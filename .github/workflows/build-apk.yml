@@ -64,12 +64,12 @@ jobs:
         run: npx capacitor-assets generate --android
 
       - name: Fetch llama.cpp (native on-device engine)
-        if: ${{ vars.QUARK_NATIVE != '0' }}
+        if: ${{ (vars.QUARK_NATIVE || '1') != '0' }}
         continue-on-error: true
         run: bash scripts/fetch-llama.sh
 
       - name: Build Vulkan GPU module (optional)
-        if: ${{ vars.QUARK_NATIVE != '0' && vars.QUARK_VULKAN != '0' }}
+        if: ${{ (vars.QUARK_NATIVE || '1') != '0' && (vars.QUARK_VULKAN || '1') != '0' }}
         continue-on-error: true
         timeout-minutes: 45
         run: |

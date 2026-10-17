@@ -77,7 +77,7 @@
       const c = doc.createElement('canvas'); c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
       const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
       return c.toDataURL('image/jpeg', 0.85).split(',')[1];
-    }catch{ return raw; }
+    }catch{ return raw.length < 4e6 ? raw : null; }   /* صورة ضخمة تعذّر تصغيرها: لا نمرّرها خامًا */
   }
 
   /* ---------- التنزيل في الخلفية ---------- */

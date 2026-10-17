@@ -230,6 +230,32 @@ std::string load(const std::string & load_json) {
                 {"gpu", use_gpu}, {"gpu_name", gpu_name}, {"gpu_note", gpu_note}}.dump();
 }
 
+// تصغير صورة RGB (متوسط مربعات) بحيث لا يتجاوز أطول ضلع maxside — يحمي من صور ضخمة تستنزف الذاكرة
+static mtmd_bitmap * shrink_bitmap(mtmd_bitmap * b, uint32_t maxside) {
+    const uint32_t nx = mtmd_bitmap_get_nx(b), ny = mtmd_bitmap_get_ny(b);
+    if (!nx || !ny || std::max(nx, ny) <= maxside) return b;
+    const double k = (double) maxside / (double) std::max(nx, ny);
+    const uint32_t ox = std::max<uint32_t>(1, (uint32_t) (nx * k)), oy = std::max<uint32_t>(1, (uint32_t) (ny * k));
+    const unsigned char * src = mtmd_bitmap_get_data(b);
+    std::vector<unsigned char> out((size_t) ox * oy * 3);
+    for (uint32_t y = 0; y < oy; y++) {
+        const uint32_t y0 = (uint64_t) y * ny / oy, y1 = std::max(y0 + 1, (uint32_t) ((uint64_t) (y + 1) * ny / oy));
+        for (uint32_t x = 0; x < ox; x++) {
+            const uint32_t x0 = (uint64_t) x * nx / ox, x1 = std::max(x0 + 1, (uint32_t) ((uint64_t) (x + 1) * nx / ox));
+            uint64_t acc[3] = {0, 0, 0}; uint32_t cnt = 0;
+            for (uint32_t yy = y0; yy < y1 && yy < ny; yy++) for (uint32_t xx = x0; xx < x1 && xx < nx; xx++) {
+                const unsigned char * px = src + ((size_t) yy * nx + xx) * 3; acc[0] += px[0]; acc[1] += px[1]; acc[2] += px[2]; cnt++;
+            }
+            if (!cnt) cnt = 1;
+            unsigned char * d = out.data() + ((size_t) y * ox + x) * 3; d[0] = acc[0] / cnt; d[1] = acc[1] / cnt; d[2] = acc[2] / cnt;
+        }
+    }
+    mtmd_bitmap * nb = mtmd_bitmap_init(ox, oy, out.data());
+    if (!nb) return b;
+    mtmd_bitmap_free(b);
+    return nb;
+}
+
 std::string chat(const std::string & chat_json, const std::vector<std::string> & images, const PieceCb & on_piece, const ProgressCb & on_prog) {
     std::lock_guard<std::mutex> lk(g_mu);
     g_abort = false;
@@ -305,16 +331,20 @@ std::string chat(const std::string & chat_json, const std::vector<std::string> &
         for (auto & im : images) {
             auto w = mtmd_helper_bitmap_init_from_buf(g.mtmd, (const unsigned char *) im.data(), im.size(), false, mtmd_helper_init_opt{});
             if (!w.bitmap) { free_bms(); return err("image", "تعذّر قراءة الصورة المرفقة.").dump(); }
-            bms.push_back(w.bitmap);
+            mtmd_bitmap * sb = shrink_bitmap(w.bitmap, 896);
+            bms.push_back(sb);
         }
         mtmd_input_text it; it.text = prompt.c_str(); it.add_special = llama_vocab_get_add_bos(vocab); it.parse_special = true;
         mtmd_input_chunks * chunks = mtmd_input_chunks_init();
         std::vector<const mtmd_bitmap *> cb(bms.begin(), bms.end());
-        int32_t r = mtmd_tokenize(g.mtmd, chunks, &it, cb.data(), cb.size());
+        int32_t r = 2;
+        try { r = mtmd_tokenize(g.mtmd, chunks, &it, cb.data(), cb.size()); }
+        catch (const std::exception & e) { r = 2; log_cb(GGML_LOG_LEVEL_ERROR, e.what(), nullptr); }
+        std::string dims; for (auto * b : bms) dims += " [" + std::to_string(mtmd_bitmap_get_nx(b)) + "x" + std::to_string(mtmd_bitmap_get_ny(b)) + "]";
         if (r != 0) {
             mtmd_input_chunks_free(chunks); free_bms();
             std::string why = take_lasterr();
-            return err("image", "تعذّر تجهيز الصورة (" + std::to_string(r) + ")" + (why.empty() ? "" : ": " + why)).dump();
+            return err("image", "تعذّر تجهيز الصورة (" + std::to_string(r) + ")" + dims + (why.empty() ? "" : ": " + why)).dump();
         }
         n_prompt = (int) mtmd_helper_get_n_tokens(chunks);
         if (n_prompt >= g.n_ctx - 8) { mtmd_input_chunks_free(chunks); free_bms(); return json{{"ok", false}, {"code", "ctx"}, {"error", "المحادثة مع الصور أطول من السياق"}, {"need", n_prompt}, {"ctx", g.n_ctx}}.dump(); }
