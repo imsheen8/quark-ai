@@ -1,0 +1,26 @@
+{
+  "appId": "com.krazos.quarkai",
+  "appName": "QUARK AI",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "backgroundColor": "#161616",
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1000,
+      "launchAutoHide": true,
+      "backgroundColor": "#000000",
+      "androidScaleType": "CENTER_INSIDE",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#161616",
+      "overlaysWebView": false
+    }
+  }
+}

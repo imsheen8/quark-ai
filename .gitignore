@@ -1,0 +1,19 @@
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+node_modules/
+android/
+www/
+*.keystore
+*.jks
+*.b64
+
+# بيانات المستخدم المحلية (قاعدة البيانات والصور)
+data/
+
+# محرك النماذج المحلية (يُنسخ من node_modules)
+vendor/
+
+android-native/llama.cpp/

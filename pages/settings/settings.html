@@ -1,0 +1,424 @@
+    <!-- الإعدادات: صفحة كاملة (تُنقل داخل .main أدناه) -->
+    <section class="set-view" id="modal">
+      <div class="lib-head"><div class="lib-in">
+        <div class="lib-top">
+          <button class="lib-ib" id="setMenu" aria-label="القائمة"><svg class="i"><use href="#i-menu"/></svg></button>
+          <button class="lib-ib sh-back" id="setBack" aria-label="رجوع"><svg class="i"><use href="#i-lib-back"/></svg></button>
+          <h2 id="setTitle">الإعدادات</h2>
+          <button class="lib-ib sh-info" id="setInfo" aria-label="معلومات"><svg class="i"><use href="#i-info"/></svg></button>
+          <button class="lib-btn" id="cancelSettings">إلغاء</button>
+        <button class="lib-btn pri" id="saveSettings">حفظ</button>
+        </div>
+        <nav class="lib-tabs" id="tabs" role="tablist">
+          <button class="lib-tab on" data-tab="keys" role="tab">المفاتيح</button>
+          <button class="lib-tab" data-tab="defaults" role="tab">النماذج التلقائية</button>
+          <button class="lib-tab" data-tab="research" role="tab">البحث العميق</button>
+          <button class="lib-tab" data-tab="integrations" role="tab">التكاملات</button>
+          <button class="lib-tab" data-tab="agent" role="tab">الوكيل</button>
+          <button class="lib-tab" data-tab="custom" role="tab">التخصيص</button>
+          <button class="lib-tab" data-tab="general" role="tab">عام</button>
+          <button class="lib-tab" data-tab="voice" role="tab">الصوت</button>
+          <button class="lib-tab" data-tab="look" role="tab">المظهر</button>
+          <button class="lib-tab" data-tab="security" role="tab">الأمان</button>
+          <button class="lib-tab" data-tab="stats" role="tab">الإحصائيات</button>
+          <button class="lib-tab" data-tab="data" role="tab">التخزين</button>
+          <button class="lib-tab" data-tab="about" role="tab">حول التطبيق</button>
+        </nav>
+      </div></div>
+    
+      <div class="set-home" id="setHome"></div>
+      <div class="sh-pop" id="shPop" hidden></div>
+
+      <div class="set-body">
+    
+          <!-- المفاتيح والنماذج -->
+          <section class="tab-panel" data-panel="keys">
+            <div class="vo-tabs" id="keysTabs" role="tablist">
+              <button type="button" role="tab" class="vo-tab on" data-ktab="text" aria-selected="true"><svg class="i" aria-hidden="true"><use href="#i-sh-aa"/></svg><span>مفاتيح الكتابة</span></button>
+              <button type="button" role="tab" class="vo-tab" data-ktab="voice" aria-selected="false"><svg class="i" aria-hidden="true"><use href="#i-sh-wave"/></svg><span>مفاتيح الصوت</span></button>
+            </div>
+            <div id="keysText">
+            <div class="panel">
+              <div class="sel-wrap">
+                <svg class="i lead-i"><use href="#i-globe"/></svg>
+                <select class="fld lead" id="fKind" aria-label="نوع الاتصال">
+                  <option value="api">API</option>
+                  <option value="local">محلي (Local)</option>
+                </select>
+                <svg class="i caret"><use href="#i-chevron-down"/></svg>
+              </div>
+              <div class="f-join">
+                <input class="fld" id="fUrl" type="text" dir="ltr" autocomplete="off" spellcheck="false" placeholder="https://api.example.com/v1">
+                <div class="sel-wrap">
+                  <select class="fld" id="fPreset" aria-label="المزوّد"></select>
+                  <svg class="i caret"><use href="#i-chevron-down"/></svg>
+                </div>
+              </div>
+              <div class="f-row">
+                <input class="fld f-key" id="fKey" type="password" dir="ltr" autocomplete="off" spellcheck="false" placeholder="مفتاح API">
+                <div class="sel-wrap">
+                  <select class="fld" id="fProto" aria-label="البروتوكول">
+                    <option value="openai">OpenAI</option>
+                    <option value="anthropic">Anthropic</option>
+                    <option value="gemini">Gemini (أصلي)</option>
+                    <option value="ollama">Ollama (أصلي)</option>
+                  </select>
+                  <svg class="i caret"><use href="#i-chevron-down"/></svg>
+                </div>
+                <div class="sel-wrap">
+                  <select class="fld" id="fType" aria-label="النوع"><option value="llm">LLM</option></select>
+                  <svg class="i caret"><use href="#i-chevron-down"/></svg>
+                </div>
+                <button type="button" class="f-btn" id="fTest">اختبار</button>
+                <button type="button" class="f-btn pri" id="fAdd">إضافة</button>
+              </div>
+              <div class="key-help" id="fHelp"></div>
+            </div>
+
+            <div class="panel">
+              <div class="ep-title"><svg class="i"><use href="#i-monitor"/></svg><b>المفاتيح المضافة</b></div>
+              <div class="ep-line"></div>
+              <p class="panel-desc">المفاتيح ونقاط الاتصال التي أضفتها. تُدار النماذج نفسها (تفعيل، تعطيل، جلب، إضافة) من صفحة «النماذج».</p>
+              <div id="epList" style="display:flex;flex-direction:column;gap:10px"></div>
+            </div>
+
+
+            <div class="panel" id="gwPanel">
+              <div class="ep-title"><svg class="i"><use href="#i-globe"/></svg><b>بوابة النماذج</b><span class="tag" id="gwBadge">…</span></div>
+              <div class="ep-line"></div>
+              <p class="panel-desc">خادم وسيط (<span dir="ltr">python3 serve.py</span>) يتحدث مع كل مزوّد بلغته الأصلية، يتجاوز قيود المتصفح، يصلح المعاملات المرفوضة تلقائيًا، ويُظهر أخطاء مفهومة. في تطبيق الأندرويد تعمل البوابة داخل التطبيق تلقائيًا. إن لم تتوفر يتصل التطبيق مباشرةً كما كان.</p>
+              <div class="gw-grid">
+                <div class="gw-f"><small>وضع البوابة</small>
+                  <div class="sel-wrap">
+                    <select class="fld" id="gwMode" aria-label="وضع البوابة"><option value="auto">تلقائي</option><option value="off">متوقفة</option></select>
+                    <svg class="i caret"><use href="#i-chevron-down"/></svg>
+                  </div>
+                </div>
+                <div class="gw-f"><small>التفكير</small>
+                  <div class="sel-wrap">
+                    <select class="fld" id="gwThink" aria-label="وضع التفكير"><option value="auto">افتراضي النموذج</option><option value="on">تشغيل</option><option value="off">إيقاف</option></select>
+                    <svg class="i caret"><use href="#i-chevron-down"/></svg>
+                  </div>
+                </div>
+                <div class="gw-f wide"><small>عنوان الخادم — اتركه فارغًا لاستخدام البوابة الافتراضية</small>
+                  <input class="fld" id="gwUrl" type="text" dir="ltr" autocomplete="off" spellcheck="false" placeholder="http://192.168.1.5:8000">
+                </div>
+                <div class="gw-f wide"><small>رمز البوابة — عند الحاجة فقط</small>
+                  <input class="fld" id="gwToken" type="password" dir="ltr" autocomplete="off" spellcheck="false" placeholder="QUARK_GW_TOKEN">
+                </div>
+                <button type="button" class="f-btn wide" id="gwCheck">فحص الاتصال</button>
+              </div>
+              <div class="key-help" id="gwHelp"></div>
+            </div>
+
+            <div class="help"><svg class="i"><use href="#i-info"/></svg><div>تُحفظ المفاتيح على جهازك في قاعدة بيانات بايثون (مجلد <code>data</code>)، أو في المتصفح إن لم يكن هناك خادم، ولا تُرسل إلا إلى نقطة الاتصال التي تستخدمها. للاستخدام الشخصي — لا تنشر الملف علنًا وفيه مفتاحك. اضغط «حفظ» في الأعلى لتثبيت التغييرات.</div></div>
+            </div>
+            <div id="keysVoice" hidden></div>
+          </section>
+
+          <!-- التخصيص -->
+          <!-- النماذج التلقائية -->
+          <section class="tab-panel" data-panel="defaults" hidden>
+            <div id="defsRoot"></div>
+          </section>
+
+          <!-- البحث العميق -->
+          <section class="tab-panel" data-panel="research" hidden>
+            <div id="rsSetRoot"></div>
+          </section>
+
+          <!-- التكاملات -->
+          <section class="tab-panel" data-panel="integrations" hidden>
+            <div id="intRoot"></div>
+          </section>
+
+          <!-- الوكيل -->
+          <section class="tab-panel" data-panel="agent" hidden>
+            <div id="agRoot"></div>
+          </section>
+
+          <section class="tab-panel" data-panel="custom" hidden>
+            <details class="embedded-group" id="prefsDetails" open>
+              <summary><svg class="i"><use href="#i-user"/></svg> التفضيلات الشخصية <span>ما يراعيه الذكاء الاصطناعي في كل المحادثات</span></summary>
+              <div class="pf-sec eg-body">
+              <div class="field"><textarea id="pfPrefs" rows="5" placeholder="اطرح أسئلة توضيحية قبل تقديم إجابات مفصّلة"></textarea></div>
+              <button class="pf-big" id="pfSavePrefs" disabled>حفظ التفضيلات</button>
+              </div>
+            </details>
+            <details class="embedded-group" id="systemDetails">
+              <summary><svg class="i"><use href="#i-cpu"/></svg> تعليمات النظام <span>دور الذكاء الاصطناعي وأسلوبه ولغته</span></summary>
+              <div class="pf-sec eg-body">
+              <div class="field"><textarea id="pfSystem" rows="4" placeholder="مثال: أنت مساعد ودود تجيب بالعربية بإيجاز."></textarea></div>
+              <button class="pf-big" id="pfSaveSystem" disabled>حفظ التعليمات</button>
+              </div>
+            </details>
+            <details class="embedded-group" id="paramsDetails">
+              <summary><svg class="i"><use href="#i-sh-sliders"/></svg> معاملات النموذج <span>Temperature وTop P وطول الرد</span></summary>
+              <div class="pf-sec eg-body">
+              <div class="prm-box">
+                <div class="seg" id="prmScope">
+                  <button type="button" data-sc="global">عام</button>
+                  <button type="button" data-sc="model">النموذج</button>
+                  <button type="button" data-sc="chat">المحادثة</button>
+                </div>
+                <div class="prm-target" id="prmTarget"></div>
+
+                <div class="prm" data-p="temperature">
+                  <div class="prm-top"><label>Temperature<small>أعلى = أكثر إبداعًا وعشوائية، أقل = أدق وثباتًا (0 – 2)</small></label>
+                    <input class="fld prm-in" type="number" inputmode="decimal" min="0" max="2" step="0.05" placeholder="افتراضي"></div>
+                  <input type="range" min="0" max="2" step="0.05" aria-label="temperature">
+                </div>
+                <div class="prm" data-p="top_p">
+                  <div class="prm-top"><label>Top P<small>يحدّ من الكلمات المرشّحة بحسب الاحتمال (0 – 1)</small></label>
+                    <input class="fld prm-in" type="number" inputmode="decimal" min="0" max="1" step="0.05" placeholder="افتراضي"></div>
+                  <input type="range" min="0" max="1" step="0.05" aria-label="top_p">
+                </div>
+                <div class="prm" data-p="max_tokens">
+                  <div class="prm-top"><label>Max Tokens<small>أقصى طول للرد. الافتراضي في Anthropic هو 4096</small></label>
+                    <input class="fld prm-in" type="number" inputmode="numeric" min="1" step="256" placeholder="افتراضي"></div>
+                </div>
+
+                <div class="prm-eff" id="prmEff"></div>
+                <div class="prm-acts">
+                  <button class="pf-big" id="prmSave" disabled>حفظ المعاملات</button>
+                  <button type="button" class="reset" id="prmReset">مسح</button>
+                </div>
+              </div>
+              <div class="help"><svg class="i"><use href="#i-info"/></svg><div>في Anthropic لا تُرسل Temperature وTop P معًا (يُستخدم Temperature فقط، وحدّه الأقصى 1). بعض النماذج المنطقية تتجاهل هذه المعاملات.</div></div>
+              </div>
+            </details>
+            <details class="embedded-group" id="memoryDetails">
+              <summary><svg class="i"><use href="#i-brain"/></svg> الذاكرة <span>الذكريات والاستخراج التلقائي</span></summary>
+              <div id="memoryMount"></div>
+            </details>
+            <details class="embedded-group" id="skillsSettingsDetails">
+              <summary><svg class="i"><use href="#i-sparkles"/></svg> إعدادات المهارات <span>المطابقة والاعتماد والاستيراد</span></summary>
+              <div id="skillsSettingsRoot"></div>
+              <button type="button" class="lib-btn" id="manageSkills">إدارة المهارات في المكتبة</button>
+            </details>
+          </section>
+
+          <!-- الصوت -->
+          <section class="tab-panel" data-panel="voice" hidden>
+            <div id="voBody"></div>
+          </section>
+
+          <!-- عام -->
+          <section class="tab-panel" data-panel="general" hidden>
+            <div class="panel">
+              <label class="sw-row" for="autoTitleSw">
+                <div><b>عنوان تلقائي للمحادثات</b><small>بعد أول رد يولّد النموذج عنوانًا قصيرًا للمحادثة. يرسل طلبًا صغيرًا إضافيًا (أول رسالة وأول رد فقط) إلى نقطة الاتصال نفسها.</small></div>
+                <input type="checkbox" id="autoTitleSw" class="sw">
+              </label>
+            </div>
+
+            <div class="panel" style="margin-top:12px">
+              <label class="sw-row" for="introSw">
+                <div><b>انميشن الدخول</b><small>يعرض شعار QUARK AI متحركًا عند فتح التطبيق. المقدمة الكاملة تظهر مرة واحدة فقط عند أول استخدام. المس الشاشة لتخطيه.</small></div>
+                <input type="checkbox" id="introSw" class="sw">
+              </label>
+            </div>
+
+            <div class="panel" id="hapticsRow" style="display:none;margin-top:12px">
+              <label class="sw-row" for="hapticsSw">
+                <div><b>الاهتزاز عند اللمس</b><small>اهتزاز خفيف عند الضغط على الأزرار والعناصر. أوقفه إن لم ترغب به.</small></div>
+                <input type="checkbox" id="hapticsSw" class="sw">
+              </label>
+            </div>
+            <div class="panel" id="notifyRow" style="display:none;margin-top:12px">
+              <label class="sw-row" for="notifySw">
+                <div><b>إشعار عند اكتمال الرد</b><small>يستمر الرد في الخلفية عند الخروج من التطبيق، وتصلك رسالة تنبيه عند انتهائه.</small></div>
+                <input type="checkbox" id="notifySw" class="sw">
+              </label>
+            </div>
+            <div class="panel" id="taskBgRow" style="display:none;margin-top:12px">
+              <label class="sw-row" for="taskBgSw">
+                <div><b>تشغيل المهام في الخلفية</b><small>يُبقي مجدول المهام يعمل بعد إغلاق التطبيق وبعد إعادة تشغيل الهاتف، ويرسل إشعارًا عند اكتمال كل مهمة. يظهر إشعار دائم صغير ويستهلك بعض البطارية.</small></div>
+                <input type="checkbox" id="taskBgSw" class="sw">
+              </label>
+              <div class="key-help" id="taskBgHelp" style="margin-top:8px"></div>
+              <button class="row-btn" id="taskBgBatt" style="display:none;margin-top:8px"><svg class="i"><use href="#i-cpu"/></svg><div><b>استثناء من توفير البطارية</b><small>يمنع النظام من إيقاف الخدمة. موصى به لهواتف Xiaomi وHuawei وSamsung وغيرها.</small></div></button>
+            </div>
+            <div class="rows" id="keysRow" style="display:none;margin-top:12px">
+              <p class="panel-desc" style="margin:6px 0 4px">الإيماءات والأزرار</p>
+              <button class="row-btn" id="assistBtn"><svg class="i"><use href="#i-cpu"/></svg><div><b>تعيين QUARK AI كمساعد افتراضي</b><small>يُستدعى بضغط مطوّل على زر التشغيل أو الهوم، أو بالسحب من زاوية الشاشة (حسب هاتفك)</small></div></button>
+              <div class="panel">
+                <label class="lbl" for="assistAct" style="display:block;margin-bottom:8px">عند استدعاء المساعد</label>
+                <div class="sel-wrap">
+                  <select class="fld" id="assistAct" aria-label="إجراء المساعد">
+                    <option value="chat">محادثة جديدة مع لوحة المفاتيح</option>
+                    <option value="mic">إملاء صوتي</option>
+                    <option value="camera">الكاميرا</option>
+                    <option value="new">محادثة جديدة فقط</option>
+                  </select>
+                  <svg class="i caret"><use href="#i-chevron-down"/></svg>
+                </div>
+              </div>
+              <div class="panel">
+                <label class="lbl" for="volAct" style="display:block;margin-bottom:8px">ضغطتان سريعتان على زر رفع الصوت</label>
+                <div class="sel-wrap">
+                  <select class="fld" id="volAct" aria-label="إجراء زر الصوت">
+                    <option value="">معطّل</option>
+                    <option value="chat">محادثة جديدة مع لوحة المفاتيح</option>
+                    <option value="mic">إملاء صوتي</option>
+                    <option value="camera">الكاميرا</option>
+                  </select>
+                  <svg class="i caret"><use href="#i-chevron-down"/></svg>
+                </div>
+                <div class="key-help" id="volHelp" style="margin-top:8px"></div>
+              </div>
+              <div class="panel">
+                <label class="sw-row" for="shakeSw">
+                  <div><b>هزّ الهاتف لمحادثة جديدة</b><small>داخل التطبيق فقط: هزّتان سريعتان تبدآن محادثة جديدة.</small></div>
+                  <input type="checkbox" id="shakeSw" class="sw">
+                </label>
+              </div>
+              <div class="help"><svg class="i"><use href="#i-info"/></svg><div>في هواتف Xiaomi يمكنك أيضًا ربط «اختصارات الأزرار» و«اختصارات الإيماءات» (الإعدادات الإضافية) بأي اختصار من أيقونة QUARK AI مثل «محادثة جديدة» أو «إملاء صوتي».</div></div>
+            </div>
+            <div class="rows" id="widgetRow" style="display:none;margin-top:12px">
+              <button class="row-btn" id="widgetBtn"><svg class="i"><use href="#i-cpu"/></svg><div><b>إضافة ودجت للشاشة الرئيسية</b><small>اكتب أو صوّر أو أملِ صوتيًا مباشرة من الشاشة الرئيسية</small></div></button>
+              <button class="row-btn" id="tileBtn"><svg class="i"><use href="#i-cpu"/></svg><div><b>إضافة زر للإعدادات السريعة</b><small>زر QUARK AI في الشريط العلوي (اسحب الإشعارات للأسفل) لبدء محادثة بضغطة واحدة</small></div></button>
+            </div>
+          </section>
+
+          <!-- المظهر -->
+          <section class="tab-panel" data-panel="look" hidden>
+            <div class="field">
+              <span class="lbl"><svg class="i"><use href="#i-moon"/></svg> السمة</span>
+              <div class="seg" id="themeSeg">
+                <button data-tmode="dark">داكن</button>
+                <button data-tmode="light">فاتح</button>
+                <button data-tmode="auto">تلقائي</button>
+              </div>
+              <p class="panel-desc">«تلقائي» يتبع إعداد جهازك.</p>
+            </div>
+            <div class="field" id="themeBox"></div>
+            <div class="field">
+              <span class="lbl"><svg class="i"><use href="#i-sparkles"/></svg> نمط الرسائل</span>
+              <div class="seg" id="msgStyleSeg" style="grid-template-columns:repeat(2,1fr)">
+                <button data-mstyle="plain">عادية</button>
+                <button data-mstyle="container">حاوية</button>
+              </div>
+              <p class="panel-desc">«عادية» تعرض ردّ المساعد نصًّا مباشرًا، و«حاوية» تضعه داخل بطاقة مستقلة.</p>
+              <span class="lbl" style="margin-top:8px">نمط هذه المحادثة فقط</span>
+              <div class="seg" id="chatStyleSeg">
+                <button data-cs="auto">تلقائي</button>
+                <button data-cs="plain">عادية</button>
+                <button data-cs="container">حاوية</button>
+              </div>
+              <p class="panel-desc" id="chatStyleDesc">«تلقائي» يتبع الإعداد العام أعلاه.</p>
+            </div>
+            <div class="field" id="contBox" hidden>
+              <span class="lbl"><svg class="i"><use href="#i-sparkles"/></svg> خيارات الحاوية</span>
+              <div class="seg" id="stripeSeg">
+                <button data-stripe="none">بدون شريط</button>
+                <button data-stripe="accent">لون الثيم</button>
+                <button data-stripe="custom">مخصص</button>
+              </div>
+              <span class="lbl" style="margin-top:6px">الحواف</span>
+              <div class="seg" id="radiusSeg"><button data-radius="sharp">حادة</button><button data-radius="round">مدورة</button><button data-radius="pill">دائرية</button></div>
+              <span class="lbl" style="margin-top:6px">شدة الإطار</span>
+              <div class="seg" id="borderSeg"><button data-bw="none">بدون</button><button data-bw="thin">رفيع</button><button data-bw="bold">سميك</button></div>
+              <span class="lbl" style="margin-top:6px">الخلفية</span>
+              <div class="seg" id="alphaSeg"><button data-alpha="solid">صلبة</button><button data-alpha="soft">ناعمة</button><button data-alpha="glass">زجاجية</button></div>
+              <label class="c-color" id="stripeColorRow" hidden>لون الشريط الجانبي <input type="color" id="stripeColor" value="#5b8def" style="margin-inline-start:auto"></label>
+              <button type="button" class="opt-row" role="switch" data-copt="sep"><span>فواصل بين الأقسام<small>خط فاصل قبل كل عنوان داخل الرد</small></span><i class="tg"></i></button>
+              <button type="button" class="opt-row" role="switch" data-copt="spoiler"><span>حجب الرد (Spoiler)<small>يُموَّه الرد حتى تضغط عليه</small></span><i class="tg"></i></button>
+              <button type="button" class="opt-row" role="switch" data-copt="header"><span>ترويسة الحاوية<small>اسم النموذج والوقت وأزرار النسخ والمشاركة في أعلى البطاقة</small></span><i class="tg"></i></button>
+              <button type="button" class="opt-row" role="switch" data-copt="sections"><span>فصل كتل الكود والجداول<small>خط فاصل قبل كل كتلة كود أو جدول وبعدها</small></span><i class="tg"></i></button>
+              <button type="button" class="opt-row" role="switch" data-copt="user"><span>حاوية لرسائلي أيضًا<small>تُطبَّق الحواف والإطار والشريط على فقاعة رسالتك</small></span><i class="tg"></i></button>
+              <button type="button" class="opt-row" role="switch" data-copt="actions"><span>صف أزرار سريعة<small>أزرار «اشرح أكثر» و«لخّص» و«مثال» تحت آخر رد</small></span><i class="tg"></i></button>
+              <span class="lbl" style="margin-top:6px">معاينة</span>
+              <div class="cprev-wrap"><div class="msg user cprev"><div class="bubble">سؤالك يظهر هنا</div></div><div class="msg ai revealed cprev"><div class="c-head"><svg class="i"><use href="#i-sparkles"/></svg><b>model-name</b><span class="c-t">الآن</span><span class="c-sp"></span></div><div class="bubble"><div class="ans"><h3>عنوان القسم الأول</h3><p>هذا نص تجريبي يوضح شكل الرد داخل الحاوية.</p><div class="tbl-wrap"><table><tr><td>أ</td><td>ب</td></tr></table></div><h3>عنوان القسم الثاني</h3><p>ويظهر هنا القسم التالي بعد الفاصل.</p></div></div><div class="qrow"><button>اشرح أكثر</button><button>لخّص</button><button>ترجم</button></div></div></div>
+            </div>
+            <div class="field">
+              <span class="lbl"><svg class="i"><use href="#i-pen"/></svg> حجم النص في المحادثة</span>
+              <div class="seg" id="sizeSeg">
+                <button data-size="sm">صغير</button>
+                <button data-size="md">متوسط</button>
+                <button data-size="lg">كبير</button>
+              </div>
+            </div>
+          </section>
+    
+          <!-- الأمان -->
+          <section class="tab-panel" data-panel="security" hidden>
+            <p class="panel-desc">ضع رمزًا من 4 أرقام لقفل التطبيق عند فتحه. حالة الرمز الآن: <b id="secState"></b></p>
+            <div class="rows">
+              <button class="row-btn" id="secSet"><svg class="i"><use href="#i-key"/></svg><div><b>تعيين رمز الأمان</b><small>يُطلب الرمز في كل مرة تفتح فيها التطبيق</small></div></button>
+              <button class="row-btn" id="secChange" hidden><svg class="i"><use href="#i-key"/></svg><div><b>تغيير الرمز</b><small>يتطلب إدخال الرمز الحالي أولًا</small></div></button>
+              <button class="row-btn danger" id="secRemove" hidden><svg class="i"><use href="#i-trash"/></svg><div><b>إزالة الرمز</b><small>يتطلب إدخال الرمز الحالي</small></div></button>
+            </div>
+            <div class="panel" id="secDelayBox" hidden style="margin-top:14px">
+              <label class="sw-row" for="secDelay" style="cursor:default">
+                <div><b>القفل التلقائي</b><small>يُطلب الرمز عند العودة إلى التطبيق بعد غياب أطول من هذه المدة. وعند فتح التطبيق من جديد يُطلب الرمز دائمًا.</small></div>
+              </label>
+              <div class="sel-wrap">
+                <select class="fld" id="secDelay" aria-label="مدة القفل التلقائي">
+                  <option value="0">فورًا عند مغادرة التطبيق</option>
+                  <option value="30000">بعد 30 ثانية</option>
+                  <option value="60000">بعد دقيقة</option>
+                  <option value="300000">بعد 5 دقائق</option>
+                  <option value="900000">بعد 15 دقيقة</option>
+                  <option value="3600000">بعد ساعة</option>
+                  <option value="-1">عند فتح التطبيق فقط</option>
+                </select>
+                <svg class="i caret"><use href="#i-chevron-down"/></svg>
+              </div>
+            </div>
+
+            <div class="help"><svg class="i"><use href="#i-info"/></svg><div>القفل يحمي واجهة التطبيق فقط ولا يشفّر البيانات المخزّنة في المتصفح. يُقفل التطبيق تلقائيًا بحسب المدة التي تختارها. إن نسيت الرمز فالحل الوحيد مسح بيانات التطبيق.</div></div>
+          </section>
+
+          <!-- التخزين -->
+          <section class="tab-panel" data-panel="data" hidden>
+            <div class="stor-card" id="storCard">
+              <div class="stor-head">
+                <div><b id="storUsed">—</b><small id="storOf">من —</small></div>
+                <span class="stor-pct" id="storPct" dir="ltr">0%</span>
+              </div>
+              <div class="stor-bar" id="storBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="المساحة المستخدمة">
+                <i class="seg-chats" id="segChats"></i><i class="seg-imgs" id="segImgs"></i><i class="seg-other" id="segOther"></i>
+              </div>
+              <div class="stor-legend">
+                <span><i class="seg-chats"></i>المحادثات <b id="lgChats" dir="ltr">0 B</b></span>
+                <span><i class="seg-imgs"></i>الصور <b id="lgImgs" dir="ltr">0 B</b></span>
+                <span><i class="seg-other"></i>أخرى <b id="lgOther" dir="ltr">0 B</b></span>
+              </div>
+              <div class="stor-free"><svg class="i"><use href="#i-info"/></svg><span id="storFree">جارٍ الحساب…</span></div>
+            </div>
+
+            <div class="stats">
+              <div class="stat"><b id="stChats">0</b><small>محادثات</small></div>
+              <div class="stat"><b id="stMsgs">0</b><small>رسائل</small></div>
+              <div class="stat"><b id="stSize">0</b><small>الحجم</small></div>
+            </div>
+
+            <div class="rows">
+              <button class="row-btn" id="exportAll"><svg class="i"><use href="#i-download"/></svg><div><b>تصدير نسخة احتياطية</b><small>ملف JSON بكل المحادثات (بدون المفاتيح)</small></div></button>
+              <button class="row-btn" id="importBtn"><svg class="i"><use href="#i-upload"/></svg><div><b>استيراد نسخة احتياطية</b><small>دمج محادثات من ملف JSON تم تصديره سابقًا</small></div></button>
+              <button class="row-btn" id="clearLegacy" hidden><svg class="i"><use href="#i-trash"/></svg><div><b>مسح النسخة القديمة من المتصفح</b><small id="clearLegacySub">بياناتك محفوظة الآن في بايثون؛ هذا يحذف النسخة القديمة المتبقية في المتصفح فقط</small></div></button>
+              <button class="row-btn danger" id="delAll"><svg class="i"><use href="#i-trash"/></svg><div><b>حذف كل المحادثات</b><small>لا يمكن التراجع عن هذا الإجراء</small></div></button>
+              <button class="row-btn danger" id="resetAll"><svg class="i"><use href="#i-refresh"/></svg><div><b>مسح المفاتيح وإعادة ضبط الإعدادات</b><small>تبقى المحادثات كما هي</small></div></button>
+            </div>
+            <input type="file" id="importFile" accept=".json,application/json" hidden>
+          </section>
+          <!-- الإحصائيات -->
+          <section class="tab-panel" data-panel="stats" hidden>
+            <div id="stRoot"></div>
+          </section>
+          <!-- حول التطبيق -->
+          <section class="tab-panel" data-panel="about" hidden>
+            <div class="rows">
+              <div class="row-btn"><svg class="i"><use href="#i-user"/></svg><div><b>المطوّر</b><small>شين</small></div></div>
+              <div class="row-btn"><svg class="i"><use href="#i-monitor"/></svg><div><b>الشركة</b><small dir="ltr" style="text-align:start">KRAZOS</small></div></div>
+              <div class="row-btn"><svg class="i"><use href="#i-cpu"/></svg><div><b>الإصدار</b><small dir="ltr" style="text-align:start">v1.0</small></div></div>
+            </div>
+            <p class="panel-desc" style="margin:18px 0 10px">الروابط</p>
+            <div class="rows">
+              <a class="row-btn" href="https://discord.gg/ycmPBVszCy" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none"><svg class="i"><use href="#i-globe"/></svg><div><b>ديسكورد</b><small dir="ltr" style="text-align:start">discord.gg/ycmPBVszCy</small></div></a>
+            </div>
+          </section>
+      </div>
+    </section>
+

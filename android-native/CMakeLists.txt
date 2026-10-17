@@ -1,0 +1,60 @@
+# QUARK AI — مكتبة التشغيل الأصلي (libquark_llama.so) فوق llama.cpp + mtmd (الرؤية)
+# يُستدعى من Gradle (أندرويد) أو مباشرة على الجهاز المضيف للاختبار: cmake -DQUARK_LLAMA_DIR=... -DQUARK_HOST_TEST=ON
+cmake_minimum_required(VERSION 3.22)
+project(quark_llama VERSION 1.0 LANGUAGES C CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+if(NOT DEFINED QUARK_LLAMA_DIR)
+  set(QUARK_LLAMA_DIR "${CMAKE_CURRENT_LIST_DIR}/llama.cpp")
+endif()
+if(NOT EXISTS "${QUARK_LLAMA_DIR}/CMakeLists.txt")
+  message(FATAL_ERROR "llama.cpp غير موجود في ${QUARK_LLAMA_DIR} — شغّل scripts/fetch-llama.sh")
+endif()
+
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_COMMON ON CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_SERVER OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_APP OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_MTMD ON CACHE BOOL "" FORCE)
+set(LLAMA_OPENSSL OFF CACHE BOOL "" FORCE)
+set(LLAMA_CURL OFF CACHE BOOL "" FORCE)
+set(MTMD_VIDEO OFF CACHE BOOL "" FORCE)
+set(GGML_OPENMP OFF CACHE BOOL "" FORCE)
+set(GGML_LLAMAFILE OFF CACHE BOOL "" FORCE)
+
+if(ANDROID)
+  set(GGML_NATIVE OFF CACHE BOOL "" FORCE)
+  # نسخ المعالج المتعددة تُحمَّل ديناميكيًا فيُختار الأسرع لكل هاتف (dotprod/i8mm/SVE…)
+  set(GGML_BACKEND_DL ON CACHE BOOL "" FORCE)
+  set(GGML_CPU_ALL_VARIANTS ON CACHE BOOL "" FORCE)
+  set(GGML_CPU_KLEIDIAI OFF CACHE BOOL "" FORCE)
+endif()
+
+add_subdirectory(${QUARK_LLAMA_DIR} build-llama EXCLUDE_FROM_ALL)
+
+add_library(quark_llama SHARED src/quark_llama.cpp src/quark_jni.cpp)
+target_include_directories(quark_llama PRIVATE
+  ${QUARK_LLAMA_DIR}/include ${QUARK_LLAMA_DIR}/common ${QUARK_LLAMA_DIR}/ggml/include
+  ${QUARK_LLAMA_DIR}/tools/mtmd ${QUARK_LLAMA_DIR}/vendor)
+target_link_libraries(quark_llama PRIVATE llama llama-common mtmd)
+if(ANDROID)
+  target_link_libraries(quark_llama PRIVATE log android)
+else()
+  find_package(JNI QUIET)
+  if(JNI_FOUND)
+    target_include_directories(quark_llama PRIVATE ${JNI_INCLUDE_DIRS})
+  endif()
+endif()
+
+if(QUARK_HOST_TEST)
+  add_executable(host_test test/host_test.cpp src/quark_llama.cpp)
+  target_include_directories(host_test PRIVATE
+    ${QUARK_LLAMA_DIR}/include ${QUARK_LLAMA_DIR}/common ${QUARK_LLAMA_DIR}/ggml/include
+    ${QUARK_LLAMA_DIR}/tools/mtmd ${QUARK_LLAMA_DIR}/vendor)
+  target_link_libraries(host_test PRIVATE llama llama-common mtmd)
+endif()

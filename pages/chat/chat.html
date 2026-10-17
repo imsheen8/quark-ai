@@ -1,0 +1,71 @@
+    <div class="stage">
+      <section class="messages" id="messages"></section>
+      <button class="to-bottom" id="toBottom" aria-label="للأسفل"><svg class="i"><use href="#i-arrow-down"/></svg></button>
+    </div>
+
+    <footer class="composer">
+      <div class="composer-inner">
+        <div class="pop slash-pop" id="slashPop" hidden role="listbox" aria-label="الأوامر السريعة">
+          <div class="sl-head">القوالب والشخصيات</div>
+          <div class="pop-list" id="slashList"></div>
+          <div class="sl-foot">↑↓ للتنقل · Enter للاختيار · Esc للإغلاق</div>
+        </div>
+        <div class="sheet-ov" id="attachPop" role="dialog" aria-label="إضافة إلى المحادثة">
+          <div class="sheet add-sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-head">
+              <button type="button" class="sheet-x" id="amX" aria-label="إغلاق"><svg class="i"><use href="#i-x"/></svg></button>
+              <h3>إضافة إلى المحادثة</h3><span></span>
+            </div>
+            <div class="sheet-body">
+              <div id="attachMain">
+                <div class="am-tiles">
+                  <button type="button" class="am-tile" data-am="cam"><span class="ico"><svg class="i"><use href="#i-camera"/></svg></span>كاميرا</button>
+                  <button type="button" class="am-tile" data-am="photo"><span class="ico"><svg class="i"><use href="#i-image"/></svg></span>صور</button>
+                  <button type="button" class="am-tile" data-am="file"><span class="ico"><svg class="i"><use href="#i-file-up"/></svg></span>ملفات</button>
+                </div>
+                <div class="am-rows">
+                  <div class="am-models" id="amModels">
+                    <button type="button" class="am-row" data-am="model"><span class="ico"><svg class="i"><use href="#i-cpu"/></svg></span><span class="tx"><b id="amModelT">النموذج</b><small id="amModelS" dir="auto">—</small></span><svg class="i go"><use href="#i-chevron-left"/></svg></button>
+                    <button type="button" class="am-row" data-am="modelB" id="amModelB" hidden><span class="ico"><svg class="i"><use href="#i-cpu"/></svg></span><span class="tx"><b>النموذج الثاني</b><small id="amModelBS" dir="auto">—</small></span><svg class="i go"><use href="#i-chevron-left"/></svg></button>
+                  </div>
+                  <button type="button" class="am-row" data-am="mic" id="amMic"><span class="ico"><svg class="i"><use href="#i-mic"/></svg></span><span class="tx"><b id="amMicT">إدخال صوتي</b><small>اكتب رسالتك بصوتك</small></span></button>
+                  <button type="button" class="am-row" data-am="cmp" id="amCmp"><span class="ico"><svg class="i"><use href="#i-columns"/></svg></span><span class="tx"><b id="amCmpT">مقارنة نموذجين</b><small>أرسل السؤال لنموذجين وقارن الردين</small></span><span class="am-sw"></span></button>
+                  <button type="button" class="am-row" data-am="ws" id="amWs"><span class="ico"><svg class="i"><use href="#i-search"/></svg></span><span class="tx"><b>بحث في الويب</b><small>أجب بمعلومات حديثة من نتائج الويب مع المصادر</small></span><span class="am-sw"></span></button>
+                  <button type="button" class="am-row" data-am="rs" id="amRs"><span class="ico"><svg class="i"><use href="#i-globe"/></svg></span><span class="tx"><b>بحث عميق</b><small>ابحث في الويب واكتب تقريرًا موثّقًا بالمصادر</small></span><span class="am-sw"></span></button>
+                  <button type="button" class="am-row" data-am="tpl"><span class="ico"><svg class="i"><use href="#i-lib-list"/></svg></span><span class="tx"><b>اختيار قالب</b><small>أدرج قالبًا من المكتبة</small></span><svg class="i go"><use href="#i-chevron-left"/></svg></button>
+                </div>
+              </div>
+              <div id="attachTpl" hidden>
+                <div class="am-head"><button type="button" data-am="back" aria-label="رجوع"><svg class="i"><use href="#i-lib-back"/></svg></button> اختيار قالب</div>
+                <label class="am-search"><svg class="i"><use href="#i-search"/></svg><input id="tplSearch" type="text" placeholder="ابحث في القوالب…" autocomplete="off" spellcheck="false"></label>
+                <div id="tplList"></div>
+              </div>
+              <div id="attachModel" hidden>
+                <div class="am-head"><button type="button" data-am="back" aria-label="رجوع"><svg class="i"><use href="#i-lib-back"/></svg></button> <span id="amModelTitle">اختيار النموذج</span></div>
+                <label class="am-search"><svg class="i"><use href="#i-search"/></svg><input id="modelSearch" type="text" placeholder="ابحث أو اكتب معرّف نموذج مخصص…" autocomplete="off" spellcheck="false" dir="ltr"></label>
+                <div class="pop-list" id="popList"></div>
+                <div class="am-foot">
+                  <button type="button" id="popRefresh"><svg class="i"><use href="#i-refresh"/></svg> جلب كل النماذج</button>
+                  <button type="button" id="popSettings"><svg class="i"><use href="#i-settings"/></svg> الإعدادات</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="composer-box">
+          <div class="att-row" id="attRow"></div>
+          <textarea id="input" rows="1" placeholder="اكتب رسالتك... أو / للأوامر"></textarea>
+          <div class="composer-bar">
+            <button class="circle-btn" id="attachBtn" aria-label="إضافة" title="إضافة"><svg class="i"><use href="#i-plus"/></svg></button>
+            <div class="ag-mode" id="agMode" role="group" aria-label="وضع الرد">
+              <button type="button" id="agModeA" aria-pressed="false" title="وضع الوكيل: ينفّذ المهمة على خطوات بالأدوات"><svg class="i"><use href="#i-sparkles"/></svg><span>وكيل</span></button>
+              <button type="button" id="agModeC" aria-pressed="true" title="محادثة عادية بلا أدوات"><svg class="i"><use href="#i-message"/></svg><span>محادثة</span></button>
+            </div>
+            <button class="send idle" id="sendBtn" aria-label="إرسال"><svg class="i"><use href="#i-arrow-up"/></svg></button>
+          </div>
+        </div>
+        <div class="hint">الذكاء الاصطناعي قد يخطئ، تحقق من المعلومات المهمة.</div>
+        <input type="file" id="fileInput" hidden multiple accept=".txt,.md,.json,.csv,.js,.ts,.jsx,.tsx,.py,.html,.css,.java,.c,.cpp,.cs,.go,.rs,.php,.rb,.sql,.xml,.yml,.yaml,.log,.sh,text/*">
+      </div>
+    </footer>

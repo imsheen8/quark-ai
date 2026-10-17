@@ -1,0 +1,10 @@
+/* QUARK AI — الشاشة الرئيسية الفارغة: الترحيب + الكتابة في الوسط */
+/* الشاشة الرئيسية: الترحيب + خانة الكتابة في الوسط */
+.welcome h2{margin-bottom:22px}
+.main.empty{padding-bottom:calc(64px + env(safe-area-inset-top))}
+.main.empty>.stage{flex:none;min-height:auto;margin-top:auto}
+.main.empty .messages{flex:1 1 auto;width:100%;overflow:visible;padding-bottom:6px;scroll-behavior:auto}
+.main.empty .to-bottom{display:none}
+.main.empty .hint{display:none}
+.main.empty>.composer{flex:none;margin-bottom:auto}
+

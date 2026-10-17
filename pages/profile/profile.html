@@ -1,0 +1,31 @@
+    <!-- الملف الشخصي: صفحة كاملة -->
+    <section class="pf-view" id="pfView">
+      <div class="lib-head"><div class="lib-in">
+        <div class="lib-top">
+          <button class="lib-ib" id="pfBack" aria-label="رجوع"><svg class="i"><use href="#i-lib-back"/></svg></button>
+          <h2>الملف الشخصي</h2>
+        </div>
+      </div></div>
+      <div class="set-body">
+        <div class="pf-photo">
+          <div class="pf-ava" id="pfAva"></div>
+          <button class="pill" id="pfPhotoBtn">تعديل الصورة</button>
+          <button class="rm" id="pfPhotoRm" hidden>إزالة الصورة</button>
+          <input type="file" id="pfFile" accept="image/*" hidden>
+        </div>
+        <div class="field"><label for="pfName">الاسم الكامل</label><input id="pfName" type="text" maxlength="60" autocomplete="off"></div>
+        <div class="field"><label for="pfNick">بماذا ننادِيك؟</label><input id="pfNick" type="text" maxlength="40" autocomplete="off"></div>
+        <button class="pf-big" id="pfUpdate" disabled>تحديث الملف</button>
+        <div class="up-card" id="upCard"><h3 id="upTitle">تريد المزيد؟</h3><p id="upText">رقّ إلى برو للحصول على ثيمات مخصصة بلا حدود ونمط الحاوية للرسائل.</p><button type="button" class="up-btn" id="upBtn">ترقية</button></div>
+
+
+        <div class="pf-sec">
+          <div class="pf-acc">إجراءات الحساب</div>
+          <div class="rows">
+            <button class="row-btn" id="pfGoSettings"><svg class="i"><use href="#i-settings"/></svg><div><b>الإعدادات</b><small>المفاتيح والتخصيص والمظهر والأمان والتخزين</small></div></button>
+            <button class="row-btn danger" id="pfDelAll"><svg class="i"><use href="#i-trash"/></svg><div><b>حذف كل المحادثات</b><small>لا يمكن التراجع عن هذا الإجراء</small></div></button>
+          </div>
+        </div>
+      </div>
+    </section>
+

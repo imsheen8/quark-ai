@@ -1,0 +1,44 @@
+/* QUARK AI — المتغيرات (الألوان والخطوط) + إعادة الضبط الأساسية */
+:root{
+  --font:"IBM Plex Sans Arabic","Tajawal","Segoe UI",Tahoma,system-ui,sans-serif;
+  --serif:"Amiri","Noto Naskh Arabic",Georgia,serif;
+  --sw:320px;
+  --bg:#faf9f5; --sidebar:#f3f1ea; --surface:#ffffff; --surface-2:#ece9df; --surface-3:#dfdbcd;
+  --text:#1f1e1c; --text-2:#55524b; --muted:#8a867b; --border:#e2dfd4;
+  --bubble:#ece9df; --accent:#d97757; --accent-soft:rgba(217,119,87,.14);
+  --primary:var(--accent); --on-primary:#ffffff;
+  --danger:#e5484d; --danger-soft:rgba(229,72,77,.12); --ok:#2f9e5a;
+  --shadow-md:0 8px 30px rgba(40,30,10,.1); --shadow-lg:0 20px 60px rgba(30,20,0,.22);
+  --on-accent:#fff;
+  --code-bg:#f1efe7; --code-head:#e7e4d9; --code-bd:#dcd8ca; --code-fg:#1f1e1c; --code-mute:#8f8b80; --code-btn:#6a665b; --code-hover:#dcd8ca; --code-hover-fg:#1f1e1c;
+  --tk-c:#6b7585; --tk-s:#2f7d32; --tk-n:#c25b12; --tk-k:#8a3fc2;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#161616; --sidebar:#101010; --surface:#1c1c1c; --surface-2:#2a2a2a; --surface-3:#363636;
+  --text:#ececec; --text-2:#bdbdbd; --muted:#8b8b8b; --border:#2c2c2c;
+  --bubble:#2b2b2b; --accent:#e07a5f; --accent-soft:rgba(224,122,95,.16);
+  --primary:var(--accent); --on-primary:#ffffff;
+  --danger-soft:rgba(229,72,77,.16);
+  --shadow-md:0 8px 30px rgba(0,0,0,.45); --shadow-lg:0 20px 60px rgba(0,0,0,.65);
+  --code-bg:#0e0e0e; --code-head:#171717; --code-bd:#262626; --code-fg:#e4e4e4; --code-mute:#8d8d8d; --code-btn:#b0b0b0; --code-hover:#262626; --code-hover-fg:#fff;
+  --tk-c:#6f7a8c; --tk-s:#a5e075; --tk-n:#f8a56b; --tk-k:#e0a0ff;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+::selection{background:var(--accent-soft)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:8px}
+
+.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:middle}
+.i.fill{fill:currentColor;stroke:none}
+
+.app{display:flex;height:100dvh;overflow:hidden;position:relative}
+
+
+/* مربعات الاختيار والراديو تتبع لون الثيم */
+input[type=checkbox],input[type=radio]{accent-color:var(--accent)}

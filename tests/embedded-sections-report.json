@@ -1,0 +1,18 @@
+[
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "checks": "passed",
+    "runtimeErrors": []
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "checks": "passed",
+    "runtimeErrors": []
+  }
+]

@@ -1,0 +1,68 @@
+    <!-- قسم الذاكرة داخل التخصيص -->
+    <section class="mm-view" id="mmView" aria-label="إدارة الذاكرة">
+      <div class="rs-body">
+        <!-- تبويب الذكريات -->
+        <div class="mm-panel" data-p="list">
+          <div class="mm-card-box">
+            <div class="sw-row mm-headrow">
+              <div><b><svg class="i"><use href="#i-lightbulb"/></svg> الذكريات <span class="mm-n" id="mmN"></span></b></div>
+              <input type="checkbox" id="mmOn" class="sw" aria-label="تضمين الذاكرة في المحادثات">
+            </div>
+            <p class="mm-desc">حقائق طويلة المدى يتذكرها الذكاء الاصطناعي عبر المحادثات — استدعِها أو عدّلها أو رتّبها.</p>
+            <div class="rs-tools">
+              <select class="fld" id="mmSort" aria-label="الترتيب"><option value="newest">الأحدث</option><option value="oldest">الأقدم</option><option value="alpha">أ‑ي</option><option value="uses">الأكثر استخدامًا</option></select>
+              <button type="button" class="lib-btn" id="mmTidy" title="ترتيب بالذكاء الاصطناعي: دمج المكرر وتنظيف الذكريات"><svg class="i"><use href="#i-sparkles"/></svg> ترتيب</button>
+              <button type="button" class="lib-btn" id="mmSel">تحديد</button>
+            </div>
+            <label class="rs-search" style="margin-bottom:10px"><svg class="i"><use href="#i-search"/></svg><input id="mmSearch" type="text" placeholder="ابحث في الذكريات…" autocomplete="off"></label>
+            <div class="rs-chips" id="mmChips"></div>
+            <div class="rs-bulk" id="mmBulk" hidden>
+              <label class="mm-all"><input type="checkbox" id="mmAll" class="sw sm"> الكل</label>
+              <span id="mmBulkN">0 محدد</span>
+              <button type="button" class="lib-btn" id="mmBulkPin">تثبيت</button>
+              <button type="button" class="lib-btn dng" id="mmBulkDel">حذف</button>
+              <button type="button" class="lib-ib" id="mmBulkX" aria-label="إلغاء"><svg class="i"><use href="#i-x"/></svg></button>
+            </div>
+            <div id="mmList" class="rs-list"></div>
+          </div>
+        </div>
+
+        <!-- تبويب الإضافة -->
+        <details class="mm-panel mm-add-details" data-p="add" id="mmAddDetails"><summary>إضافة ذكرى أو استيرادها</summary>
+          <div class="mm-card-box">
+            <h3 class="mm-h"><svg class="i"><use href="#i-plus"/></svg> إضافة ذكرى</h3>
+            <div class="mm-addrow">
+              <input class="fld" id="mmNew" type="text" maxlength="400" placeholder="مثال: أفضّل الردود المختصرة" autocomplete="off">
+              <select class="fld" id="mmNewCat" aria-label="التصنيف"></select>
+              <button type="button" class="lib-btn pri" id="mmAddBtn"><svg class="i"><use href="#i-plus"/></svg> إضافة</button>
+            </div>
+            <p class="mm-desc">يمكنك أيضًا أن تكتب في أي محادثة: <code>تذكّر: أعمل مهندسًا</code> لتُحفظ مباشرة.</p>
+          </div>
+          <div class="mm-card-box">
+            <h3 class="mm-h"><svg class="i"><use href="#i-upload"/></svg> استيراد وتصدير</h3>
+            <p class="mm-desc">استورد ملف <code>.txt</code> أو <code>.md</code> أو <code>.csv</code> أو <code>.log</code> أو <code>.json</code> — يقرؤه النموذج ويقترح ذكريات تعتمدها قبل الحفظ. ملفات JSON المُصدَّرة من هنا تُستورد مباشرة.</p>
+            <div class="rs-acts">
+              <button type="button" class="lib-btn" id="mmImp"><svg class="i"><use href="#i-upload"/></svg> استيراد ملف</button>
+              <button type="button" class="lib-btn" id="mmExp"><svg class="i"><use href="#i-download"/></svg> تصدير JSON</button>
+              <button type="button" class="lib-btn" id="mmChatX"><svg class="i"><use href="#i-message"/></svg> استخراج من المحادثة الحالية</button>
+            </div>
+            <input type="file" id="mmFile" accept=".txt,.md,.csv,.log,.json,text/plain,application/json" hidden>
+          </div>
+        </details>
+
+        <!-- إعدادات الذاكرة ضمن التخصيص -->
+        <details class="mm-panel" data-p="set"><summary>إعدادات الذاكرة والبيانات</summary>
+          <div class="mm-card-box">
+            <label class="sw-row" for="mmSetAuto"><div><b>الاستخراج التلقائي</b><small>يلتقط النموذج الحقائق والتفضيلات الشخصية من رسائلك ويحفظها. يُرسل طلبًا قصيرًا إضافيًا لنموذجك عند الحاجة فقط، ولا يعمل في المحادثات المؤقتة.</small></div><input type="checkbox" id="mmSetAuto" class="sw"></label>
+          </div>
+          <div class="mm-card-box">
+            <div class="mm-setline"><div><b>أقصى عدد ذكريات تُحقن</b><small>المثبّتة تُحقن دائمًا ضمن هذا الحد.</small></div><select class="fld" id="mmSetMax" aria-label="أقصى عدد"></select></div>
+          </div>
+          <div class="mm-card-box">
+            <div class="mm-stats" id="mmStats"></div>
+            <div class="rs-acts"><button type="button" class="lib-btn dng" id="mmWipe"><svg class="i"><use href="#i-trash"/></svg> حذف كل الذكريات</button></div>
+            <p class="mm-desc">الذكريات تُحفظ في هذا الجهاز وتُرسل إلى النموذج الذي تستخدمه كجزء من السياق، فلا تحفظ فيها أسرارًا.</p>
+          </div>
+        </details>
+      </div>
+    </section>

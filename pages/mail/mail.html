@@ -1,0 +1,42 @@
+    <!-- البريد: صفحة كاملة (قائمة الرسائل + القارئ + الإعدادات) -->
+    <section class="ml-view" id="mlView">
+      <div class="lib-head"><div class="lib-in">
+        <div class="lib-top">
+          <button class="lib-ib" id="mlMenu" aria-label="القائمة"><svg class="i"><use href="#i-menu"/></svg></button>
+          <button class="lib-ib" id="mlBack" aria-label="رجوع" hidden><svg class="i"><use href="#i-lib-back"/></svg></button>
+          <h2><span id="mlTitle">البريد</span><small class="ml-sync" id="mlSync" aria-live="polite"></small></h2>
+          <button class="lib-ib" id="mlSelBtn" aria-label="تحديد" title="تحديد"><svg class="i"><use href="#i-check"/></svg></button>
+          <button class="lib-ib" id="mlRefresh" aria-label="تحديث" title="تحديث"><svg class="i"><use href="#i-refresh"/></svg></button>
+          <button class="lib-ib ml-gear" id="mlSetBtn" aria-label="إعدادات البريد" title="إعدادات البريد"><svg class="i"><use href="#i-settings"/></svg><i class="ml-dot" id="mlArDot" hidden></i></button>
+          <button class="lib-ib" id="mlComposeTop" aria-label="رسالة جديدة" title="رسالة جديدة"><svg class="i"><use href="#i-lib-edit"/></svg></button>
+        </div>
+        <div class="ml-accts" id="mlAccts" hidden></div>
+        <div class="ml-tools" id="mlTools">
+          <label class="rs-search"><svg class="i"><use href="#i-search"/></svg><input id="mlSearch" type="text" placeholder="ابحث في البريد…" autocomplete="off"><button type="button" class="lib-ib ml-optb" id="mlSearchOpt" aria-label="خيارات البحث"><svg class="i"><use href="#i-filter"/></svg></button></label>
+          <button type="button" class="lib-btn" id="mlFolderBtn"><svg class="i"><use href="#i-folder"/></svg><span id="mlFolderLbl">الوارد</span></button>
+          <select class="fld" id="mlFilter" aria-label="التصفية"><option value="all">الكل</option><option value="unread">غير المقروءة</option><option value="flagged">المميزة بنجمة</option></select>
+        </div>
+        <div class="ml-opts" id="mlSearchOpts" hidden>
+          <label>من تاريخ <input type="date" class="fld" id="mlDateFrom"></label>
+          <label>إلى تاريخ <input type="date" class="fld" id="mlDateTo"></label>
+          <button type="button" class="lib-btn" id="mlOptClear">مسح</button>
+        </div>
+        <div class="rs-chips ml-tagbar" id="mlTagBar" hidden></div>
+      </div></div>
+
+      <div class="rs-body">
+        <div class="rs-bulk" id="mlBulk" hidden>
+          <label class="mm-all"><input type="checkbox" id="mlAll" class="sw sm" aria-label="تحديد الكل"> الكل</label>
+          <span id="mlBulkN">0 محدد</span>
+          <button type="button" class="lib-btn" id="mlBulkRead">مقروء</button>
+          <button type="button" class="lib-btn" id="mlBulkArch">أرشفة</button>
+          <button type="button" class="lib-btn dng" id="mlBulkDel">حذف</button>
+          <button type="button" class="lib-ib" id="mlBulkX" aria-label="إلغاء"><svg class="i"><use href="#i-x"/></svg></button>
+        </div>
+        <div id="mlList" class="rs-list ml-list"></div>
+        <div id="mlSetPage" class="ml-setpage" hidden></div>
+      </div>
+
+      <button type="button" class="ml-fab" id="mlFab" aria-label="رسالة جديدة"><svg class="i"><use href="#i-lib-edit"/></svg></button>
+      <div class="ml-reader" id="mlReader" hidden></div>
+    </section>

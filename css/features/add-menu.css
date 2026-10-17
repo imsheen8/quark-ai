@@ -1,0 +1,14 @@
+/* QUARK AI — قائمة زر + */
+/* قائمة زر + */
+.attach-pop{direction:rtl;width:min(290px,100%);padding:6px}
+.am-item{width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;font-size:15.5px;color:var(--text-2);text-align:start}
+.am-item:hover{background:var(--surface-2);color:var(--text)}
+.am-item .i{font-size:20px}
+.am-item .go{margin-inline-start:auto;font-size:16px;color:var(--muted)}
+.am-item.tpl span{display:flex;flex-direction:column;min-width:0;gap:2px}
+.am-item.tpl b{font-weight:600;color:var(--text);font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.am-item.tpl small{color:var(--muted);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.am-head{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;border-bottom:1px solid var(--border);margin-bottom:4px;font-weight:600;font-size:14px;color:var(--text-2)}
+.am-head button{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--text-2)}
+.am-head button:hover{background:var(--surface-2)}
+.attach-pop .pop-list{max-height:260px;padding:0}

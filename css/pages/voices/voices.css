@@ -1,0 +1,116 @@
+/* QUARK AI — صفحة الأصوات (استوديو الأصوات) */
+.vo-view{display:none;flex:1;min-height:0;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.main.vo-open>.vo-view{display:flex}
+.main.vo-open>.topbar,.main.vo-open>.stage,.main.vo-open>.composer,.main.vo-open>.csearch{display:none}
+.vo-body{width:100%;max-width:1132px;margin:0 auto;padding:18px 16px 0}
+
+/* ===== استوديو الأصوات ===== */
+.md-voices{display:flex;flex-direction:column;gap:14px;padding-bottom:110px}
+.vs-dock{background:linear-gradient(160deg,var(--surface),var(--surface-2));border:1px solid var(--border);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.vs-top{display:flex;align-items:center;gap:16px}
+.vs-orb{flex:none;width:72px;height:72px;border-radius:50%;position:relative;
+  background:radial-gradient(circle at 32% 26%,hsl(var(--hue,20) 90% 82%),hsl(var(--hue,20) 75% 58%) 55%,hsl(calc(var(--hue,20) + 40) 70% 40%));
+  box-shadow:0 10px 28px hsl(var(--hue,20) 70% 50% / .38);transition:transform .15s}
+.vs-orb[style*="--oc"]{background:radial-gradient(circle at 32% 26%,color-mix(in srgb,#fff 70%,var(--oc)),var(--oc) 60%,color-mix(in srgb,var(--oc) 60%,#000));box-shadow:0 10px 28px color-mix(in srgb,var(--oc) 40%,transparent)}
+.vs-orb:active{transform:scale(.95)}
+.vs-orb i{position:absolute;inset:-6px;border-radius:50%;border:2px solid currentColor;color:hsl(var(--hue,20) 75% 58%);opacity:0}
+.vs-dock.playing .vs-orb{animation:voPulse 1.3s ease-in-out infinite}
+.vs-dock.playing .vs-orb i{animation:vsRing 1.3s ease-out infinite}
+.vs-dock.loading .vs-orb{opacity:.6;animation:vsBlink .9s ease-in-out infinite}
+@keyframes vsRing{0%{opacity:.7;transform:scale(.9)}100%{opacity:0;transform:scale(1.35)}}
+@keyframes vsBlink{50%{opacity:.35}}
+.vs-now{flex:1;min-width:0}
+.vs-now small{font-size:12px;color:var(--muted);display:block}
+.vs-now h3{font-size:22px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:start}
+.vs-now p{font-size:13px;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:start}
+.vs-play{flex:none;width:52px;height:52px;border-radius:50%;background:var(--primary);color:var(--on-primary);display:grid;place-items:center;font-size:22px;transition:transform .12s}
+.vs-play:active{transform:scale(.93)}
+.vs-play .i{font-size:22px}
+.vs-prog{height:5px;border-radius:99px;background:var(--surface-3);overflow:hidden}
+.vs-prog i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
+.vs-meta{display:flex;justify-content:space-between;min-height:16px;font-size:12px;color:var(--muted);direction:ltr}
+.vs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.vs-f{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--text-2)}
+.vs-f em{font-style:normal;color:var(--accent);margin-inline-start:6px;direction:ltr;display:inline-block}
+.vs-f select.fld,.vs-f .q-sel{height:40px;font-size:13.5px;border-radius:12px;direction:ltr}
+.vs-pre{display:flex;gap:6px;flex-wrap:wrap}
+.vs-pre button{height:30px;padding:0 12px;border-radius:99px;background:var(--surface-2);color:var(--text-2);font-size:12.5px;font-weight:600;transition:all .15s}
+.vs-pre button.on{background:var(--accent-soft);color:var(--accent)}
+.vs-sample{display:flex;flex-direction:column;gap:8px}
+.vs-sample textarea{width:100%;min-height:74px;resize:vertical;border:1px solid var(--border);background:var(--bg);border-radius:14px;padding:11px 13px;line-height:1.8;color:var(--text);font-size:14.5px;outline:none}
+.vs-sample textarea:focus{border-color:var(--accent)}
+.vs-keys{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.vs-keys .lib-btn{height:36px;font-size:13px}
+.vs-kr{font-size:12.5px;color:var(--muted)}.vs-kr.ok{color:var(--ok)}.vs-kr.bad{color:var(--danger)}
+.vs-tool{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.vs-search{flex:1 1 220px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:12px;background:var(--surface-2);color:var(--muted)}
+.vs-search .i{font-size:18px}
+.vs-search input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--text);font-size:14.5px;padding:0}
+.vs-tool .md-chips{flex:1 1 auto}
+.vs-tr{display:flex;gap:8px;align-items:center}
+.vs-tr select.fld,.vs-tr .q-sel{height:38px;font-size:13.5px;border-radius:12px}
+.vs-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.vs-bar .sp{flex:1}
+.vs-bar .lib-btn{height:38px;font-size:13px}
+.vc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:10px}
+.vc-grid.list{grid-template-columns:minmax(0,1fr);gap:6px}
+.vc-card{min-width:0;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--border);transition:border-color .15s,background .15s;cursor:default}
+.vc-card:hover{background:var(--surface-2)}
+.vc-card.cur{border-color:var(--ok)}
+.vc-card.playing,.vc-card.loading{border-color:var(--accent);background:var(--accent-soft)}
+.vc-grid.cmp .vc-card{cursor:pointer}
+.vc-card.sel{border-color:var(--accent);background:var(--accent-soft)}
+.vc-orb{flex:none;width:50px;height:50px;border-radius:50%;position:relative;display:grid;place-items:center;color:#fff;
+  background:radial-gradient(circle at 32% 26%,hsl(var(--hue,20) 90% 80%),hsl(var(--hue,20) 75% 56%) 60%,hsl(calc(var(--hue,20) + 40) 70% 40%));box-shadow:0 5px 14px hsl(var(--hue,20) 70% 50% / .3)}
+.vc-orb[data-c]{background:radial-gradient(circle at 32% 26%,color-mix(in srgb,#fff 65%,var(--oc)),var(--oc) 62%,color-mix(in srgb,var(--oc) 60%,#000));box-shadow:0 5px 14px color-mix(in srgb,var(--oc) 35%,transparent)}
+.vc-orb .o{display:grid}
+.vc-orb .i{font-size:20px;grid-area:1/1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35));transition:opacity .15s}
+.vc-orb .i+.i,.vc-card.playing .vc-orb .i:first-child{opacity:0}
+.vc-card.playing .vc-orb .i+.i{opacity:1}
+.vc-card.loading .vc-orb{animation:vsBlink .9s ease-in-out infinite}
+.vc-ring{position:absolute;inset:-5px;border-radius:50%;border:2px solid hsl(var(--hue,20) 75% 58%);opacity:0;pointer-events:none}
+.vc-card.playing .vc-ring{animation:vsRing 1.3s ease-out infinite}
+.vc-info{flex:1;min-width:0}
+.vc-info h4{font-size:15.5px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap;text-align:start}
+.vc-info h4 .vo-badge{margin:0;padding:1px 8px;font-size:11px}
+.vo-badge.ok{background:rgba(47,158,90,.15);color:var(--ok)}
+.vc-info p{font-size:13px;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:start}
+.vc-info small{font-size:11.5px;color:var(--muted);direction:ltr;display:block;text-align:start;min-height:0}
+.vc-info small:empty{display:none}
+.vc-act{display:flex;align-items:center;gap:2px;flex:none}
+.vc-act .vo-mi.more.open{background:var(--surface-3);color:var(--text)}
+.vc-act .vo-mi{width:34px;height:34px}
+.vc-act .vo-mi.fav.on{color:var(--accent)}
+.vc-act .vo-mi.fav.on .i{fill:currentColor}
+.vc-use{height:34px!important;margin-inline-start:4px;flex:none;white-space:nowrap}
+.vc-chk{width:26px;height:26px;border-radius:8px;border:2px solid var(--border);display:grid;place-items:center;color:transparent;transition:all .15s}
+.vc-chk .i{font-size:16px}
+.vc-card.sel .vc-chk{background:var(--accent);border-color:var(--accent);color:var(--on-accent,#fff)}
+.vs-foot{text-align:center;padding:0 12px}
+
+/* قائمة الثلاث نقاط */
+.vc-menu{min-width:190px}
+.vc-menu button.on .i{fill:var(--accent);color:var(--accent)}
+.vc-menu hr{border:0;height:1px;background:var(--border);margin:4px 6px}
+
+/* أزرار الأدوات: تباعد ثابت بين الصفوف */
+#vsToolBox{display:flex;flex-direction:column;gap:12px}
+.vs-tool{row-gap:12px}
+.vs-bar{gap:10px}
+.vs-tr .sel-wrap{flex:1 1 auto}
+@media(max-width:560px){
+  .vc-grid{grid-template-columns:minmax(0,1fr)}
+  .vs-top{gap:12px}.vs-orb{width:60px;height:60px}.vs-now h3{font-size:19px}
+  .vc-card{gap:10px;padding:11px 12px}
+  .vc-orb{width:46px;height:46px}
+  .vc-use{padding:0 12px;margin-inline-start:2px}
+  .vc-act .vo-mi{width:32px;height:32px}
+  .vs-tool .md-chips{flex:1 1 100%}
+  .vs-tr{width:100%;gap:10px}
+  .vs-tr .sel-wrap{flex:1 1 0}
+  .vs-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .vs-bar .sp{display:none}
+  .vs-bar .lib-btn{justify-content:center;min-width:0;padding:0 10px;white-space:nowrap}
+  .vs-bar #vsCmp,.vs-bar #vsAll,.vs-bar #vsSeq{grid-column:span 1}
+  .vs-bar #vsAdd{grid-column:1/-1}
+}

@@ -1,0 +1,14 @@
+/* QUARK AI — البحث داخل المحادثة */
+/* ===== البحث داخل المحادثة ===== */
+.csearch{display:flex;align-items:center;gap:6px;margin:2px 14px 6px;padding:4px 10px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border)}
+.csearch[hidden]{display:none}
+.csearch .cs-i{font-size:18px;color:var(--muted);flex:none}
+.csearch input{flex:1;min-width:0;height:36px;background:none;border:0;outline:0;font-size:15px}
+.cs-cnt{font-size:12.5px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cs-b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:18px;color:var(--text-2);flex:none}
+.cs-b:hover{background:var(--surface-3)}
+.cs-b.up .i{transform:rotate(180deg)}
+.cs-b:disabled{opacity:.35;pointer-events:none}
+mark.sr-hit{background:rgba(255,193,7,.38);color:inherit;border-radius:3px;padding:0 1px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+mark.sr-hit.cur{background:#ffb300;color:#111;outline:2px solid rgba(255,179,0,.45)}
+

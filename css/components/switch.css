@@ -1,0 +1,14 @@
+/* QUARK AI — مفتاح التبديل */
+/* مفتاح تبديل */
+.sw-row{display:flex;align-items:center;gap:14px;cursor:pointer}
+.sw-row>div{flex:1;min-width:0}
+.sw-row b{display:block;font-size:15.5px;font-weight:600}
+.sw-row small{display:block;margin-top:4px;color:var(--muted);font-size:13px;line-height:1.7}
+input.sw{appearance:none;-webkit-appearance:none;flex:none;width:50px;height:30px;border-radius:999px;background:var(--surface-3);position:relative;cursor:pointer;transition:background .2s;border:0;outline:none}
+input.sw::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.35);transition:inset-inline-start .2s}
+input.sw:checked{background:var(--accent)}
+input.sw:checked::after{inset-inline-start:23px}
+input.sw:focus-visible{box-shadow:0 0 0 3px var(--accent-soft)}
+.title-pop{animation:titlepop .5s ease}
+@keyframes titlepop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+

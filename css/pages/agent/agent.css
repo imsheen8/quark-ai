@@ -1,0 +1,75 @@
+/* QUARK AI — وضع الوكيل */
+#agRoot{display:flex;flex-direction:column;gap:14px}
+.ag-sel{min-width:150px;max-width:48%;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:0 10px;font:inherit;font-size:13px}
+.ag-code{font:600 11px/1 ui-monospace,Menlo,monospace;color:var(--muted);background:var(--surface);padding:2px 6px;border-radius:6px;margin-inline-start:4px;vertical-align:middle}
+.it-tag.warn{background:color-mix(in srgb,#d9a441 20%,transparent);color:#a87510}
+
+/* أثناء التوليد */
+.ag-live{display:flex;flex-direction:column;gap:4px;margin-top:10px;font-size:12.5px}
+.ag-ls{display:flex;gap:8px;align-items:baseline;color:var(--text-2);min-width:0}
+.ag-ls b{flex:none;font-weight:700}
+.ag-ls span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+.ag-ls.ok b::before{content:'✔ ';color:var(--ok)}.ag-ls.err b::before,.ag-ls.denied b::before,.ag-ls.blocked b::before{content:'✖ ';color:var(--danger)}
+
+/* سجل الخطوات تحت الرد */
+.ag-run{margin-top:10px;border-radius:14px;background:var(--surface-2);overflow:hidden;font-size:13px}
+.ag-run>summary{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;list-style:none;font-weight:700;color:var(--text-2)}
+.ag-run>summary::-webkit-details-marker{display:none}
+.ag-run>summary .i{width:15px;height:15px;color:var(--accent);flex:none}
+.ag-run>summary small{margin-inline-start:auto;font-weight:500;color:var(--muted)}
+.ag-body{display:flex;flex-direction:column;gap:2px;padding:2px 12px 10px}
+.ag-st{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--border)}
+.ag-st:first-of-type{border-top:0}
+.ag-n{flex:none;width:20px;height:20px;border-radius:50%;background:var(--surface);color:var(--muted);font-size:11px;font-weight:800;display:grid;place-items:center;margin-top:1px}
+.ag-main{min-width:0;flex:1}
+.ag-h{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ag-h .i{width:14px;height:14px;color:var(--accent);flex:none}
+.ag-h small{color:var(--muted);font-size:11px;margin-inline-start:auto}
+.ag-chip{font-size:10.5px;font-weight:800;padding:1px 8px;border-radius:99px;background:var(--surface);color:var(--text-2)}
+.ag-chip.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}.ag-chip.bad{background:var(--danger-soft);color:var(--danger)}
+.ag-t{margin-top:2px;color:var(--text-2);overflow-wrap:anywhere;font-size:12.5px}
+.ag-note{margin-top:2px;color:var(--muted);font-size:12px;font-style:italic;overflow-wrap:anywhere}
+
+/* نافذة سؤال الوكيل */
+.ag-opts{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 10px}
+.ag-in{width:100%;box-sizing:border-box;height:42px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:0 12px;font:inherit;font-size:14px;margin-bottom:12px}
+.ag-in:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+
+/* ===== زرّا الوضع في خانة الكتابة: وكيل | محادثة ===== */
+.ag-mode{display:flex;flex-shrink:0;height:38px;padding:3px;gap:2px;border-radius:19px;background:var(--surface-2);border:1px solid var(--border)}
+.ag-mode button{display:flex;align-items:center;gap:5px;padding:0 11px;border-radius:16px;font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);background:transparent;white-space:nowrap;transition:background .2s,color .2s}
+.ag-mode button .i{width:14px;height:14px;flex:none}
+.ag-mode button[aria-pressed="true"]{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.ag-mode.on button[aria-pressed="true"]{color:var(--accent)}
+@media (max-width:380px){.ag-mode button{padding:0 9px}.ag-mode button span{font-size:12px}}
+
+/* ===== الخط الزمني للخطوات ===== */
+.ag-tl{position:relative;display:flex;flex-direction:column;gap:2px;margin-top:10px;font-size:14px}
+.ag-tl::before{content:'';position:absolute;inset-inline-start:15px;top:14px;bottom:14px;width:1px;background:var(--border)}
+.ag-tl-note{position:relative;display:flex;align-items:flex-start;gap:14px;padding:6px 0}
+.ag-tl-dot{flex:none;width:10px;height:10px;margin:7px 0 0 0;margin-inline-start:11px;border-radius:50%;background:var(--muted);opacity:.7;position:relative;z-index:1;outline:4px solid var(--bg,transparent)}
+.ag-tl-note p{margin:0;color:var(--text-2);line-height:1.7;min-width:0;overflow-wrap:anywhere}
+.ag-tl-row{position:relative;min-width:0}
+.ag-tl-btn{display:flex;align-items:center;gap:12px;width:100%;padding:4px 0;background:none;border:0;color:var(--text);font:inherit;text-align:start;cursor:pointer;min-width:0}
+.ag-tl-ic{position:relative;z-index:1;flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2)}
+.ag-tl-ic .i{width:16px;height:16px}
+.ag-tl-t{flex:1;min-width:0;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
+.ag-tl-chev{flex:none;width:15px;height:15px;color:var(--muted);transition:transform .2s}
+.ag-tl-row.open .ag-tl-chev{transform:rotate(180deg)}
+.ag-tl-row.st-err .ag-tl-ic,.ag-tl-row.st-denied .ag-tl-ic,.ag-tl-row.st-blocked .ag-tl-ic{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,var(--border))}
+.ag-tl-row.st-run .ag-tl-t{color:var(--muted)}
+.ag-spin{width:15px;height:15px;border-radius:50%;border:2px solid var(--border);border-top-color:var(--accent);animation:agSpin .8s linear infinite}
+@keyframes agSpin{to{transform:rotate(360deg)}}
+.ag-tl-det{display:none;margin:2px 0 8px;margin-inline-start:44px;padding:9px 11px;border-radius:12px;background:var(--surface-2);font-size:12.5px;color:var(--text-2);flex-direction:column;gap:7px}
+.ag-tl-row.open .ag-tl-det{display:flex}
+.ag-kv{display:flex;gap:8px;align-items:baseline;min-width:0}
+.ag-kv>b{flex:none;font-weight:700;color:var(--muted);min-width:52px}
+.ag-kv.col{flex-direction:column;gap:3px}
+.ag-kv code{font:600 11.5px ui-monospace,Menlo,monospace}
+.ag-kv pre{margin:0;max-height:180px;overflow:auto;padding:8px 10px;border-radius:8px;background:var(--surface);white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 ui-monospace,Menlo,monospace;width:100%;box-sizing:border-box}
+.ag-s.ok{color:var(--ok)}.ag-s.err,.ag-s.denied,.ag-s.blocked{color:var(--danger)}
+.ag-run .ag-tl{margin-top:4px}
+.ag-run .ag-body{padding-top:6px}
+
+/* خطوات الوكيل بعد اكتمال الرد: كما هي أثناء التوليد، دون صندوق */
+.ag-live.ag-done{margin-top:0;margin-bottom:10px}

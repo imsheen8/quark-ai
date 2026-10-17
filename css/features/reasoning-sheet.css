@@ -1,0 +1,44 @@
+/* QUARK AI — ورقة التفكير (reasoning) */
+/* ===== التفكير (reasoning) ===== */
+.ans>*:last-child{margin-bottom:0}
+.think{display:flex;align-items:center;gap:12px;margin:0 0 14px;padding:6px 0;color:var(--muted);font-size:15.5px;cursor:pointer;user-select:none;-webkit-user-select:none;max-width:100%;outline:none}
+.think:hover{color:var(--text-2)}
+.think:focus-visible{border-radius:10px;box-shadow:0 0 0 2px var(--accent-soft)}
+.tk-dots{display:inline-flex;gap:4px;flex:none}
+.tk-dots i{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.7}
+.think.live .tk-dots i{background:var(--accent);opacity:1;animation:tkdot 1.2s ease-in-out infinite}
+.think.live .tk-dots i:nth-child(2){animation-delay:.15s}
+.think.live .tk-dots i:nth-child(3){animation-delay:.3s}
+@keyframes tkdot{0%,70%,100%{transform:scale(.7);opacity:.35}35%{transform:scale(1.15);opacity:1}}
+.think .tk-t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:start}
+.think.live .tk-t{animation:tkpulse 1.8s ease-in-out infinite}
+@keyframes tkpulse{50%{opacity:.5}}
+.think .chev{flex:none;font-size:18px;color:var(--muted)}
+
+.sheet-ov{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center;animation:fade .2s}
+.sheet-ov.show{display:flex}
+.sheet{width:100%;max-width:640px;max-height:82dvh;display:flex;flex-direction:column;background:var(--surface);border-radius:28px 28px 0 0;box-shadow:var(--shadow-lg);padding:10px 20px calc(24px + env(safe-area-inset-bottom));animation:sheetup .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes sheetup{from{transform:translateY(40px);opacity:0}}
+.sheet-handle{width:44px;height:5px;border-radius:99px;background:var(--surface-3);margin:2px auto 12px;flex:none}
+.sheet-head{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-bottom:14px;flex:none}
+.sheet-head h3{text-align:center;font-size:18px;font-weight:600}
+.sheet-x{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:24px;color:var(--text)}
+.sheet-x:hover{background:var(--surface-2)}
+.sheet-body{overflow-y:auto;min-height:0;padding:6px 2px 4px}
+.tl{display:flex;flex-direction:column}
+.tl-item{position:relative;display:flex;gap:18px;padding-bottom:26px}
+.tl-item:last-child{padding-bottom:4px}
+.tl-item::before{content:"";position:absolute;inset-inline-start:5.25px;top:24px;bottom:-4px;width:1.5px;background:var(--border)}
+.tl-item:last-child::before{display:none}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--surface-3);margin-top:8px;flex:none;position:relative;z-index:1}
+.tl-item.active .tl-dot{background:var(--accent)}
+.tl-item.done .tl-dot{background:var(--ok)}
+.tl-txt{flex:1;min-width:0}
+.tl-title{font-family:var(--serif);font-size:19.5px;line-height:1.6;color:var(--text);text-align:start;overflow-wrap:anywhere}
+.tl-item.active .tl-title{animation:tkpulse 1.8s ease-in-out infinite}
+.tl-item.has{cursor:pointer}
+.tl-item.has .tl-title::after{content:"";display:inline-block;width:7px;height:7px;margin-inline-start:10px;border-inline-end:1.8px solid var(--muted);border-bottom:1.8px solid var(--muted);transform:rotate(45deg) translateY(-3px);opacity:.7;transition:transform .2s}
+.tl-item.has.open .tl-title::after{transform:rotate(-135deg) translateY(-2px)}
+.tl-body{display:none;margin-top:8px;font-size:15px;line-height:1.95;color:var(--text-2);white-space:pre-wrap;overflow-wrap:anywhere;text-align:start}
+.tl-item.open .tl-body{display:block}
+

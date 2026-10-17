@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="quark_new"
+        android:enabled="true"
+        android:icon="@drawable/ic_sc_new"
+        android:shortcutShortLabel="@string/sc_new"
+        android:shortcutLongLabel="@string/sc_new_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="__APP_ID__"
+            android:targetClass="__APP_ID__.MainActivity">
+            <extra android:name="quark_action" android:value="new" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="quark_voice"
+        android:enabled="true"
+        android:icon="@drawable/ic_sc_voice"
+        android:shortcutShortLabel="@string/sc_voice"
+        android:shortcutLongLabel="@string/sc_voice_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="__APP_ID__"
+            android:targetClass="__APP_ID__.MainActivity">
+            <extra android:name="quark_action" android:value="mic" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="quark_settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_sc_settings"
+        android:shortcutShortLabel="@string/sc_settings"
+        android:shortcutLongLabel="@string/sc_settings_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="__APP_ID__"
+            android:targetClass="__APP_ID__.MainActivity">
+            <extra android:name="quark_action" android:value="settings" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="quark_stats"
+        android:enabled="true"
+        android:icon="@drawable/ic_sc_stats"
+        android:shortcutShortLabel="@string/sc_stats"
+        android:shortcutLongLabel="@string/sc_stats_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="__APP_ID__"
+            android:targetClass="__APP_ID__.MainActivity">
+            <extra android:name="quark_action" android:value="stats" />
+        </intent>
+    </shortcut>
+</shortcuts>

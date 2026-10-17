@@ -1,0 +1,83 @@
+/* QUARK AI — صفحة الإعدادات */
+/* ===== الإعدادات ===== */
+@keyframes fade{from{opacity:0}}
+.set-body{padding:20px 16px 40px;display:flex;flex-direction:column;gap:22px;max-width:720px;margin:0 auto;width:100%}
+.field{display:flex;flex-direction:column;gap:9px}
+.field>label,.field>.lbl{font-size:14px;font-weight:600;color:var(--text-2);display:flex;align-items:center;gap:8px}
+.field>label .i,.field>.lbl .i{color:var(--muted);font-size:17px}
+.field input,.field textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 15px;outline:none;font-size:15px;color:var(--text);resize:vertical;transition:border-color .15s}
+.field input:focus,.field textarea:focus{border-color:var(--accent)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;background:var(--surface-2);border-radius:16px}
+.seg button{padding:11px 6px;border-radius:12px;font-size:14px;color:var(--text-2);transition:all .15s}
+.seg button.on{background:var(--primary);color:var(--on-primary);font-weight:600}
+.input-row{display:flex;gap:8px}
+.input-row .wrap{position:relative;flex:1;min-width:0}
+.input-row .wrap input{padding-inline-end:48px}
+.input-row>input{flex:1;min-width:0}
+.eye{position:absolute;inset-inline-end:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--muted);font-size:19px}
+.eye:hover{background:var(--surface-2);color:var(--text)}
+.btn-soft{display:inline-flex;align-items:center;gap:6px;padding:0 16px;border-radius:14px;background:var(--surface-2);color:var(--text);font-size:14px;white-space:nowrap}
+.btn-soft:hover{background:var(--surface-3)}
+.quick{display:flex;flex-wrap:wrap;gap:6px}
+.quick button{font-size:12.5px;padding:7px 12px;border-radius:999px;background:var(--surface-2);color:var(--text-2);direction:ltr}
+.quick button:hover{background:var(--accent-soft);color:var(--accent)}
+.help{display:flex;gap:10px;font-size:13px;color:var(--muted);line-height:1.8;background:var(--surface);border:1px solid var(--border);padding:12px 14px;border-radius:14px}
+.help .i{margin-top:4px;color:var(--accent)}
+.help a{color:var(--accent)}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-ghost{background:var(--surface-2);color:var(--text)}
+.btn-ghost:hover{background:var(--surface-3)}
+
+.tab-panel{display:flex;flex-direction:column;gap:18px;animation:fade .2s}
+.tab-panel[hidden]{display:none}
+.panel-desc{font-size:13.5px;color:var(--muted);line-height:1.8}
+.key-card{padding:16px;border-radius:20px;background:var(--surface);border:1px solid var(--border);gap:10px}
+.key-card input{background:var(--bg)}
+.key-card>label{font-size:13px;font-weight:600;color:var(--text-2)}
+.key-head{display:flex;align-items:center;justify-content:space-between}
+.key-head b{font-size:16px}
+.dot{font-size:12.5px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--surface-3)}
+.dot::after{content:"غير مضاف"}
+.dot.on{color:var(--ok)}
+.dot.on::before{background:var(--ok)}
+.dot.on::after{content:"مُضاف"}
+.key-help{font-size:12.5px;color:var(--muted);line-height:1.8}
+.key-help a{color:var(--accent)}
+.help.warn{border-color:var(--accent);background:var(--accent-soft);color:var(--text-2)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px 8px;text-align:center}
+.stat b{display:block;font-size:22px;font-weight:700;margin-bottom:2px;direction:ltr}
+.stat small{color:var(--muted);font-size:12.5px}
+.rows{display:flex;flex-direction:column;gap:10px}
+.row-btn{display:flex;align-items:center;gap:16px;width:100%;padding:14px 16px;border-radius:18px;background:var(--surface);border:1px solid var(--border);text-align:start;transition:background .15s}
+.row-btn:hover{background:var(--surface-2)}
+.row-btn .i{font-size:22px;color:var(--text-2)}
+.row-btn b{display:block;font-size:15px;font-weight:600}
+.row-btn small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.row-btn.danger b,.row-btn.danger .i{color:var(--danger)}
+.row-btn.danger:hover{background:var(--danger-soft);border-color:var(--danger)}
+.toast{position:fixed;bottom:130px;left:50%;transform:translate(-50%,16px);background:var(--primary);color:var(--on-primary);padding:12px 20px;border-radius:999px;font-size:14.5px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:all .25s;z-index:99;max-width:92vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+
+/* ===== شريط المساحة المستخدمة (التخزين) ===== */
+.stor-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:16px;margin-bottom:12px}
+.stor-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:12px}
+.stor-head b{display:block;font-size:24px;font-weight:700;direction:ltr;text-align:start}
+.stor-head small{color:var(--muted);font-size:12.5px}
+.stor-pct{font-size:15px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 12px;border-radius:999px}
+.stor-bar{display:flex;height:14px;border-radius:999px;background:var(--surface-3);overflow:hidden;direction:ltr}
+.stor-bar i{display:block;height:100%;width:0;min-width:0;transition:width .5s ease}
+.seg-chats{background:var(--accent)}
+.seg-imgs{background:#e0a030}
+.seg-other{background:var(--muted);opacity:.7}
+.stor-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:12.5px;color:var(--text-2)}
+.stor-legend span{display:inline-flex;align-items:center;gap:6px}
+.stor-legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.stor-legend b{color:var(--muted);font-weight:500}
+.stor-free{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12.5px;color:var(--muted)}
+.stor-free .i{color:var(--accent);flex:none}
+.stor-card.warn .stor-pct{color:var(--danger);background:var(--danger-soft)}
+.stor-card.warn .stor-free .i{color:var(--danger)}
+.stor-card.warn .stor-free{color:var(--danger)}

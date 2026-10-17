@@ -1,0 +1,39 @@
+/* QUARK AI — صفحة الاشتراك (برو) */
+/* ----- الاشتراك (برو) ----- */
+.plan-ov{position:fixed;inset:0;z-index:95;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;padding:calc(14px + env(safe-area-inset-top)) 16px calc(36px + env(safe-area-inset-bottom));animation:pop .2s ease}
+.plan-ov[hidden]{display:none}
+.plan-in{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.plan-x{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:26px;color:var(--text);align-self:flex-start}
+.plan-x:hover{background:var(--surface-2)}
+.plan-in h1{font-size:32px;line-height:1.3;text-align:center;font-weight:700;margin-top:4px}
+.plan-sub{text-align:center;color:var(--text-2);font-size:16.5px;margin-top:-8px}
+.plan-reason{background:var(--accent-soft);border:1px solid var(--accent);color:var(--text);border-radius:16px;padding:12px 16px;font-size:14.5px;line-height:1.8;text-align:center}
+.plan-reason[hidden]{display:none}
+.plan-card{border:1px solid var(--border);background:var(--surface);border-radius:28px;padding:24px 22px;display:flex;flex-direction:column;gap:14px}
+.plan-card.pro{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.plan-card h2{font-size:27px;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.plan-card .plan-tag{font-size:13px;font-weight:600;padding:4px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.plan-card .plan-tag[hidden]{display:none}
+.plan-desc{color:var(--text-2);font-size:16px;margin-top:-6px}
+.plan-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--border);padding-top:16px}
+.plan-list li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:var(--text-2);line-height:1.7}
+.plan-list li .i{flex:none;width:20px;height:20px;margin-top:4px;color:var(--accent)}
+.plan-list li.off{opacity:.55}
+.plan-list li.off .i{color:var(--muted)}
+.plan-status{background:var(--accent-soft);border-radius:16px;padding:12px 16px;font-size:15px;line-height:1.8;color:var(--text)}
+.plan-status[hidden]{display:none}
+.plan-code{width:100%;height:58px;border-radius:16px;border:1px solid var(--border);background:var(--bg);color:var(--text);text-align:center;font-size:22px;letter-spacing:.18em;font-family:ui-monospace,"SF Mono",Consolas,monospace;direction:ltr;outline:none;text-transform:uppercase}
+.plan-code:focus{border-color:var(--accent)}
+.plan-code::placeholder{letter-spacing:.18em;color:var(--muted);opacity:.7}
+.plan-lbl{font-size:14px;font-weight:600;color:var(--text-2)}
+.plan-go{height:56px;border-radius:999px;background:var(--primary);color:var(--on-primary);font-weight:700;font-size:17px;width:100%;transition:opacity .15s}
+.plan-go:disabled{opacity:.45}
+.plan-msg{font-size:14px;line-height:1.7;min-height:22px;text-align:center}
+.plan-msg.err{color:var(--danger)}
+.plan-msg.ok{color:var(--ok)}
+.plan-link{align-self:center;font-size:14px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:4px 8px}
+.plan-link[hidden]{display:none}
+.plan-note{font-size:12.5px;color:var(--muted);line-height:1.8;text-align:center}
+.up-card{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:22px;border-radius:26px;background:var(--surface);border:1px solid var(--border)}
+.up-card h3{font-size:19px;font-weight:700}
+.up-card p{font-size:15.5px;line-height:1.8;color:var(--text-2)}

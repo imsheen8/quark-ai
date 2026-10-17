@@ -1,0 +1,18 @@
+/* QUARK AI — معاملات النموذج */
+/* ===== معاملات النموذج ===== */
+.prm-box{display:flex;flex-direction:column;gap:16px;padding:16px;border-radius:20px;background:var(--surface);border:1px solid var(--border)}
+.prm-target{font-size:13px;color:var(--muted);line-height:1.8;overflow-wrap:anywhere}
+.prm-target b{color:var(--text-2);font-weight:600;direction:ltr;unicode-bidi:embed}
+.seg button:disabled{opacity:.35;pointer-events:none}
+.prm{display:flex;flex-direction:column;gap:8px}
+.prm-top{display:flex;align-items:center;gap:12px}
+.prm-top label{flex:1;min-width:0;font-size:14.5px;font-weight:600;display:flex;flex-direction:column;gap:2px}
+.prm-top label small{font-size:12px;font-weight:400;color:var(--muted);line-height:1.6}
+.prm-in{width:112px!important;height:42px!important;text-align:center;direction:ltr;flex:none}
+.prm input[type=range]{width:100%;accent-color:var(--accent);direction:ltr;height:28px}
+.prm-eff{font-size:12.5px;color:var(--muted);line-height:1.8;background:var(--surface-2);border-radius:12px;padding:10px 12px;direction:ltr;text-align:left}
+.prm-acts{display:flex;gap:8px}
+.prm-acts .pf-big{flex:1}
+.prm-acts .reset{height:52px;padding:0 20px;border-radius:999px;background:var(--surface-2);color:var(--text);font-weight:600;font-size:15px}
+.prm-acts .reset:hover{background:var(--surface-3)}
+

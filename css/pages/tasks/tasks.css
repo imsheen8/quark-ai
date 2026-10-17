@@ -1,0 +1,46 @@
+/* QUARK AI — صفحة المهام (تعيد استخدام أنماط rs-* من البحث العميق) */
+.tk-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.tk-card.sel{outline:2px solid var(--accent)}
+.tk-card.off{opacity:.62}
+.tk-row{display:flex;align-items:flex-start;gap:10px}
+.tk-row .tk-nm{flex:1;min-width:0;font-weight:700;font-size:15px;line-height:1.6;text-align:start}
+.tk-ico{width:34px;height:34px;border-radius:11px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+.tk-sub{font-size:12.5px;color:var(--muted);line-height:1.7}
+.tk-sw{width:44px;height:26px;border-radius:99px;background:var(--surface-3);position:relative;flex:none;transition:background .2s}
+.tk-sw::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px #0003}
+.tk-sw.on{background:var(--accent)}.tk-sw.on::after{transform:translateX(-18px)}
+[dir=ltr] .tk-sw.on::after{transform:translateX(18px)}
+.tk-st{display:inline-flex;align-items:center;gap:6px;font-size:12px}
+.tk-st i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.tk-st.success i{background:#2eb67d}.tk-st.error i{background:var(--danger,#e5484d)}.tk-st.running i{background:var(--accent);animation:rsPulse 1.1s infinite}.tk-st.aborted i{background:#e8a33d}
+.tk-out{font-size:13px;line-height:1.8;color:var(--text-2);white-space:pre-wrap;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical}
+.tk-card.unread{border-color:var(--accent)}
+.tk-more{width:34px;height:34px;border-radius:10px;color:var(--text-2);display:grid;place-items:center;flex:none}
+.tk-menu{position:fixed;z-index:95;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 10px 30px #0004;padding:6px;min-width:180px}
+.tk-menu button{display:block;width:100%;text-align:start;padding:10px 12px;border-radius:9px;font-size:14px}
+.tk-menu button:hover{background:var(--surface-2)}.tk-menu .dng{color:var(--danger,#e5484d)}
+.tk-form{max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.tk-form label{display:flex;flex-direction:column;gap:6px}
+.tk-form small{font-size:12.5px;font-weight:600;color:var(--text-2)}
+.tk-form .fld,.tk-form textarea{width:100%}
+.tk-form textarea{border:1px solid var(--border);background:var(--bg);border-radius:14px;padding:12px 14px;line-height:1.8;color:var(--text);font-size:15px;outline:none;min-height:96px;resize:vertical}
+.tk-form textarea:focus{border-color:var(--accent)}
+.tk-seg{display:flex;gap:6px;flex-wrap:wrap}
+.tk-seg button{height:36px;padding:0 14px;border-radius:99px;background:var(--surface-2);color:var(--text-2);font-size:13px;font-weight:600}
+.tk-seg button.on{background:var(--accent-soft);color:var(--accent)}
+.tk-days button{width:42px;padding:0}
+.tk-g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tk-next{font-size:13px;color:var(--accent);background:var(--accent-soft);border-radius:12px;padding:10px 12px;line-height:1.8}
+.tk-ai{display:flex;gap:8px}.tk-ai input{flex:1;min-width:0}
+.tk-pre{display:flex;flex-direction:column;gap:2px;text-align:start;padding:12px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--border);width:100%}
+.tk-pre b{font-size:14.5px}.tk-pre span{font-size:12.5px;color:var(--muted)}
+.tk-hist{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.tk-adv[hidden]{display:none}
+.nav-badge{font-style:normal;font-size:11px;background:var(--accent);color:#fff;border-radius:99px;padding:1px 7px;margin-inline-start:auto}
+.nav-badge[hidden]{display:none}
+
+/* أقسام المهام الثلاثة (المهام · النتائج · النشاط) داخل تبويب واحد */
+.tk-sub-tabs{margin-bottom:12px;flex-wrap:nowrap;overflow-x:auto}
+.tk-sub-tabs button{flex:1 1 0;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.tk-dot{font-style:normal;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--accent);color:#fff;font-size:11px;line-height:18px;text-align:center}
+.tk-dot[hidden]{display:none}

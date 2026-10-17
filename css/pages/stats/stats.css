@@ -1,0 +1,135 @@
+/* QUARK AI — صفحة الإحصائيات (الإعدادات ← الإحصائيات) */
+.st{display:flex;flex-direction:column;gap:12px;min-width:0}
+.st-tabs{margin:0}
+.st-tabs .vo-tab{font-size:13.5px;padding:10px 4px;gap:5px;min-width:0}
+.st-tabs .vo-tab .i{font-size:17px;flex:none}
+.st-per{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.st-per::-webkit-scrollbar{display:none}
+.st-body{display:flex;flex-direction:column;gap:14px;min-width:0}
+
+/* مؤشرات */
+.st-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.st-kpi{display:flex;flex-direction:column;gap:3px;min-width:0;padding:13px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--border)}
+.st-kpi .l{font-size:12.5px;color:var(--muted);font-weight:600}
+.st-kpi b{font-size:23px;font-weight:700;line-height:1.25;text-align:start;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-kpi .s{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-height:16px}
+.st-d{font-size:11.5px;font-weight:700;padding:1px 7px;border-radius:99px;background:var(--surface-2);color:var(--muted)}
+.st-d.up{background:rgba(47,158,90,.15);color:var(--ok)}
+.st-d.down{background:var(--danger-soft);color:var(--danger)}
+
+/* بطاقات */
+.st-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:16px;min-width:0}
+.st-card h4{font-size:14.5px;font-weight:700;margin-bottom:12px;color:var(--text-2);display:flex;align-items:center;gap:8px}
+.st-card h4 small{margin-inline-start:auto;font-size:12px;font-weight:500;color:var(--muted)}
+.st-empty{font-size:13.5px;color:var(--muted);line-height:1.9;text-align:center;padding:14px 6px}
+.st-note{font-size:12.5px;color:var(--muted);line-height:1.9;margin-top:10px}
+.st-note.c{margin:0;padding:0 4px}
+.st-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.st-acts .lib-btn{height:38px;font-size:13px}
+.st-acts .lib-btn .i{font-size:17px}
+.st-more{width:100%;justify-content:center;margin-top:10px}
+
+/* السلسلة */
+.st-hero{display:flex;align-items:center;gap:14px;padding:16px;border-radius:20px;border:1px solid var(--border);background:linear-gradient(135deg,var(--accent-soft),var(--surface))}
+.st-hero b{display:block;font-size:22px;font-weight:700}
+.st-hero small{display:block;font-size:12.5px;color:var(--text-2);margin-top:2px;line-height:1.7}
+.st-flame{flex:none;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--on-accent,#fff)}
+.st-flame .i{font-size:26px}
+
+/* الرسوم */
+.st-chart{min-width:0}
+.st-chart svg{display:block;width:100%;height:auto;overflow:visible}
+.st-read{min-height:22px;font-size:13px;color:var(--muted);margin-bottom:6px;text-align:start}
+.st-read.on{color:var(--text);font-weight:600}
+.st-chart .gl{stroke:var(--border);stroke-width:1;stroke-dasharray:3 4}
+.st-chart .ax{fill:var(--muted);font-size:9.5px;font-family:inherit}
+.st-chart .b1{fill:var(--accent)}
+.st-chart .b2{fill:#3e8ede}
+.st-chart .hit{fill:transparent;cursor:pointer}
+.st-chart .hit.sel{fill:var(--accent);fill-opacity:.14}
+.st-chart .ln{fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.st-chart .ar{fill:var(--accent);fill-opacity:.12}
+.st-chart .dot{fill:var(--surface);stroke:var(--accent);stroke-width:2}
+.st-hm{max-width:420px;margin:0 auto}
+.st-hm .hm,.st-lg i.hm{cursor:pointer}
+.hm.l0{fill:var(--surface-2);background:var(--surface-2)}
+.hm.l1{fill:color-mix(in srgb,var(--accent) 28%,var(--surface-2));background:color-mix(in srgb,var(--accent) 28%,var(--surface-2))}
+.hm.l2{fill:color-mix(in srgb,var(--accent) 50%,var(--surface-2));background:color-mix(in srgb,var(--accent) 50%,var(--surface-2))}
+.hm.l3{fill:color-mix(in srgb,var(--accent) 75%,var(--surface-2));background:color-mix(in srgb,var(--accent) 75%,var(--surface-2))}
+.hm.l4{fill:var(--accent);background:var(--accent)}
+.st-hm .hm.sel{stroke:var(--text);stroke-width:1.5}
+.st-lg{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:10px;font-size:12px;color:var(--muted)}
+.st-lg i{display:inline-block;width:12px;height:12px;border-radius:4px}
+.st-lg i.b1{background:var(--accent)}.st-lg i.b2{background:#3e8ede}
+.st-lg span{display:inline-flex;align-items:center;gap:5px}
+.st-lg.top{justify-content:flex-start;gap:14px;margin:0 0 10px}
+
+/* أشرطة أفقية */
+.st-hb{display:grid;grid-template-columns:minmax(80px,38%) minmax(0,1fr) auto;align-items:center;gap:10px;margin-bottom:11px;font-size:13px}
+.st-hb:last-child{margin-bottom:0}
+.st-hb .n{overflow:hidden;color:var(--text-2);text-align:start}
+.st-hb .n small{display:block;font-size:11px;color:var(--muted);white-space:normal;line-height:1.5}
+.st-hb i{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;display:block}
+.st-hb u{display:block;height:100%;border-radius:99px;background:var(--accent);text-decoration:none}
+.st-hb.sp u{background:var(--ok)}
+.st-hb b{font-size:12.5px;min-width:30px;text-align:end;white-space:nowrap}
+
+/* تبديل المقياس */
+.st-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;background:var(--surface-2);border-radius:14px;margin-bottom:14px}
+.st-seg button{padding:8px 4px;border-radius:10px;font-size:13px;color:var(--text-2);transition:all .15s}
+.st-seg button.on{background:var(--primary);color:var(--on-primary);font-weight:600}
+
+/* نسب مئوية للزمن */
+.st-pc{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.st-pc>div{background:var(--surface-2);border-radius:12px;padding:9px 6px;text-align:center}
+.st-pc span{display:block;font-size:11.5px;color:var(--muted);font-weight:600}
+.st-pc b{font-size:15px}
+
+/* النماذج */
+.st-mrows{display:flex;flex-direction:column;gap:10px}
+.st-mrow{background:var(--surface-2);border-radius:14px;padding:11px 13px;display:flex;flex-direction:column;gap:7px;min-width:0}
+.st-mrow .h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.st-mrow .h b{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;text-align:start}
+.st-mrow .h span{font-size:12.5px;color:var(--text-2);flex:none}
+.st-mrow .bar{height:5px;border-radius:99px;background:var(--surface-3);overflow:hidden}
+.st-mrow .bar u{display:block;height:100%;background:var(--accent);border-radius:99px}
+.st-mrow .m{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted)}
+.st-mrow .m b{color:var(--text);font-weight:600}
+.st-mrow .m .bad,.st-mrow .m .bad b{color:var(--danger)}
+.st-mrow small{font-size:11.5px;color:var(--muted);text-align:start}
+
+/* أخطاء ومفاتيح وإعدادات ورؤى */
+.st-errs{display:flex;flex-direction:column;gap:8px}
+.st-errs>div{background:var(--surface-2);border-radius:12px;padding:9px 12px}
+.st-errs p{font-size:13px;line-height:1.7;word-break:break-word;text-align:start}
+.st-errs small{font-size:11.5px;color:var(--muted)}
+.st-keys{display:flex;flex-direction:column;gap:8px}
+.st-keys>div{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface-2);border-radius:12px;padding:10px 12px;font-size:13px}
+.st-keys span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr}
+.st-keys em{font-style:normal;font-size:12.5px;color:var(--muted);flex:none;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-keys em.ok{color:var(--ok)}.st-keys em.bad{color:var(--danger)}
+.st-cfg{display:flex;flex-direction:column}
+.st-cfg>div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.st-cfg>div:last-child{border-bottom:0}
+.st-cfg span{color:var(--muted);flex:none}
+.st-cfg b{font-weight:600;text-align:end;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.st-ins{display:flex;flex-direction:column;gap:12px}
+.st-ins>div{display:flex;gap:10px;align-items:flex-start}
+.st-ins .i{flex:none;font-size:19px;color:var(--accent);margin-top:3px}
+.st-ins p{font-size:13.5px;line-height:1.9;color:var(--text-2);text-align:start}
+.st-ins b{color:var(--text)}
+
+/* تبويب النماذج المنقول */
+.st-body #stOv{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.st-body #stOv .stats,.st-body #stOv .opt-row{grid-column:1/-1}
+
+@media(min-width:600px){
+  .st-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(min-width:900px){
+  .st-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:380px){
+  .st-tabs .vo-tab .i{display:none}
+  .st-kpi b{font-size:20px}
+}

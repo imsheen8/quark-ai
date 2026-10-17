@@ -1,0 +1,10 @@
+/* QUARK AI — زر الثلاث نقاط + وضع المحادثة الخفية */
+/* ===== الرئيسية: إخفاء زر الثلاث نقاط + زر المحادثة الخفية ===== */
+.main.empty #topMore{display:none}
+#topIncog{display:none}
+.main.empty #topIncog{display:grid}
+.main.incog #topIncog{background:var(--accent-soft);color:var(--accent)}
+.main.incog #chatTitle::before{content:"خفية · ";color:var(--accent);font-weight:600}
+.incog-note{margin-top:10px;font-size:14px;line-height:1.8;color:var(--text-2);display:flex;align-items:center;justify-content:center;gap:8px;text-align:center}
+.incog-note .i{font-size:18px;color:var(--accent);flex:none}
+

@@ -1,0 +1,14 @@
+/* QUARK AI — شاشة الترحيب */
+/* ===== الترحيب ===== */
+.welcome{margin:auto;max-width:640px;width:100%;padding:12px 0;text-align:center}
+.welcome .spark{color:var(--accent);font-size:44px;display:grid;place-items:center;margin-bottom:14px}
+.welcome .spark .i{width:1em;height:1em;stroke-width:1.6}
+.welcome h2{font-family:var(--serif);font-size:34px;font-weight:400;line-height:1.5;margin-bottom:28px}
+.cards{display:flex;flex-direction:column;gap:10px;text-align:start}
+.card{display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:20px;background:var(--surface);border:1px solid var(--border);transition:all .15s;text-align:start}
+.card:hover{background:var(--surface-2)}
+.card .ci{font-size:22px;color:var(--accent)}
+.card div{flex:1;min-width:0}
+.card b{display:block;font-size:16px;font-weight:600;margin-bottom:2px}
+.card small{display:block;color:var(--muted);font-size:14px}
+

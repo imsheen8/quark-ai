@@ -1,0 +1,14 @@
+/* QUARK AI — تبويب النماذج التلقائية */
+#defsRoot{display:flex;flex-direction:column;gap:26px}
+.df-sec b{font-weight:600}
+.df-fb{display:flex;flex-direction:column;gap:8px;margin-top:2px}
+.df-fbh{font-size:13px;color:var(--muted)}
+.df-fbr{display:flex;gap:8px;align-items:center}
+.df-fbr .sel-wrap{flex:1;min-width:0}
+.df-x{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;color:var(--muted);transition:background .15s,color .15s}
+.df-x:hover{background:var(--hover,rgba(127,127,127,.15));color:var(--text)}
+.df-x .i{width:16px;height:16px}
+.df-add{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:999px;border:1px dashed var(--border,rgba(127,127,127,.4));color:var(--muted);font-size:14px}
+.df-add:hover{color:var(--text)}
+.df-add .i{width:15px;height:15px}
+.df-empty{padding:22px 16px;border-radius:16px;background:var(--surface,rgba(127,127,127,.1));color:var(--muted);line-height:1.9;font-size:14px}

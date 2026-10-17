@@ -1,0 +1,72 @@
+/* QUARK AI — الوسوم */
+/* ===== الوسوم ===== */
+.tg-dot{width:9px;height:9px;border-radius:50%;flex:none;display:inline-block;vertical-align:middle}
+.tg-dots{display:inline-flex;gap:3px;flex:none}
+.chat-item .tg-dots{flex:none;overflow:visible}
+.tg-dots i{width:7px;height:7px;border-radius:50%;display:block}
+.tg-chips{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.lib-badge.tgb{display:inline-flex;align-items:center;gap:6px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lib-tab .tg-dot{margin-inline-end:6px}
+.tg-dlg{max-width:420px}
+.tg-new{display:flex;gap:8px;margin-bottom:14px}
+.tg-new .fld{height:44px;flex:1;min-width:0}
+.tg-list{display:flex;flex-direction:column;gap:8px;max-height:45vh;overflow-y:auto;margin-bottom:14px}
+.tg-row{display:flex;align-items:center;gap:6px}
+.tg-row.man{gap:10px;border:1px solid var(--border);border-radius:12px;padding:5px 6px 5px 14px}
+.tg-pick{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;border:1px solid var(--border);text-align:start;font-size:15px;color:var(--text)}
+.tg-pick:hover{background:var(--surface-2)}
+.tg-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tg-row small{color:var(--muted);font-size:12.5px}
+.tg-ck{width:22px;height:22px;border-radius:7px;border:2px solid var(--surface-3);display:grid;place-items:center;color:transparent;flex:none}
+.tg-ck .i{width:14px;height:14px;stroke-width:3}
+.tg-pick.on .tg-ck{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tg-pick.some .tg-ck{border-color:var(--accent);color:var(--accent)}
+.tg-rn{flex:1;min-width:0;background:none;border:none;outline:none;font-size:15px;color:var(--text);padding:8px 0;border-bottom:1.5px solid transparent}
+.tg-rn:focus{border-bottom-color:var(--accent)}
+.tg-ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--muted);font-size:18px;flex:none}
+.tg-ico:hover{background:var(--surface-2);color:var(--text)}
+.tg-ico.dng:hover{background:var(--danger-soft);color:var(--danger)}
+.tg-hint{font-size:12.5px;color:var(--muted);line-height:1.8;margin:-2px 0 12px}
+#filterMenu{min-width:210px}
+#filterMenu .go{margin-inline-start:auto;color:var(--muted);font-size:16px}
+#filterMenu .cnt{margin-inline-start:auto;color:var(--muted);font-size:12px}
+#filterMenu .cnt+.ck{margin-inline-start:6px}
+#filterMenu button[data-back]{color:var(--text);font-weight:600;border-bottom:1px solid var(--border);border-radius:11px 11px 0 0;margin-bottom:4px}
+#filterMenu .pop-empty{padding:14px 12px 8px}
+
+
+/* قائمة الوسوم في رأس صفحة المحادثات */
+#chTagBtn{position:relative}
+#chTagBtn.on::after{content:"";position:absolute;top:7px;inset-inline-end:7px;width:9px;height:9px;border-radius:50%;background:var(--tgc,var(--accent));border:2px solid var(--bg)}
+#chTagMenu{min-width:210px;max-height:60vh;overflow-y:auto}
+#chTagMenu .cnt{margin-inline-start:auto;color:var(--muted);font-size:12px}
+#chTagMenu .cnt+.ck{margin-inline-start:6px}
+#chTagMenu .pop-empty{padding:14px 12px 8px}
+
+/* نافذة إنشاء وسم */
+.tc-dlg{max-width:420px}
+.tc-dlg .lib-f textarea{min-height:76px}
+.tc-opt{font-weight:400;color:var(--muted);font-size:12px}
+.tc-colors{display:flex;flex-wrap:wrap;gap:10px;padding-top:2px}
+.tc-sw{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:transparent;position:relative;cursor:pointer;border:2px solid transparent;box-shadow:inset 0 0 0 2px var(--surface);transition:transform .12s}
+.tc-sw:hover{transform:scale(1.08)}
+.tc-sw .i{width:16px;height:16px;stroke-width:3}
+.tc-sw.on{color:#fff;border-color:var(--text)}
+.tc-custom{background:conic-gradient(#e0527a,#d4a017,#4f9d69,#2fa5a5,#5b8def,#b66dd6,#e0527a)}
+.tc-custom input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:0;padding:0}
+.tc-prev{display:flex;align-items:center;gap:10px;margin:2px 0 18px;padding:12px 14px;border:1px dashed var(--border);border-radius:12px}
+.tc-prev-l{font-size:12.5px;color:var(--muted)}
+#chTagMenu .tg-txt{display:flex;flex-direction:column;min-width:0;flex:1;gap:2px}
+#chTagMenu .tg-txt b{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#chTagMenu .tg-txt em{font-style:normal;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px}
+
+/* تعديل/حذف الوسم داخل القائمة */
+#chTagMenu .tg-mrow{display:flex;align-items:center;gap:2px}
+#chTagMenu .tg-mrow>button[data-ctag]{flex:1;min-width:0;width:auto}
+#chTagMenu .tg-mi{width:34px;height:34px;padding:0;flex:none;justify-content:center;color:var(--muted)}
+#chTagMenu .tg-mi .i{font-size:17px}
+#chTagMenu .tg-mi:hover{background:var(--surface-2);color:var(--text)}
+#chTagMenu .tg-mi.dng:hover{background:var(--danger-soft);color:var(--danger)}
+
+/* اللون المخصص يستخدم منتقي الألوان الخاص بالتطبيق */
+.tc-custom button.q-color{position:absolute;inset:0;width:100%;height:100%;opacity:0;border-radius:50%;border:0;padding:0;box-shadow:none}

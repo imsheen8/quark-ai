@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quark_widget_name">QUARK AI</string>
+    <string name="quark_widget_desc">اسأل QUARK AI من الشاشة الرئيسية</string>
+    <string name="quark_widget_hint">اكتب رسالة…</string>
+    <string name="quark_widget_camera">الكاميرا</string>
+    <string name="quark_widget_photo">صورة من المعرض</string>
+    <string name="quark_widget_mic">إملاء صوتي</string>
+    <string name="quark_widget_new">محادثة جديدة</string>
+    <string name="sc_new">محادثة جديدة</string>
+    <string name="sc_new_long">بدء محادثة جديدة</string>
+    <string name="sc_settings">الإعدادات</string>
+    <string name="sc_settings_long">فتح الإعدادات</string>
+    <string name="sc_stats">الإحصائيات</string>
+    <string name="sc_stats_long">فتح الإحصائيات</string>
+    <string name="tile_label">QUARK AI</string>
+    <string name="pt_label">اسأل QUARK</string>
+    <string name="quark_widget2_name">QUARK AI (صغير)</string>
+    <string name="quark_widget2_desc">ودجت صغير 2×2: محادثة وميكروفون وكاميرا</string>
+    <string name="qws_name">إحصائيات QUARK AI</string>
+    <string name="qws_title">إحصائيات QUARK AI</string>
+    <string name="qws_desc">محادثاتك ورسائلك وردود اليوم من الشاشة الرئيسية</string>
+    <string name="a11y_desc">اختصار الأزرار: ضغطتان سريعتان على زر رفع الصوت تفتحان QUARK AI. لا تقرأ هذه الخدمة الشاشة ولا محتوى التطبيقات.</string>
+    <string name="a11y_label">QUARK AI — اختصار زر الصوت</string>
+    <string name="sc_voice">إملاء صوتي</string>
+    <string name="sc_voice_long">بدء إملاء صوتي</string>
+</resources>

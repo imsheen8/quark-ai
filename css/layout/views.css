@@ -1,0 +1,11 @@
+/* QUARK AI — ربط الصفحات الكاملة بالهيكل الرئيسي */
+/* ===== المكتبة ===== */
+.lib-view{display:none;flex:1;min-height:0;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.set-view,.pf-view{display:none;flex:1;min-height:0;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.main.lib-open>.topbar,.main.lib-open>.stage,.main.lib-open>.composer,.main.set-open>.topbar,.main.set-open>.stage,.main.set-open>.composer,.main.pf-open>.topbar,.main.pf-open>.stage,.main.pf-open>.composer,.main.ch-open>.topbar,.main.ch-open>.stage,.main.ch-open>.composer{display:none}
+.main.lib-open>.lib-view{display:flex}
+.ch-view{display:none;flex:1;min-height:0;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.main.ch-open>.ch-view{display:flex}
+.main.set-open>.set-view{display:flex}
+.main.pf-open>.pf-view{display:flex}
+.avatar-btn{overflow:hidden;font-weight:700}

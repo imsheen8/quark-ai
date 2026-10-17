@@ -1,0 +1,223 @@
+<!-- QUARK AI — مقاطع انميشن الدخول وصفحة تسجيل الدخول (تُحقن داخل Shadow DOM بواسطة js/pages/gate/intro.js) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="q" viewBox="0 0 100 100">
+      <path pathLength="1" fill-rule="evenodd" d="M48.5 4C72 4 93 22 93 46C93 70 72 88 48.5 88C25 88 4 70 4 46C4 22 25 4 48.5 4ZM47 11.5C32 11.5 19 26 19 44.5C19 63 32 77.5 47 77.5C62 77.5 75.5 63 75.5 44.5C75.5 26 62 11.5 47 11.5Z"/>
+    </symbol>
+  </defs>
+</svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 6.1A9.6 9.6 0 0112 6c6.4 0 10 6 10 6a17 17 0 01-3.2 3.9M6.6 7.6A16.6 16.6 0 002 12s3.6 7 10 7c1.6 0 3-.4 4.3-1M9.9 9.9a3 3 0 004.2 4.2"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-del" viewBox="0 0 24 24"><path d="M21 5H9l-6 7 6 7h12a1 1 0 001-1V6a1 1 0 00-1-1z"/><path d="M16 9.5l-5 5M11 9.5l5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  </defs>
+</svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="ap-menu" viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M10 12h10"/><path d="M14 18h6"/></symbol>
+<symbol id="ap-ghost" viewBox="0 0 24 24"><path d="M9 10h.01M15 10h.01M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/></symbol>
+<symbol id="ap-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="ap-message-plus" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h8"/><path d="M12 8v8"/></symbol>
+<symbol id="ap-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></symbol>
+<symbol id="ap-lib-book" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></symbol>
+<symbol id="ap-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+<symbol id="ap-brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></symbol>
+<symbol id="ap-sparkles" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></symbol>
+<symbol id="ap-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+<symbol id="ap-cpu" viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></symbol>
+<symbol id="ap-volume" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></symbol>
+<symbol id="ap-filter" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></symbol>
+<symbol id="ap-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+<symbol id="ap-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ap-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+<symbol id="ap-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
+<symbol id="ap-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+<symbol id="ap-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+<symbol id="ap-thumb-up" viewBox="0 0 24 24"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></symbol>
+</defs></svg>
+
+<div id="stage">
+
+  <!-- 3) الشعار -->
+  <section class="scene" id="sSplash">
+    <div class="glow" id="glow"></div>
+    <svg class="logo" id="logo" viewBox="0 0 100 100">
+      <path class="ring" pathLength="1" fill-rule="evenodd" d="M48.5 4C72 4 93 22 93 46C93 70 72 88 48.5 88C25 88 4 70 4 46C4 22 25 4 48.5 4ZM47 11.5C32 11.5 19 26 19 44.5C19 63 32 77.5 47 77.5C62 77.5 75.5 63 75.5 44.5C75.5 26 62 11.5 47 11.5Z"/>
+      <path class="tail" pathLength="1" d="M41 54H58Q62 54 65.5 57.5L99 90.5Q100 91.5 98.5 91.5H86Q82 91.5 79.5 89Z"/>
+    </svg>
+    <div class="word" id="word"></div>
+    <div class="tag" id="tag">مساعدك الذكي… بالعربية</div>
+    <button class="skip-b skip-s" id="skipSplash" type="button">تخطي المقدمة</button>
+  </section>
+
+  <!-- 3) بناء الواجهة — نسخة طبق الأصل من واجهة التطبيق -->
+  <section class="scene" id="sBuild">
+    <div class="dev-wrap" id="devWrap">
+      <div class="dev" id="dev">
+
+        <div class="d-sb"><span>9:41</span><div class="r"><div class="sig"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+
+        <header class="topbar">
+          <div class="icon-btn rv" id="dMenu"><svg class="i"><use href="#ap-menu"/></svg></div>
+          <h1 class="rv" id="dTitle"></h1>
+          <div class="icon-btn rv"><svg class="i"><use href="#ap-ghost"/></svg></div>
+          <div class="icon-btn rv"><svg class="i"><use href="#ap-search"/></svg></div>
+          <div class="icon-btn rv"><svg class="i"><use href="#ap-message-plus"/></svg></div>
+          <div class="icon-btn rv"><svg class="i"><use href="#ap-more"/></svg></div>
+        </header>
+
+        <div class="d-welcome rv" id="dWelcome"><h2 id="dGreet"></h2></div>
+
+        <div class="d-msgs">
+          <div class="msg user rv" id="mUser"><div class="bubble" id="mUserT"></div></div>
+          <div class="msg ai rv" id="mAi">
+            <div class="bubble"><div class="typing" id="dTyping"><i></i><i></i><i></i></div><span id="aiTxt"></span></div>
+            <div class="actions rv" id="dActs"><div class="act"><svg class="i"><use href="#ap-copy"/></svg></div><div class="act"><svg class="i"><use href="#ap-volume"/></svg></div><div class="act"><svg class="i"><use href="#ap-refresh"/></svg></div><div class="act"><svg class="i"><use href="#ap-thumb-up"/></svg></div></div>
+          </div>
+        </div>
+
+        <footer class="d-comp rv" id="dComp">
+          <div class="composer-box">
+            <div class="ta" id="dTa"><span class="ph">اكتب رسالتك... أو / للأوامر</span><span id="taTxt"></span><i class="caret"></i></div>
+            <div class="composer-bar">
+              <div class="circle-btn"><svg class="i"><use href="#ap-plus"/></svg></div>
+              <div class="ag-mode"><span><svg class="i"><use href="#ap-sparkles"/></svg> وكيل</span><span class="on"><svg class="i"><use href="#ap-message"/></svg> محادثة</span></div>
+              <div class="send" id="dSend"><svg class="i"><use href="#ap-arrow-up"/></svg></div>
+            </div>
+          </div>
+          <div class="d-hint">الذكاء الاصطناعي قد يخطئ، تحقق من المعلومات المهمة.</div>
+        </footer>
+
+        <div class="d-back"></div>
+        <aside class="d-side">
+          <div class="sb-head rv"><div class="brand">QUARK AI</div><div class="icon-btn"><svg class="i"><use href="#ap-search"/></svg></div></div>
+          <nav class="nav">
+          <div class="nav-item rv"><svg class="i"><use href="#ap-lib-book"/></svg> المكتبة</div>
+          <div class="nav-item rv"><svg class="i"><use href="#ap-mail"/></svg> البريد</div>
+          <div class="nav-item rv"><svg class="i"><use href="#ap-brain"/></svg> الذاكرة</div>
+          <div class="nav-item rv"><svg class="i"><use href="#ap-sparkles"/></svg> المهارات</div>
+          <div class="nav-item rv"><svg class="i"><use href="#ap-clock"/></svg> المهام</div>
+          <div class="nav-item rv"><svg class="i"><use href="#ap-cpu"/></svg> النماذج</div>
+          <div class="nav-item rv"><svg class="i"><use href="#ap-volume"/></svg> الأصوات</div>
+          </nav>
+          <div class="divider"></div>
+          <div class="recents-head rv"><span class="recents-label">الأخيرة</span><div class="filter-btn"><svg class="i"><use href="#ap-filter"/></svg></div></div>
+          <div class="chat-list">
+          <div class="chat-item rv active"><svg class="i"><use href="#ap-message"/></svg><span>ماذا يمكنك أن تفعل لي؟</span><div class="more"><svg class="i"><use href="#ap-more"/></svg></div></div>
+          <div class="chat-item rv"><svg class="i"><use href="#ap-message"/></svg><span>تلخيص مقال عن الطاقة الشمسية</span><div class="more"><svg class="i"><use href="#ap-more"/></svg></div></div>
+          <div class="chat-item rv"><svg class="i"><use href="#ap-message"/></svg><span>كتابة رسالة اعتذار رسمية</span><div class="more"><svg class="i"><use href="#ap-more"/></svg></div></div>
+          </div>
+          <div class="sb-foot rv"><div class="avatar-btn"><svg class="i"><use href="#ap-user"/></svg></div><div class="pill-new" id="dNew"><svg class="i"><use href="#ap-plus"/></svg> محادثة جديدة</div></div>
+        </aside>
+
+      </div>
+    </div>
+    <div class="prog"><i id="progBar"></i></div>
+    <div class="prog-t" id="progT">جاري تجهيز الواجهة…</div>
+    <button class="skip-b" id="skipBuild" type="button">تخطي المقدمة</button>
+  </section>
+
+  <!-- 4) تسجيل الدخول -->
+  <section class="scene" id="sLogin">
+<div class="lgapp" id="app">
+
+  <div class="hero">
+    <svg class="lg-logo" viewBox="0 0 100 100"><use href="#q" fill="#fff"/><path d="M41 54H58Q62 54 65.5 57.5L99 90.5Q100 91.5 98.5 91.5H86Q82 91.5 79.5 89Z" fill="#fff"/></svg>
+    <div class="lg-word">QUARK<em>AI</em></div>
+    <p class="lg-tag">مساعدك الذكي… بالعربية</p>
+  </div>
+
+  <div class="panel" id="panel">
+
+    <div class="lg-prog" id="prog"><div class="segs" id="segs"></div><div class="lg-meta" id="meta"></div></div>
+
+    <div class="lg-stage">
+
+      <!-- تسجيل الدخول -->
+      <section class="step" data-id="signin">
+        <header class="sh"><h1>أهلًا بعودتك</h1><p class="sub">سجّل دخولك لمتابعة محادثاتك.</p></header>
+        <div class="fs">
+          <div class="field"><label for="siMail">البريد الإلكتروني</label><input class="fld ltr" id="siMail" type="email" autocomplete="off" placeholder="name@example.com"></div>
+          <div class="field"><label for="siPass">كلمة المرور</label>
+            <div class="pw"><input class="fld ltr" id="siPass" type="password" autocomplete="off" placeholder="••••••••"><button class="eye" type="button" data-eye><svg class="i"><use href="#i-eye"/></svg></button></div>
+          </div>
+        </div>
+        <div class="gate-err" hidden></div>
+        <button class="link" type="button" id="toSignup">ليس لديك حساب؟ <b>أنشئ حسابًا</b></button>
+      </section>
+
+      <!-- 1) الحساب -->
+      <section class="step" data-id="account">
+        <header class="sh"><h1>أنشئ حسابك</h1><p class="sub">حساب واحد لحفظ محادثاتك ومزامنتها بين أجهزتك.</p></header>
+        <div class="fs">
+          <div class="field"><label for="acMail">البريد الإلكتروني</label><input class="fld ltr" id="acMail" type="email" autocomplete="off" placeholder="name@example.com"></div>
+          <div class="field"><label for="acPass">كلمة المرور</label>
+            <div class="pw"><input class="fld ltr" id="acPass" type="password" autocomplete="off" placeholder="8 أحرف على الأقل"><button class="eye" type="button" data-eye><svg class="i"><use href="#i-eye"/></svg></button></div>
+          </div>
+          <div class="field"><label for="acPass2">تأكيد كلمة المرور</label>
+            <div class="pw"><input class="fld ltr" id="acPass2" type="password" autocomplete="off" placeholder="أعد كتابتها"><button class="eye" type="button" data-eye><svg class="i"><use href="#i-eye"/></svg></button></div>
+          </div>
+        </div>
+        <div class="gate-err" hidden></div>
+        <button class="link" type="button" id="toSignin">لديك حساب؟ <b>سجّل الدخول</b></button>
+      </section>
+
+      <!-- 2) الملف الشخصي -->
+      <section class="step" data-id="profile">
+        <header class="sh"><h1>عرّفنا بنفسك</h1><p class="sub">الاسم يظهر في التحية وبجانب محادثاتك.</p></header>
+        <div class="pf-photo">
+          <div class="pf-ava" id="pfAva"></div>
+          <button type="button" class="pill" id="pfPhotoBtn">إضافة صورة</button>
+          <button type="button" class="rm" id="pfPhotoRm" hidden>إزالة الصورة</button>
+          <input type="file" id="pfFile" accept="image/*" hidden>
+        </div>
+        <div class="fs"><div class="field"><label for="pfName">الاسم</label><input class="fld" id="pfName" type="text" maxlength="40" autocomplete="off" placeholder="اكتب اسمك"></div></div>
+        <p class="key-help">الصورة اختيارية — يمكنك تغييرها لاحقًا.</p>
+        <div class="gate-err" hidden></div>
+      </section>
+
+      <!-- 3) الاتصال بالنموذج -->
+      <section class="step" data-id="model">
+        <header class="sh"><h1>اربط نموذجك</h1><p class="sub">اختياري — أضف مفتاح API ليبدأ QUARK بالرد عليك، أو أضفه لاحقًا من الإعدادات.</p></header>
+        <div class="fs">
+          <div class="sel-wrap"><select class="fld" id="mdPreset" aria-label="المزوّد"></select><svg class="i caret"><use href="#i-down"/></svg></div>
+          <input class="fld ltr" id="mdUrl" type="text" autocomplete="off" spellcheck="false" placeholder="https://.../v1" hidden>
+          <input class="fld ltr" id="mdKey" type="password" autocomplete="off" spellcheck="false" placeholder="مفتاح API">
+          <input class="fld ltr" id="mdModel" type="text" autocomplete="off" spellcheck="false" placeholder="النموذج، مثل gpt-4o-mini" list="mdModels">
+          <datalist id="mdModels"></datalist>
+          <div class="key-help" id="mdHelp">يُحفظ المفتاح على جهازك فقط.</div>
+          <div class="key-help" id="mdNote" hidden>لديك اتصال محفوظ مسبقًا — اترك الحقول فارغة للإبقاء عليه.</div>
+        </div>
+        <div class="gate-err" hidden></div>
+      </section>
+
+      <!-- 4) الانتهاء -->
+      <section class="step" data-id="done">
+        <div class="done-ic"><svg class="i"><use href="#i-check"/></svg></div>
+        <header class="sh"><h1 id="doneTitle">أهلًا بك</h1><p class="sub">حسابك جاهز. هذا ملخص ما تم إعداده:</p></header>
+        <div class="fs"><ul class="sum" id="sum"></ul></div>
+      </section>
+
+    </div>
+
+    <!-- أزرار التنقّل -->
+    <div class="ctl" id="ctl">
+      <button class="btn-back" type="button" id="back"><svg class="i flip"><use href="#i-arrow"/></svg><span>رجوع</span></button>
+      <button class="btn-skip" type="button" id="skip">تخطي</button>
+      <button class="btn-next" type="button" id="next"><span id="nextLbl">التالي</span><svg class="i"><use href="#i-arrow"/></svg></button>
+    </div>
+
+  </div>
+</div>
+
+  </section>
+</div>

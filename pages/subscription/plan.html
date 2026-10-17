@@ -1,0 +1,39 @@
+<div class="plan-ov" id="planOv" role="dialog" aria-modal="true" aria-label="الاشتراك" hidden>
+  <div class="plan-in">
+    <button type="button" class="plan-x" id="planX" aria-label="إغلاق"><svg class="i"><use href="#i-x"/></svg></button>
+    <h1>احصل على المزيد</h1>
+    <p class="plan-sub">اختر الخطة المناسبة لك</p>
+    <div class="plan-reason" id="planReason" hidden></div>
+
+    <div class="plan-card pro">
+      <h2>برو <span class="plan-tag" id="planProTag" hidden>خطتك الحالية</span></h2>
+      <p class="plan-desc">للتخصيص الكامل</p>
+      <div class="plan-status" id="planStatus" hidden></div>
+      <label class="plan-lbl" for="planCode" id="planCodeLbl">كود التفعيل</label>
+      <input class="plan-code" id="planCode" type="text" inputmode="text" maxlength="9" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX" dir="ltr">
+      <button type="button" class="plan-go" id="planGo" disabled>تفعيل برو</button>
+      <div class="plan-msg" id="planMsg" role="status"></div>
+      <ul class="plan-list">
+        <li><svg class="i"><use href="#i-check"/></svg><span>كل ما في المجانية</span></li>
+        <li><svg class="i"><use href="#i-check"/></svg><span>ثيمات مخصصة بلا حدود (حتى 50 ثيمًا)</span></li>
+        <li><svg class="i"><use href="#i-check"/></svg><span>نمط الحاوية لرسائل المحادثة</span></li>
+        <li><svg class="i"><use href="#i-check"/></svg><span>التحكم الكامل بالحاوية: الشريط الجانبي والحواف والإطار والخلفية الزجاجية</span></li>
+        <li><svg class="i"><use href="#i-check"/></svg><span>الترويسة والفواصل وحجب الرد والأزرار السريعة</span></li>
+        <li><svg class="i"><use href="#i-check"/></svg><span>نمط مستقل لكل محادثة</span></li>
+      </ul>
+      <button type="button" class="plan-link" id="planRemove" hidden>إزالة الاشتراك من هذا الجهاز</button>
+    </div>
+
+    <div class="plan-card">
+      <h2>مجانية <span class="plan-tag" id="planFreeTag">خطتك الحالية</span></h2>
+      <p class="plan-desc">للبدء والاستخدام اليومي</p>
+      <ul class="plan-list">
+        <li><svg class="i"><use href="#i-check"/></svg><span>كل المحادثات والنماذج ونقاط الاتصال</span></li>
+        <li><svg class="i"><use href="#i-check"/></svg><span>كل الثيمات الجاهزة الفاتحة والداكنة</span></li>
+        <li><svg class="i"><use href="#i-check"/></svg><span>ثيم مخصص واحد</span></li>
+        <li class="off"><svg class="i"><use href="#i-lock"/></svg><span>نمط الرسائل العادية فقط</span></li>
+      </ul>
+    </div>
+    <p class="plan-note">يُحصل على كود التفعيل من مزوّد التطبيق. الكود من 8 أرقام وحروف.</p>
+  </div>
+</div>

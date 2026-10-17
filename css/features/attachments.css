@@ -1,0 +1,21 @@
+/* QUARK AI — الملفات المرفقة */
+/* ===== الملفات المرفقة ===== */
+.att-row{display:flex;flex-wrap:wrap;gap:8px;padding:0 4px 12px}
+.att-row:empty{display:none}
+.att-chip{display:inline-flex;align-items:center;gap:6px;max-width:100%;height:44px;padding:0 6px 0 14px;border-radius:14px;background:var(--surface-2);color:var(--text);font-size:14px;cursor:pointer;transition:background .15s}
+.att-chip:hover{background:var(--surface-3)}
+.att-chip>.i{font-size:20px;color:var(--accent)}
+.att-chip .nm{display:flex;flex-direction:column;min-width:0;line-height:1.35;text-align:start}
+.att-chip .nm b{font-weight:600;font-size:13.5px;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:start}
+.att-chip .nm small{font-size:11.5px;color:var(--muted)}
+.att-chip .rm{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:var(--muted);font-size:16px;flex:none}
+.att-chip .rm:hover{background:var(--danger-soft);color:var(--danger)}
+.att-chip.ro{padding-inline-end:14px}
+.msg.user .att-row{padding:0 0 10px;align-self:flex-start}
+.msg.user .att-chip{background:var(--bubble)}
+.msg.user .att-chip:hover{background:var(--surface-3)}
+.fv-dlg{max-width:760px}
+.fv-dlg h2{display:flex;align-items:center;gap:10px;direction:ltr;overflow-wrap:anywhere;font-size:16px}
+.fv-dlg h2 .i{color:var(--accent);font-size:20px}
+.fv-pre{background:var(--code-bg);color:var(--code-fg);border:1px solid var(--code-bd);border-radius:14px;padding:14px 16px;max-height:55vh;overflow:auto;direction:ltr;text-align:left;font-family:ui-monospace,"SF Mono",Consolas,monospace;font-size:13px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+

@@ -1,0 +1,40 @@
+<div class="lib-ov" id="lbOvAdd"><div class="lib-dlg">
+  <h2>إضافة عنصر</h2>
+  <label class="lib-f">اسم العنصر<input type="text" id="lbName" maxlength="80"></label>
+  <label class="lib-f">محتوى العنصر (الوصف)<textarea id="lbText"></textarea></label>
+  <div class="lib-hint">للقوالب: اكتب <code>{{الموضوع}}</code> لإضافة متغيّر يُسأل عنه قبل الإدراج، أو <code>{{اللغة|العربية}}</code> لوضع قيمة افتراضية.</div>
+  <div class="lib-f">النوع
+    <div class="lib-seg">
+      <label><input type="radio" name="lbType" value="template" checked><span>قالب</span></label>
+      <label><input type="radio" name="lbType" value="persona"><span>شخصية</span></label>
+    </div>
+  </div>
+  <div class="lib-acts"><button class="lib-btn" data-lbclose>إلغاء</button><button class="lib-btn pri" id="lbSave">إضافة</button></div>
+</div></div>
+<div class="lib-ov" id="tcOv"><div class="lib-dlg tc-dlg">
+  <h2 id="tcTitle">إنشاء وسم</h2>
+  <label class="lib-f">اسم الوسم<input type="text" id="tcName" maxlength="24" placeholder="مثال: عمل، دراسة، أفكار…" autocomplete="off"></label>
+  <label class="lib-f">الوصف <span class="tc-opt">(اختياري)</span><textarea id="tcDesc" maxlength="120" placeholder="وصف قصير يوضّح ما يخص هذا الوسم"></textarea></label>
+  <div class="lib-f">اللون
+    <div class="tc-colors" id="tcColors"></div>
+  </div>
+  <div class="tc-prev"><span class="tc-prev-l">معاينة</span><span class="lib-badge tgb" id="tcPrev"><i class="tg-dot"></i><span></span></span></div>
+  <div class="lib-acts"><button class="lib-btn" data-lbclose>إلغاء</button><button class="lib-btn pri" id="tcOk">إنشاء</button></div>
+</div></div>
+<div class="lib-ov" id="tgOv"><div class="lib-dlg tg-dlg">
+  <h2 id="tgTitle">الوسوم</h2>
+  <div class="tg-new"><input class="fld" type="text" id="tgNew" maxlength="24" placeholder="وسم جديد…" autocomplete="off"><button class="lib-btn pri" id="tgAdd">إضافة</button></div>
+  <div class="tg-list" id="tgList"></div>
+  <div class="lib-acts"><button class="lib-btn pri" data-lbclose>تم</button></div>
+</div></div>
+<div class="lib-ov" id="tvOv"><div class="lib-dlg tv-dlg">
+  <h2 id="tvTitle"></h2>
+  <p class="tv-sub">املأ المتغيّرات ليُدرَج القالب جاهزًا في خانة الكتابة.</p>
+  <div id="tvFields"></div>
+  <div class="lib-acts"><button class="lib-btn" data-lbclose>إلغاء</button><button class="lib-btn pri" id="tvOk">إدراج</button></div>
+</div></div>
+<div class="lib-ov" id="lbOvDlg"><div class="lib-dlg">
+  <h2 id="lbDTitle"></h2><div id="lbDBody"></div>
+  <div class="lib-acts"><button class="lib-btn" data-lbclose>إلغاء</button><button class="lib-btn pri" id="lbDOk">تأكيد</button></div>
+</div></div>
+

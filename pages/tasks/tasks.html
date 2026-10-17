@@ -1,0 +1,22 @@
+    <!-- المهام: مكان واحد (المكتبة ← المهام) وبداخله ثلاثة أقسام: المهام · النتائج · النشاط -->
+    <section class="sk-view" id="tkTasksView" hidden aria-label="المهام">
+      <div class="rs-body">
+        <div class="tk-seg tk-sub-tabs" id="tkSeg" role="tablist" aria-label="أقسام المهام">
+          <button type="button" role="tab" data-sub="list" class="on">المهام</button>
+          <button type="button" role="tab" data-sub="results">النتائج<em class="tk-dot" id="tkResDot" hidden>0</em></button>
+          <button type="button" role="tab" data-sub="act">النشاط</button>
+        </div>
+        <div data-pane="list">
+          <div class="tk-sub" id="tkSummary" style="margin-bottom:10px"></div>
+          <div id="tkList" class="rs-list"></div>
+        </div>
+        <div data-pane="results" hidden>
+          <div class="rs-bulk" style="display:flex"><span id="tkResN"></span><button type="button" class="lib-btn" id="tkReadAll">تعليم الكل كمقروء</button></div>
+          <div id="tkResList" class="rs-list"></div>
+        </div>
+        <div data-pane="act" hidden>
+          <div class="rs-bulk" style="display:flex"><span id="tkActSummary" class="tk-sub"></span><button type="button" class="lib-btn" id="tkPauseAll">إيقاف كل المهام</button></div>
+          <div id="tkActList" class="rs-list"></div>
+        </div>
+      </div>
+    </section>

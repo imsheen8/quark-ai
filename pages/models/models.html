@@ -1,0 +1,65 @@
+    <!-- النماذج: صفحة كاملة -->
+    <section class="md-view" id="mdView">
+      <div class="lib-head"><div class="lib-in">
+        <div class="lib-top">
+          <button class="lib-ib" id="mdMenu" aria-label="القائمة"><svg class="i"><use href="#i-menu"/></svg></button>
+          <h2>النماذج</h2>
+          <button class="lib-ib" id="mdSearchBtn" aria-label="بحث"><svg class="i"><use href="#i-search"/></svg></button>
+          <button class="lib-ib" id="mdMulti" aria-label="تحديد متعدد"><svg class="i"><use href="#i-lib-list"/></svg></button>
+          <button class="lib-ib" id="mdSync" aria-label="جلب النماذج من كل النقاط" title="جلب النماذج من كل النقاط"><svg class="i"><use href="#i-refresh"/></svg></button>
+          <button class="lib-ib" id="mdAdd" aria-label="إضافة نموذج أو صوت" title="إضافة نموذج أو صوت"><svg class="i"><use href="#i-plus"/></svg></button>
+        </div>
+        <div class="lib-search" id="mdSearch"><input type="text" id="mdQ" placeholder="ابحث باسم النموذج أو المزوّد…" autocomplete="off" spellcheck="false" dir="auto"></div>
+        <div class="lib-bar" id="mdBar">
+          <button class="lib-btn" id="mdAll">تحديد الكل</button>
+          <button class="lib-btn" id="mdBOn" disabled>تفعيل</button>
+          <button class="lib-btn" id="mdBOff" disabled>تعطيل</button>
+          <button class="lib-btn" id="mdBFav" disabled><svg class="i"><use href="#i-lib-star"/></svg> مفضلة</button>
+          <button class="lib-btn" id="mdBTest" disabled><svg class="i"><use href="#i-clock"/></svg> اختبار</button>
+          <button class="lib-btn" id="mdBBench" disabled><svg class="i"><use href="#i-columns"/></svg> مقارنة أداء</button>
+          <button class="lib-btn dng" id="mdBDel" disabled><svg class="i"><use href="#i-trash"/></svg> حذف</button>
+          <span class="cnt" id="mdCnt"></span>
+        </div>
+        <nav class="lib-tabs" id="mdTabs"></nav>
+      </div></div>
+      <div class="md-body">
+        <div class="md-filters" id="mdFilters">
+          <div class="md-chips" id="mdChips"></div>
+          <div class="md-tool">
+            <div class="sel-wrap"><select class="fld" id="mdCap" aria-label="القدرات">
+              <option value="all">كل القدرات</option>
+              <option value="reason">تفكير</option>
+              <option value="vision">رؤية (صور)</option>
+              <option value="image">توليد صور</option>
+              <option value="params">معاملات مخصصة</option>
+            </select><svg class="i caret"><use href="#i-chevron-down"/></svg></div>
+            <div class="sel-wrap"><select class="fld" id="mdSt" aria-label="الحالة">
+              <option value="all">كل الحالات</option>
+              <option value="ok">اتصال سليم</option>
+              <option value="bad">فاشلة</option>
+              <option value="none">لم تُختبر</option>
+              <option value="off">معطّلة</option>
+            </select><svg class="i caret"><use href="#i-chevron-down"/></svg></div>
+            <div class="sel-wrap"><select class="fld" id="mdFam" aria-label="العائلة"></select><svg class="i caret"><use href="#i-chevron-down"/></svg></div>
+            <div class="sel-wrap"><select class="fld" id="mdSort" aria-label="الترتيب">
+              <option value="name">الترتيب: الاسم</option>
+              <option value="used">الأكثر استخدامًا</option>
+              <option value="recent">الأحدث استخدامًا</option>
+              <option value="speed">الأسرع استجابة</option>
+              <option value="ctx">الأكبر نافذة سياق</option>
+              <option value="ep">نقطة الاتصال</option>
+            </select><svg class="i caret"><use href="#i-chevron-down"/></svg></div>
+            <div class="md-vm" id="mdVm" role="group" aria-label="طريقة العرض">
+              <button type="button" data-vm="grid" aria-label="شبكة" title="شبكة"><svg class="i"><use href="#i-grid"/></svg></button>
+              <button type="button" data-vm="list" aria-label="قائمة" title="قائمة"><svg class="i"><use href="#i-rows"/></svg></button>
+              <button type="button" data-vm="group" aria-label="تجميع حسب النقطة" title="تجميع حسب نقطة الاتصال"><svg class="i"><use href="#i-layers"/></svg></button>
+            </div>
+            <button type="button" class="lib-btn" id="mdReset" hidden>مسح التصفية</button>
+          </div>
+        </div>
+        <div class="od-rec-host" id="mdRec" hidden></div>
+        <div class="od-panel" id="mdDl" hidden></div>
+        <div class="lib-grid" id="mdGrid"></div>
+      </div>
+    </section>
+

@@ -1,0 +1,31 @@
+/* Memory in personalization, skills in Library, tasks alongside chat. */
+.embedded-group{margin-bottom:16px;border:1px solid var(--border);border-radius:18px;background:var(--surface);padding:14px}
+.embedded-group>summary{cursor:pointer;font-size:16px;font-weight:600;line-height:1.8}
+.embedded-group>summary .i{width:19px;height:19px;vertical-align:middle;margin-inline-end:5px}
+.embedded-group>summary span{display:block;color:var(--muted);font-size:12.5px;font-weight:400;margin-inline-start:24px}
+.embedded-group[open]>summary{margin-bottom:14px}
+.embedded-group>.lib-btn{margin-top:12px}
+.embedded-group>summary::marker{color:var(--muted)}
+.embedded-group>.eg-body{margin-top:0}
+.embedded-group .eg-body .help{margin-top:0}
+.embedded-group .rs-set input[type=checkbox]:not(.sw){accent-color:var(--accent)}
+/* التمرير في تبويب المهارات مثل بقية تبويبات المكتبة */
+.lib-view>#skillsMount{flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:0 max(16px,calc((100% - 1100px)/2))}
+#memoryMount>.mm-view{display:flex;overflow:visible}
+#memoryMount .rs-body{padding:0;max-width:none;display:flex;flex-direction:column;gap:12px}
+#memoryMount .mm-panel>summary{padding:10px 2px;cursor:pointer;font-size:14px;font-weight:600}
+#memoryMount details.mm-panel{display:block}
+#memoryMount details.mm-panel:not([open])>:not(summary){display:none}
+#memoryMount details.mm-panel[open]>.mm-card-box{margin-top:10px}
+#memoryMount .rs-search{flex:none;min-height:42px}
+#mmView [hidden],#skView [hidden],#tkTasksView [hidden]{display:none!important}
+#skillsSettingsRoot .rs-set{max-width:none;margin:0;padding:0}
+#skillsMount>.sk-view{display:flex;overflow:visible;flex:none}
+#skillsMount[hidden],#skillsMount>.sk-view[hidden],#lbGrid[hidden]{display:none}
+#skillsMount .rs-body{padding-bottom:32px}
+@media(max-width:600px){
+  .topbar{gap:2px}
+  .topbar .icon-btn{flex-shrink:0}
+  .embedded-group{padding:12px}
+  #memoryMount .mm-card-box{padding:12px}
+}

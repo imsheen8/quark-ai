@@ -1,0 +1,89 @@
+name: Release (signed AAB + APK)
+
+# يُشغَّل يدوياً فقط: Actions ← Release ← Run workflow
+# يحتاج 4 أسرار في المستودع (Settings ← Secrets and variables ← Actions):
+#   KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: "رقم الإصدار الظاهر (مثال 1.0.0)"
+        required: true
+        default: "1.0.0"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+    steps:
+      - name: Check secrets
+        env:
+          KS: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          for v in KS KEYSTORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            if [ -z "${!v}" ]; then echo "::error::السر المطلوب غير موجود: $v"; exit 1; fi
+          done
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Decode keystore
+        env:
+          KS: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo "$KS" | base64 -d > "$RUNNER_TEMP/quark.keystore"
+          echo "KEYSTORE_PATH=$RUNNER_TEMP/quark.keystore" >> "$GITHUB_ENV"
+
+      - name: Prepare web files
+        run: |
+          mkdir -p www
+          cp -r index.html components css js pages www/
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Bundle on-device model engine (wllama)
+        run: node scripts/vendor-wllama.js www/vendor/wllama
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Generate app icons and splash
+        run: npx capacitor-assets generate --android
+
+      - name: Patch Android project (signing + version)
+        env:
+          QUARK_NATIVE: ${{ vars.QUARK_NATIVE || '1' }}
+          SIGNING: "1"
+          VERSION_CODE: ${{ github.run_number }}
+          VERSION_NAME: ${{ inputs.version_name }}
+        run: python3 scripts/patch-android.py
+
+      - name: Sync web files
+        run: npx cap sync android
+
+      - name: Build signed AAB and APK
+        working-directory: android
+        run: ./gradlew bundleRelease assembleRelease
+
+      - name: Upload release files
+        uses: actions/upload-artifact@v4
+        with:
+          name: quark-ai-release
+          path: |
+            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/apk/release/app-release.apk

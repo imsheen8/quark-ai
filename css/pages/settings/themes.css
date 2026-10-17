@@ -1,0 +1,36 @@
+/* QUARK AI — الثيمات */
+/* ===== الثيمات ===== */
+.th-group{display:flex;flex-direction:column;gap:10px}
+.th-group+.th-group{margin-top:16px}
+.th-title{font-size:14px;font-weight:600;color:var(--text-2)}
+.th-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+.th-card{position:relative;display:flex;flex-direction:column;gap:8px;padding:6px 6px 9px;border-radius:18px;background:var(--surface);border:2px solid transparent;box-shadow:0 0 0 1px var(--border) inset;cursor:pointer;text-align:center;transition:border-color .18s,box-shadow .18s,transform .18s;outline:0}
+.th-card:hover{transform:translateY(-2px)}
+.th-card:focus-visible{border-color:var(--text-2)}
+.th-card.on{border-color:var(--accent);box-shadow:0 6px 18px -8px var(--accent)}
+.th-pv{position:relative;display:block;height:84px;border-radius:13px;overflow:hidden;background:var(--b);border:1px solid rgba(128,128,128,.26)}
+.th-pv i{position:absolute;display:block}
+.th-pv .pv-side{inset-block:0;inset-inline-start:0;width:26%;background:var(--sb);border-inline-end:1px solid rgba(128,128,128,.16)}
+.th-pv .pv-side::before{content:"";position:absolute;top:11px;inset-inline:22%;height:5px;border-radius:3px;background:var(--t);opacity:.45;box-shadow:0 9px 0 var(--t),0 18px 0 var(--t)}
+.th-pv .pv-bub{top:9px;inset-inline-start:33%;width:36%;height:13px;border-radius:8px;background:var(--s2)}
+.th-pv .pv-l1{top:32px;inset-inline-start:33%;width:52%;height:5px;border-radius:3px;background:var(--t);opacity:.85}
+.th-pv .pv-l2{top:43px;inset-inline-start:33%;width:36%;height:5px;border-radius:3px;background:var(--t);opacity:.45}
+.th-pv .pv-bar{bottom:7px;inset-inline-start:33%;inset-inline-end:7%;height:17px;border-radius:99px;background:var(--s);border:1px solid rgba(128,128,128,.28)}
+.th-pv .pv-bar::after{content:"";position:absolute;top:2px;inset-inline-end:2px;width:11px;height:11px;border-radius:50%;background:var(--a)}
+.th-chk{position:absolute;top:6px;inset-inline-end:6px;width:20px;height:20px;border-radius:50%;display:none;place-items:center;background:var(--a);color:var(--oa);font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.th-card.on .th-chk{display:grid}
+.th-n{font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
+.th-ed{position:absolute;top:6px;inset-inline-start:6px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.55);color:#fff;font-size:14px;z-index:2}
+.th-new{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border-radius:16px;border:1.5px dashed var(--border);color:var(--text-2);font-size:14px;font-weight:600;transition:all .15s}
+.th-new:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.th-new .i{font-size:18px}
+.th-dlg .th-colors{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 12px}
+.th-colors label{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:12px;background:var(--surface-2);font-size:13.5px;color:var(--text-2)}
+.th-colors input[type=color]{width:38px;height:30px;padding:0;border:0;border-radius:8px;background:none;cursor:pointer}
+.th-live{display:flex;height:112px;border-radius:14px;overflow:hidden;border:1px solid rgba(128,128,128,.3)}
+.tl-side{width:22%}
+.tl-main{flex:1;display:flex;flex-direction:column;justify-content:center;gap:7px;padding:10px 12px;min-width:0}
+.tl-bub{align-self:flex-start;padding:5px 12px;border-radius:12px;font-size:12.5px}
+.tl-ai{font-size:12.5px}
+.tl-btn{align-self:flex-start;padding:3px 14px;border-radius:99px;font-size:12px;font-weight:600}
+.th-warn{margin-top:8px;font-size:12.5px;color:var(--danger)}

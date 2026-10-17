@@ -1,0 +1,4 @@
+/* QUARK AI — إخفاء البحث عند فتح الصفحات الكاملة */
+/* ===== إخفاء زر المحادثة الجديدة والبحث في الرئيسية (المحادثة الفارغة) ===== */
+.main.empty #topNew,.main.empty #topSearch,.main.empty>.csearch{display:none}
+.main.md-open>.csearch,.main.vo-open>.csearch,.main.lib-open>.csearch,.main.set-open>.csearch,.main.pf-open>.csearch,.main.ch-open>.csearch{display:none}

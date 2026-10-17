@@ -1,0 +1,11 @@
+<input type="file" id="imgInput" accept="image/*" multiple hidden>
+<input type="file" id="camInput" accept="image/*" capture="environment" hidden>
+<div class="img-ov" id="imgOv"><button type="button" class="x" aria-label="إغلاق"><svg class="i"><use href="#i-x"/></svg></button><img id="imgView" alt=""></div>
+<div class="cam-ov" id="camOv">
+  <video id="camVideo" playsinline muted autoplay></video>
+  <div class="cam-bar">
+    <button type="button" class="cam-b" id="camX" aria-label="إلغاء"><svg class="i"><use href="#i-x"/></svg></button>
+    <button type="button" class="cam-shot" id="camShot" aria-label="التقاط"></button>
+    <button type="button" class="cam-b" id="camFlip" aria-label="تبديل الكاميرا"><svg class="i"><use href="#i-refresh"/></svg></button>
+  </div>
+</div>

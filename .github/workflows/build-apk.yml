@@ -1,0 +1,98 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # توقيع ثابت: إن وُجدت أسرار المفتاح يُبنى APK موقّعًا بنفس المفتاح كل مرة فيتحدّث التطبيق فوق النسخة القديمة
+      - name: Check signing key
+        id: key
+        env:
+          KS: ${{ secrets.KEYSTORE_BASE64 }}
+          KP: ${{ secrets.KEYSTORE_PASSWORD }}
+          KA: ${{ secrets.KEY_ALIAS }}
+          KK: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -n "$KS" ] && [ -n "$KP" ] && [ -n "$KA" ] && [ -n "$KK" ]; then
+            echo "$KS" | base64 -d > "$RUNNER_TEMP/quark.keystore"
+            echo "KEYSTORE_PATH=$RUNNER_TEMP/quark.keystore" >> "$GITHUB_ENV"
+            echo "KEYSTORE_PASSWORD=$KP" >> "$GITHUB_ENV"
+            echo "KEY_ALIAS=$KA" >> "$GITHUB_ENV"
+            echo "KEY_PASSWORD=$KK" >> "$GITHUB_ENV"
+            echo "SIGNING=1" >> "$GITHUB_ENV"
+            echo "signed=1" >> "$GITHUB_OUTPUT"
+            echo "::notice::توقيع ثابت مفعّل — سيتحدّث التطبيق فوق النسخة المثبّتة"
+          else
+            echo "signed=0" >> "$GITHUB_OUTPUT"
+            echo "::warning::أسرار التوقيع غير موجودة — يُبنى APK بمفتاح تجريبي عشوائي (ستحتاج حذف التطبيق قبل كل تحديث). راجع README: التوقيع الثابت"
+          fi
+
+      - name: Prepare web files
+        run: |
+          mkdir -p www
+          cp -r index.html components css js pages www/
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Bundle on-device model engine (wllama)
+        run: node scripts/vendor-wllama.js www/vendor/wllama
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Generate app icons and splash
+        run: npx capacitor-assets generate --android
+
+      - name: Fetch llama.cpp (native on-device engine)
+        if: ${{ vars.QUARK_NATIVE != '0' }}
+        continue-on-error: true
+        run: bash scripts/fetch-llama.sh
+
+      - name: Patch Android project
+        env:
+          QUARK_NATIVE: ${{ vars.QUARK_NATIVE || '1' }}
+          VERSION_CODE: ${{ github.run_number }}
+          VERSION_NAME: 1.0.${{ github.run_number }}
+        run: python3 scripts/patch-android.py
+
+      - name: Sync web files
+        run: npx cap sync android
+
+      - name: Build signed APK
+        if: steps.key.outputs.signed == '1'
+        working-directory: android
+        run: ./gradlew assembleRelease
+
+      - name: Build debug APK
+        if: steps.key.outputs.signed != '1'
+        working-directory: android
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: quark-ai-apk
+          path: |
+            android/app/build/outputs/apk/release/app-release.apk
+            android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

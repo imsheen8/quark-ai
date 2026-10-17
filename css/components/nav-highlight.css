@@ -1,0 +1,12 @@
+/* QUARK AI — تظليل العنصر النشط في الشريط الجانبي */
+/* تظليل العنصر النشط في الشريط الجانبي */
+.nav{gap:4px}
+.nav-item{padding:9px 12px;min-height:46px}
+.nav-item.active{background:var(--surface-2);color:var(--text)}
+.nav-item.active .i{color:var(--text)}
+.avatar-btn.active{box-shadow:0 0 0 2px var(--sidebar),0 0 0 4px var(--accent)}
+.sidebar.view-open .chat-item.active{background:transparent;color:var(--text-2)}
+.sidebar.view-open .chat-item.active:hover{background:var(--surface-2)}
+.sidebar.view-open .chat-item.active .more:not(.open){opacity:0}
+@media(hover:none){.sidebar.view-open .chat-item.active .more:not(.open){opacity:.85}}
+

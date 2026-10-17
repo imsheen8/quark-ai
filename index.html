@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#161616">
+<title>QUARK AI</title>
+<meta name="author" content="sheen">
+<!-- QUARK AI — by sheen (بواسطة شين) — AGPL-3.0 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ملفات التنسيق — الترتيب مهم (نفس ترتيب الملف الأصلي) لأن CSS يعتمد على التسلسل -->
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components/sidebar.css">
+<link rel="stylesheet" href="css/pages/chat/chat.css">
+<link rel="stylesheet" href="css/pages/subscription/plan.css">
+<link rel="stylesheet" href="css/pages/chat/message-tools.css">
+<link rel="stylesheet" href="css/pages/chat/code-and-typing.css">
+<link rel="stylesheet" href="css/pages/chat/welcome.css">
+<link rel="stylesheet" href="css/pages/chat/composer.css">
+<link rel="stylesheet" href="css/components/menus.css">
+<link rel="stylesheet" href="css/pages/settings/settings.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/features/reasoning-sheet.css">
+<link rel="stylesheet" href="css/pages/settings/model-params.css">
+<link rel="stylesheet" href="css/features/attachments.css">
+<link rel="stylesheet" href="css/features/tags.css">
+<link rel="stylesheet" href="css/features/template-vars.css">
+<link rel="stylesheet" href="css/layout/views.css">
+<link rel="stylesheet" href="css/pages/profile/profile.css">
+<link rel="stylesheet" href="css/pages/library/library.css">
+<link rel="stylesheet" href="css/pages/settings/endpoints.css">
+<link rel="stylesheet" href="css/components/nav-highlight.css">
+<link rel="stylesheet" href="css/pages/chat/home-state.css">
+<link rel="stylesheet" href="css/features/add-menu.css">
+<link rel="stylesheet" href="css/pages/gate/gate.css">
+<link rel="stylesheet" href="css/components/switch.css">
+<link rel="stylesheet" href="css/layout/page-open-states.css">
+<link rel="stylesheet" href="css/features/chat-search.css">
+<link rel="stylesheet" href="css/pages/chat/incognito.css">
+<link rel="stylesheet" href="css/features/slash-commands.css">
+<link rel="stylesheet" href="css/pages/settings/themes.css">
+<link rel="stylesheet" href="css/features/add-sheet.css">
+<link rel="stylesheet" href="css/features/images-camera.css">
+<link rel="stylesheet" href="css/pages/models/models.css">
+<link rel="stylesheet" href="css/pages/models/models-pro.css">
+<link rel="stylesheet" href="css/pages/models/ondevice.css">
+<link rel="stylesheet" href="css/pages/voices/voices.css">
+<link rel="stylesheet" href="css/pages/research/research.css">
+<link rel="stylesheet" href="css/pages/tasks/tasks.css">
+<link rel="stylesheet" href="css/pages/skills/skills.css">
+<link rel="stylesheet" href="css/pages/stats/stats.css">
+<link rel="stylesheet" href="css/pages/settings/defaults.css">
+<link rel="stylesheet" href="css/pages/memory/memory.css">
+<link rel="stylesheet" href="css/pages/mail/mail.css">
+<link rel="stylesheet" href="css/pages/integrations/integrations.css">
+<link rel="stylesheet" href="css/pages/agent/agent.css">
+<link rel="stylesheet" href="css/components/ui-kit.css">
+<link rel="stylesheet" href="css/layout/late-overrides.css">
+<link rel="stylesheet" href="css/layout/embedded-sections.css">
+</head>
+<body>
+<!-- غطاء داكن يمنع ظهور الواجهة قبل انميشن الدخول؛ يزيله js/pages/gate/intro.js (وحماية: يزول تلقائيًا بعد 25 ثانية) -->
+<div id="qiCover" style="position:fixed;inset:0;z-index:399;background:var(--bg,#0d0d0d)"></div>
+<script>setTimeout(function(){var c=document.getElementById('qiCover');if(c)c.remove();},25000)</script>
+<!-- 1) مقاطع HTML تُحقن مكان العناصر data-include بواسطة js/loader.js
+     2) ثم تُشغَّل ملفات JS بالترتيب المذكور في js/manifest.js -->
+<div data-include="components/icons-sprite.html"></div>
+
+<div class="app" id="app">
+
+<div data-include="components/sidebar.html"></div>
+  <div class="backdrop" id="backdrop"></div>
+
+  <main class="main">
+<div data-include="components/topbar.html"></div>
+<div data-include="pages/library/library.html"></div>
+<div data-include="pages/models/models.html"></div>
+<div data-include="pages/voices/voices.html"></div>
+<div data-include="pages/tasks/tasks.html"></div>
+<div data-include="pages/skills/skills.html"></div>
+<div data-include="pages/memory/memory.html"></div>
+<div data-include="pages/mail/mail.html"></div>
+<div data-include="pages/chats/chats.html"></div>
+<div data-include="pages/settings/settings.html"></div>
+<div data-include="pages/profile/profile.html"></div>
+<div data-include="pages/chat/chat.html"></div>
+  </main>
+</div>
+
+<div data-include="components/media-overlays.html"></div>
+<div data-include="pages/library/library-dialogs.html"></div>
+<div data-include="pages/settings/theme-dialog.html"></div>
+<div data-include="components/file-viewer.html"></div>
+<div data-include="components/export-dialog.html"></div>
+<div data-include="components/chat-context-menu.html"></div>
+<div data-include="components/thinking-sheet.html"></div>
+<div data-include="components/top-menus.html"></div>
+<div data-include="components/toast.html"></div>
+<div data-include="pages/gate/gate.html"></div>
+<div data-include="pages/gate/pin.html"></div>
+<div data-include="pages/subscription/plan.html"></div>
+
+<script src="js/manifest.js"></script>
+<script src="js/loader.js"></script>
+</body>
+</html>
