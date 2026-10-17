@@ -12,7 +12,7 @@ function renderPlan(){
   $('planCodeLbl').textContent = pro ? 'كود لتمديد الاشتراك' : 'كود التفعيل';
   $('planRemove').hidden = !pro;
   $('upTitle').textContent = pro ? 'أنت مشترك في برو' : 'تريد المزيد؟';
-  $('upText').textContent = pro ? (s.exp === null ? 'اشتراكك فعّال مدى الحياة.' : 'اشتراكك فعّال حتى ' + fmtDate(s.exp) + '.') : 'رقّ إلى برو للحصول على ثيمات مخصصة بلا حدود ونمط الحاوية للرسائل.';
+  $('upText').textContent = pro ? (s.exp === null ? 'اشتراكك فعّال مدى الحياة.' : 'اشتراكك فعّال حتى ' + fmtDate(s.exp) + '.') : 'رقّ إلى برو للحصول على ثيمات مخصصة بلا حدود.';
   $('upBtn').textContent = pro ? 'إدارة الاشتراك' : 'ترقية';
 }
 function openPlans(reason){

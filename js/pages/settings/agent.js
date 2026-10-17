@@ -39,7 +39,7 @@
 
   document.addEventListener('change', e => {
     const t = e.target; if (!t.closest || !t.closest('#agRoot')) return;
-    if (t.id === 'agOn'){ agDB.on = t.checked; agSave(); window.__agSync?.(); if (agDB.on && $('amRs')?.classList.contains('on')) $('amRs').click(); toast(agDB.on ? 'تم تفعيل وضع الوكيل' : 'تم إيقاف وضع الوكيل'); }
+    if (t.id === 'agOn'){ agDB.on = t.checked; agSave(); window.__agSync?.(); if (agDB.on && $('amRs')?.classList.contains('on')) $('amRs').click();  }
     else if (t.id === 'agMax'){ agDB.maxSteps = +t.value; agSave(); }
     else if (t.id === 'agAp'){ agDB.approval = t.value === 'strict' ? 'strict' : 'smart'; agSave(); }
     else if (t.id && t.id.startsWith('agT-')){

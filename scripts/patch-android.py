@@ -304,6 +304,19 @@ public class MainActivity extends BridgeActivity {
                 o.put("soc", Build.VERSION.SDK_INT >= 31 ? Build.SOC_MODEL : "");
                 o.put("abi", Build.SUPPORTED_ABIS != null && Build.SUPPORTED_ABIS.length > 0 ? Build.SUPPORTED_ABIS[0] : "");
                 try {
+                    android.os.PowerManager pm = (android.os.PowerManager) getSystemService(Context.POWER_SERVICE);
+                    if (pm != null) {
+                        o.put("powerSave", pm.isPowerSaveMode());
+                        if (Build.VERSION.SDK_INT >= 29) o.put("thermal", pm.getCurrentThermalStatus());
+                    }
+                    Intent bi = registerReceiver(null, new android.content.IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+                    if (bi != null) {
+                        int lv = bi.getIntExtra("level", -1), sc = bi.getIntExtra("scale", 100), pl = bi.getIntExtra("plugged", 0);
+                        if (lv >= 0 && sc > 0) o.put("battery", (lv * 100) / sc);
+                        o.put("charging", pl != 0);
+                    }
+                } catch (Throwable ignored) {}
+                try {
                     android.content.pm.PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
                     o.put("appVersion", pi.versionName);
                     o.put("appCode", Build.VERSION.SDK_INT >= 28 ? pi.getLongVersionCode() : pi.versionCode);

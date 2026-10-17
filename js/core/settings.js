@@ -72,7 +72,7 @@ function loadSettings(){
   return { endpoints, sel, theme:o.theme || 'auto', fontSize:o.fontSize || 'md', systemPrompt:o.systemPrompt ?? DEFAULT_SYSTEM, autoTitle:true, params:null };
 }
 const settings = loadSettings();
-settings.msgStyle = settings.msgStyle === 'container' ? 'container' : 'plain';
+settings.msgStyle = 'plain';
 settings.cont = { stripe:'accent', color:'#5b8def', radius:'round', bw:'thin', alpha:'solid', sep:false, spoiler:false, actions:false, header:false, sections:false, user:false, ...(settings.cont && typeof settings.cont === 'object' ? settings.cont : {}) };
 if (!['none','accent','custom'].includes(settings.cont.stripe)) settings.cont.stripe = 'accent';
 if (!/^#[0-9a-f]{6}$/i.test(settings.cont.color)) settings.cont.color = '#5b8def';

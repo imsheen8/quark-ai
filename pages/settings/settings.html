@@ -295,44 +295,6 @@
             </div>
             <div class="field" id="themeBox"></div>
             <div class="field">
-              <span class="lbl"><svg class="i"><use href="#i-sparkles"/></svg> نمط الرسائل</span>
-              <div class="seg" id="msgStyleSeg" style="grid-template-columns:repeat(2,1fr)">
-                <button data-mstyle="plain">عادية</button>
-                <button data-mstyle="container">حاوية</button>
-              </div>
-              <p class="panel-desc">«عادية» تعرض ردّ المساعد نصًّا مباشرًا، و«حاوية» تضعه داخل بطاقة مستقلة.</p>
-              <span class="lbl" style="margin-top:8px">نمط هذه المحادثة فقط</span>
-              <div class="seg" id="chatStyleSeg">
-                <button data-cs="auto">تلقائي</button>
-                <button data-cs="plain">عادية</button>
-                <button data-cs="container">حاوية</button>
-              </div>
-              <p class="panel-desc" id="chatStyleDesc">«تلقائي» يتبع الإعداد العام أعلاه.</p>
-            </div>
-            <div class="field" id="contBox" hidden>
-              <span class="lbl"><svg class="i"><use href="#i-sparkles"/></svg> خيارات الحاوية</span>
-              <div class="seg" id="stripeSeg">
-                <button data-stripe="none">بدون شريط</button>
-                <button data-stripe="accent">لون الثيم</button>
-                <button data-stripe="custom">مخصص</button>
-              </div>
-              <span class="lbl" style="margin-top:6px">الحواف</span>
-              <div class="seg" id="radiusSeg"><button data-radius="sharp">حادة</button><button data-radius="round">مدورة</button><button data-radius="pill">دائرية</button></div>
-              <span class="lbl" style="margin-top:6px">شدة الإطار</span>
-              <div class="seg" id="borderSeg"><button data-bw="none">بدون</button><button data-bw="thin">رفيع</button><button data-bw="bold">سميك</button></div>
-              <span class="lbl" style="margin-top:6px">الخلفية</span>
-              <div class="seg" id="alphaSeg"><button data-alpha="solid">صلبة</button><button data-alpha="soft">ناعمة</button><button data-alpha="glass">زجاجية</button></div>
-              <label class="c-color" id="stripeColorRow" hidden>لون الشريط الجانبي <input type="color" id="stripeColor" value="#5b8def" style="margin-inline-start:auto"></label>
-              <button type="button" class="opt-row" role="switch" data-copt="sep"><span>فواصل بين الأقسام<small>خط فاصل قبل كل عنوان داخل الرد</small></span><i class="tg"></i></button>
-              <button type="button" class="opt-row" role="switch" data-copt="spoiler"><span>حجب الرد (Spoiler)<small>يُموَّه الرد حتى تضغط عليه</small></span><i class="tg"></i></button>
-              <button type="button" class="opt-row" role="switch" data-copt="header"><span>ترويسة الحاوية<small>اسم النموذج والوقت وأزرار النسخ والمشاركة في أعلى البطاقة</small></span><i class="tg"></i></button>
-              <button type="button" class="opt-row" role="switch" data-copt="sections"><span>فصل كتل الكود والجداول<small>خط فاصل قبل كل كتلة كود أو جدول وبعدها</small></span><i class="tg"></i></button>
-              <button type="button" class="opt-row" role="switch" data-copt="user"><span>حاوية لرسائلي أيضًا<small>تُطبَّق الحواف والإطار والشريط على فقاعة رسالتك</small></span><i class="tg"></i></button>
-              <button type="button" class="opt-row" role="switch" data-copt="actions"><span>صف أزرار سريعة<small>أزرار «اشرح أكثر» و«لخّص» و«مثال» تحت آخر رد</small></span><i class="tg"></i></button>
-              <span class="lbl" style="margin-top:6px">معاينة</span>
-              <div class="cprev-wrap"><div class="msg user cprev"><div class="bubble">سؤالك يظهر هنا</div></div><div class="msg ai revealed cprev"><div class="c-head"><svg class="i"><use href="#i-sparkles"/></svg><b>model-name</b><span class="c-t">الآن</span><span class="c-sp"></span></div><div class="bubble"><div class="ans"><h3>عنوان القسم الأول</h3><p>هذا نص تجريبي يوضح شكل الرد داخل الحاوية.</p><div class="tbl-wrap"><table><tr><td>أ</td><td>ب</td></tr></table></div><h3>عنوان القسم الثاني</h3><p>ويظهر هنا القسم التالي بعد الفاصل.</p></div></div><div class="qrow"><button>اشرح أكثر</button><button>لخّص</button><button>ترجم</button></div></div></div>
-            </div>
-            <div class="field">
               <span class="lbl"><svg class="i"><use href="#i-pen"/></svg> حجم النص في المحادثة</span>
               <div class="seg" id="sizeSeg">
                 <button data-size="sm">صغير</button>

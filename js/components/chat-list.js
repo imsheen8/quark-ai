@@ -61,8 +61,9 @@ function renderList(){
     d.addEventListener('click', e => {
       const mb = e.target.closest('.more');
       if (mb){ e.stopPropagation(); openMenu(ctx, mb, c.id); return; }
-      if (busy) return;
-      currentId = c.id; save(); renderAll(); closeDrawer();
+      const go = () => { currentId = c.id; save(); renderAll(); closeDrawer(); };
+      if (busy){ interruptGen().then(go); return; }
+      go();
     });
     el.chatList.appendChild(d);
   });

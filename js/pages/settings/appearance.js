@@ -77,24 +77,10 @@ function renderThemes(){
 function syncLook(){
   $('themeSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.tmode === settings.theme));
   $('sizeSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.size === settings.fontSize));
-  $('msgStyleSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.mstyle === (isPro() ? settings.msgStyle : 'plain')));
-  document.querySelectorAll('[data-mstyle="container"],[data-cs="container"]').forEach(b => b.classList.toggle('locked', !isPro()));
   applyMsgStyle();
-  $('stripeSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.stripe === settings.cont.stripe));
-  $('stripeColorRow').hidden = settings.cont.stripe !== 'custom';
-  [['radiusSeg','radius','radius'],['borderSeg','bw','bw'],['alphaSeg','alpha','alpha']].forEach(([id,k,a]) => $(id).querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset[a] === settings.cont[k])));
-  $('stripeColor').value = settings.cont.color;
-  $('contBox').querySelectorAll('[data-copt]').forEach(b => b.setAttribute('aria-checked', String(settings.cont[b.dataset.copt])));
   renderThemes();
 }
-function applyMsgStyle(){
-  const d = document.documentElement.dataset, c = current(), eff = effStyle();
-  d.msgstyle = eff;
-  const box = document.getElementById('contBox'); if (box) box.hidden = !isPro() || !(settings.msgStyle === 'container' || c?.mstyle === 'container');
-  const cs = document.getElementById('chatStyleSeg');
-  if (cs){ cs.querySelectorAll('button').forEach(b => { b.disabled = !c; b.classList.toggle('on', b.dataset.cs === (c?.mstyle || 'auto')); }); }
-  const ds = document.getElementById('chatStyleDesc'); if (ds) ds.textContent = c ? '«تلقائي» يتبع الإعداد العام أعلاه.' : 'ابدأ محادثة أولًا لتخصيص نمطها.';
-}
+function applyMsgStyle(){ document.documentElement.dataset.msgstyle = 'plain'; }
 function applyTheme(){
   const t = resolvedTheme(), th = themeOf(t), st = document.documentElement.style;
   document.documentElement.dataset.theme = t;

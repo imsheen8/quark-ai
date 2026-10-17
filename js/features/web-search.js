@@ -12,7 +12,7 @@
     e.stopPropagation(); closeAttach();
     on = !on; store.set('ai_ws_chat', on); sync();
     if (on && $('amRs')?.classList.contains('on')) $('amRs').click();   /* لا يجتمع مع البحث العميق */
-    toast(on ? 'بحث الويب: سيُبحث في الويب قبل كل إجابة' : 'تم إيقاف بحث الويب');
+    
   }, true);   /* طور الالتقاط: قائمة (+) توقف انتشار النقر قبل وصوله للمستند */
   sync();
 

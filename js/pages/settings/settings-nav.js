@@ -5,13 +5,13 @@ let curSetTab = 'keys';
 /* الاهتزاز: يظهر الخيار داخل التطبيق فقط ويُحفظ فورًا */
 $('hapticsRow').style.display = (window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform()) ? '' : 'none';
 $('hapticsSw').checked = store.get('ai_haptics', true) !== false;
-$('hapticsSw').addEventListener('change', e => { store.set('ai_haptics', e.target.checked); toast(e.target.checked ? 'تم تفعيل الاهتزاز' : 'تم إيقاف الاهتزاز'); });
+$('hapticsSw').addEventListener('change', e => { store.set('ai_haptics', e.target.checked);  });
 $('introSw').checked = introOn();
-$('introSw').addEventListener('change', e => { store.set('ai_intro', e.target.checked); toast(e.target.checked ? 'تم تفعيل انميشن الدخول' : 'تم إيقاف انميشن الدخول'); });
+$('introSw').addEventListener('change', e => { store.set('ai_intro', e.target.checked);  });
 $('widgetBtn').addEventListener('click', () => window.pinQuarkWidget?.());
 $('tileBtn').addEventListener('click', () => window.addQuarkTile?.());
 $('autoTitleSw').checked = settings.autoTitle;
-$('autoTitleSw').addEventListener('change', e => { settings.autoTitle = e.target.checked; persistSettings(); toast(settings.autoTitle ? 'تم تفعيل العنوان التلقائي' : 'تم إيقاف العنوان التلقائي'); });
+$('autoTitleSw').addEventListener('change', e => { settings.autoTitle = e.target.checked; persistSettings();  });
 const phone = () => true; /* الواجهة الجديدة (قائمة ثم تفاصيل) لكل الأحجام */
 const SET_TITLES = { keys:'المفاتيح والنماذج', defaults:'النماذج التلقائية', research:'البحث العميق', integrations:'التكاملات', agent:'الوكيل', custom:'التخصيص', general:'عام', voice:'الصوت', look:'المظهر', security:'الأمان', stats:'الإحصائيات', data:'التخزين', errors:'سجل الأخطاء', about:'حول التطبيق' };
 function selectTab(name){

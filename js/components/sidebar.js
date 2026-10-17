@@ -28,6 +28,6 @@ $('topNew').addEventListener('click', newChat);
 $('topIncog').addEventListener('click', () => {
   if (busy) return;
   incog = !incog; renderMessages();
-  toast(incog ? 'المحادثة الخفية مفعّلة: لن تُحفظ' : 'أُلغيت المحادثة الخفية');
+  
 });
 

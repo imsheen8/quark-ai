@@ -130,14 +130,14 @@ el.messages.addEventListener('scroll', updateToBottom, { passive:true });
 el.toBottom.addEventListener('click', () => { el.messages.scrollTop = el.messages.scrollHeight; });
 
 function newChat(){
-  if (busy) return;
+  if (busy){ interruptGen().then(newChat); return; }
   incog = false; chats = chats.filter(c => !c.temp);
   currentId = null;
   window.applyDefaultChatModel?.();
   save(); renderAll(); closeDrawer(); el.input.focus();
 }
 function deleteChat(id){
-  if (busy) return;
+  if (busy){ interruptGen().then(() => deleteChat(id)); return; }
   if (chats.find(c => c.id === id)?.temp) incog = false;
   chats = chats.filter(c => c.id !== id);
   if (currentId === id) currentId = [...chats].sort((a,b) => (b.ts||0)-(a.ts||0))[0]?.id ?? null;

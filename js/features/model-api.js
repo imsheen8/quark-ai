@@ -9,6 +9,12 @@ function setBusy(v){
   el.send.setAttribute('aria-label', v ? 'إيقاف' : 'إرسال');
   updateSendState();
 }
+/* إيقاف التوليد الجاري وانتظار انتهائه (يُحفظ الجزء المكتوب) — لإنشاء/حذف/تبديل المحادثة أثناء الرد */
+async function interruptGen(){
+  if (!busy) return;
+  try{ controller?.abort(); }catch{}
+  for (let i = 0; i < 80 && busy; i++) await new Promise(r => setTimeout(r, 50));
+}
 function updateSendState(){ el.send.classList.toggle('idle', !busy && !el.input.value.trim() && !pending.length); }
 async function* streamSSE(res){
   const reader = res.body.getReader(), dec = new TextDecoder(); let buf = '';

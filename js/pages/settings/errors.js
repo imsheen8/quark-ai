@@ -74,7 +74,6 @@
         <button type="button" class="lib-btn" data-er="copyview"${rows.length ? '' : ' disabled'}>${ico('copy')}<span>نسخ المعروض</span></button>
         <button type="button" class="lib-btn danger" data-er="clear"${all.length ? '' : ' disabled'}>${ico('trash')}<span>مسح الكل</span></button>
       </div>
-      <p class="er-hint">«التقرير الكامل» يضم معلومات جهازك وإعدادات المحرك المحلي وأحدث الأخطاء — الصقه في المحادثة معي لأشخّص المشكلة. المفاتيح والرموز تُخفى تلقائيًا، والسجل محفوظ على جهازك فقط.</p>
       <div class="er-filters">
         <div class="er-search">${ico('search')}<input id="erQ" class="fld" type="search" placeholder="ابحث في الأخطاء…" value="${E(ui.q)}" autocomplete="off"></div>
         <div class="er-chips" role="tablist">
@@ -98,7 +97,6 @@
           <button type="button" class="lib-btn" data-er="native">${ico('refresh')}<span>استيراد انهيارات أندرويد</span></button>
           <button type="button" class="lib-btn" data-er="test">${ico('alert')}<span>توليد خطأ تجريبي</span></button>
         </div>
-        <p class="er-hint">الحالة الحالية: ${all.length} مدخلًا محفوظًا من أصل ${p.max}. انهيارات النظام (مثل انهيار المحرك الأصلي أو GPU أو إغلاق التطبيق لنقص الذاكرة) تُقرأ من أندرويد عند فتح التطبيق مرة بعد حدوثها.</p>
       </details>
     </div>`;
     if (keep){ const q = r.querySelector('#erQ'); q.focus(); try{ q.setSelectionRange(sel, sel); }catch{} }

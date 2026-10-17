@@ -64,8 +64,9 @@ function openChats(){
   chMulti = false; chSel.clear(); renderChats(); closeDrawer(); $('chGrid').scrollTop = 0;
 }
 function openChatFromPage(id){
-  if (busy){ toast('انتظر انتهاء الرد الحالي'); return; }
-  currentId = id; save(); mainEl.classList.remove('ch-open'); renderAll();
+  const go = () => { currentId = id; save(); mainEl.classList.remove('ch-open'); renderAll(); };
+  if (busy){ interruptGen().then(go); return; }
+  go();
 }
 $('chMenu').addEventListener('click', () => $('toggleSidebar').click());
 $('chSearchBtn').addEventListener('click', () => {
@@ -98,8 +99,8 @@ $('chTagMenu').addEventListener('click', e => {
 $('chTagSel').addEventListener('click', () => { if (chSel.size) openTagPicker([...chSel]); });
 $('chDel').addEventListener('click', () => {
   if (!chSel.size) return;
-  window.__dlg(`حذف ${chSel.size} محادثة؟`, '<p style="color:var(--text-2);line-height:1.8">لا يمكن التراجع عن الحذف.</p>', () => {
-    if (busy && chSel.has(currentId)){ toast('انتظر انتهاء الرد الحالي'); return; }
+  window.__dlg(`حذف ${chSel.size} محادثة؟`, '<p style="color:var(--text-2);line-height:1.8">لا يمكن التراجع عن الحذف.</p>', async () => {
+    if (busy && chSel.has(currentId)) await interruptGen();
     chats = chats.filter(c => !chSel.has(c.id));
     if (!chats.some(c => c.id === currentId)) currentId = null;
     chSel.clear(); chMulti = false; save(); renderList(); renderChats(); paintFilter(); toast('تم الحذف');
@@ -123,8 +124,8 @@ $('chGrid').addEventListener('click', e => {
   else if (a === 'fav') toggleFav(id);
   else if (a === 'tag') openTagPicker([id]);
   else if (a === 'export') exportChat(c);
-  else if (a === 'del') window.__dlg('حذف «' + c.title + '»؟', '<p style="color:var(--text-2);line-height:1.8">لا يمكن التراجع عن الحذف.</p>', () => {
-    if (busy && id === currentId){ toast('انتظر انتهاء الرد الحالي'); return; }
+  else if (a === 'del') window.__dlg('حذف «' + c.title + '»؟', '<p style="color:var(--text-2);line-height:1.8">لا يمكن التراجع عن الحذف.</p>', async () => {
+    if (busy && id === currentId) await interruptGen();
     deleteChat(id); renderChats(); toast('تم الحذف');
   }, true);
 });

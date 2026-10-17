@@ -161,6 +161,5 @@ function toggleCompare(){
   }
   saveCmp(); updateModelLabels();
   if (cmpState.on && !cmpModel()){ popTarget = 'B'; openPop(); toast('اختر النموذج الثاني'); }
-  else toast(cmpState.on ? 'وضع المقارنة: سيُرسل سؤالك للنموذجين' : 'تم إيقاف المقارنة');
 }
 

@@ -8,7 +8,9 @@ const GB = 1024 ** 3;
 const calls = [], jobs = new Map(); let emitCtxErrOnce = false, loadFail = false;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 let aborted = false, lastReq = null, lastImgs = null, loadReq = null, gpuMock = { gpu: true, gpu_name: 'Adreno 725' };
+let live = {};
 const QN = {
+  deviceInfo: () => JSON.stringify({ cores: 8, totalMem: 11 * 1024 ** 3, ...live }),
   odInfo: () => JSON.stringify({ available: true, sys: 'NEON', gpuLib: true }),
   dlEnqueue: s => { const sp = JSON.parse(s); calls.push(['enq', sp]); const j = { id: sp.id, state: 'queued', err: '', code: '', bps: 0, files: sp.files.map(f => ({ name: f.name, size: f.size, done: 0 })), spec: sp }; jobs.set(sp.id, j); return JSON.stringify({ ok: true, state: 'queued' }); },
   dlPause: id => { calls.push(['pause', id]); const j = jobs.get(id); if (j) j.state = 'paused'; },
@@ -125,6 +127,19 @@ const engine = require('../js/features/od-engine.js');
   gpuMock = { gpu: false, gpu_note: 'no_device' };
   const bres2 = await engine.benchGpu(store.get(spec.id)); ok(bres2.gpu && bres2.gpu.err && bres2.cpu.tps === 10, 'GPU غير متاح يُبلَّغ دون إسقاط المقارنة');
   device.cfgSet({ gpu: false });
+  /* حماية السخونة/البطارية: خيوط «تلقائي» تُخفَّض عند الحرارة أو ضعف البطارية، ولا تُمسّ إن حدّد المستخدم عددًا */
+  device.cfgSet({ threads: 0 }); live = { thermal: 3, battery: 80, charging: false }; await engine.unload();
+  for await (const c of engine.chat(am, hist2, null, {}, '')) { void c; }
+  ok(loadReq.n_threads === 4, 'حرارة عالية → نصف الخيوط: ' + loadReq.n_threads);
+  live = { thermal: 0, battery: 10, charging: false }; await engine.unload();
+  for await (const c of engine.chat(am, hist2, null, {}, '')) { void c; }
+  ok(loadReq.n_threads === 4, 'بطارية <15% → نصف الخيوط');
+  live = { thermal: 0, battery: 10, charging: true }; await engine.unload();
+  for await (const c of engine.chat(am, hist2, null, {}, '')) { void c; }
+  ok(loadReq.n_threads === 0, 'الشحن يلغي التخفيض');
+  device.cfgSet({ threads: 6 }); live = { thermal: 4 }; await engine.unload();
+  for await (const c of engine.chat(am, hist2, null, {}, '')) { void c; }
+  ok(loadReq.n_threads === 6, 'عدد الخيوط اليدوي يُحترم'); device.cfgSet({ threads: 0 }); live = {};
   /* إلغاء أثناء التوليد */
   const ac2 = new AbortController(); let err = null; const t = [];
   try { for await (const c of engine.chat(am, hist2, ac2.signal, {}, '')) { t.push(c); if (t.length === 1) ac2.abort(); } } catch (e) { err = e; }

@@ -13,7 +13,7 @@
     const b = e.target.closest('#amRs'); if (!b) return;
     e.stopPropagation(); closeAttach();
     on = !on; store.set('ai_rs_chat', on); sync();
-    toast(on ? 'البحث العميق: سيُجاب سؤالك ببحث في الويب وتقرير موثّق' : 'تم إيقاف البحث العميق');
+    
   }, true);   /* طور الالتقاط: قائمة (+) توقف انتشار النقر قبل وصوله للمستند */
   const _um = updateModelLabels;
   updateModelLabels = function(){ _um(); sync(); };

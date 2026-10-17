@@ -46,6 +46,9 @@ jobs:
             echo "::warning::أسرار التوقيع غير موجودة — يُبنى APK بمفتاح تجريبي عشوائي (ستحتاج حذف التطبيق قبل كل تحديث). راجع README: التوقيع الثابت"
           fi
 
+      - name: Unit tests (fail fast before the long build)
+        run: bash tests/run-unit.sh
+
       - name: Prepare web files
         run: |
           mkdir -p www

@@ -59,7 +59,7 @@ $('mdGrid').addEventListener('click', async e => {
   else if (a === 'fav') mdToggleFav(it);
   else if (a === 'test') mdTestOne(it);
   else if (a === 'params') mdParams(it);
-  else if (a === 'toggle'){ it.m.on = !it.m.on; persistSettings(); mdRender(); toast(it.m.on ? 'تم تفعيل النموذج' : 'تم تعطيل النموذج'); }
+  else if (a === 'toggle'){ it.m.on = !it.m.on; persistSettings(); mdRender();  }
   else if (a === 'copy') toast(await copyText(it.m.id) ? 'تم نسخ المعرّف' : 'تعذّر النسخ');
   else if (a === 'del') mdAskDelete([key]);
 });

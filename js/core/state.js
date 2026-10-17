@@ -1,7 +1,7 @@
 /* QUARK AI — حالة التطبيق: المحادثات، الحفظ، التنبيهات */
 'use strict';
 
-const effStyle = () => { const r = current()?.mstyle || settings.msgStyle; return r === 'container' && !isPro() ? 'plain' : r; };
+const effStyle = () => 'plain';   /* نمط الرسائل «عادية» فقط — أُزيل خيار الحاوية */
 const revealedMsgs = new WeakSet();
 const QUICK = [['اشرح أكثر', 'اشرح لي ذلك بتفصيل أوسع.'], ['لخّص', 'لخّص ردك السابق في نقاط قصيرة.'], ['ترجم', 'ترجم ردك السابق إلى الإنجليزية.'], ['أعطني مثالًا', 'أعطني مثالًا عمليًا على ذلك.']];
 settings.themeSel = { dark:'default', light:'default', ...(settings.themeSel && typeof settings.themeSel === 'object' ? settings.themeSel : {}) };

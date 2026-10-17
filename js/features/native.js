@@ -293,7 +293,7 @@
       sw.addEventListener('change', e => {
         store.set('ai_notify', e.target.checked);
         if (e.target.checked){ store.set('ai_notif_asked', true); call(() => QN().requestNotifPermission()); }
-        toast(e.target.checked ? 'سيصلك إشعار عند اكتمال الرد' : 'تم إيقاف إشعارات الرد');
+        
       });
     } }
 
@@ -335,7 +335,7 @@
         if (on){ try{ QN().requestNotifPermission(); }catch{} }
         let ok = false; try{ ok = !!QN().setTaskService(on); }catch{}
         if (!ok){ toast('تعذّر تغيير الخدمة'); sw.checked = !on; return; }
-        toast(on ? 'ستعمل المهام في الخلفية' : 'أُوقفت خدمة الخلفية'); paint();
+         paint();
         if (on && !QN().isIgnoringBattery() && await qConfirm('لضمان عدم إيقاف النظام للخدمة، استثنِ QUARK AI من توفير البطارية. فتح الإعداد الآن؟', { ok:'فتح' })) call(() => QN().requestIgnoreBattery());
       });
       batt.addEventListener('click', () => call(() => QN().requestIgnoreBattery()));
@@ -363,7 +363,7 @@
       });
       document.addEventListener('visibilitychange', help);
       document.getElementById('assistBtn').addEventListener('click', () => { call(() => window.QuarkNative.openAssistSettings()); toast('اختر QUARK AI كتطبيق المساعد الرقمي'); });
-      shake.addEventListener('change', e => { store.set('ai_shake', e.target.checked); toast(e.target.checked ? 'تم تفعيل الهز' : 'تم إيقاف الهز'); });
+      shake.addEventListener('change', e => { store.set('ai_shake', e.target.checked);  });
       /* الهز: هزّتان قويّتان خلال ثانية، والتطبيق ظاهر وفي شاشة المحادثة */
       let lastS = 0, cnt = 0, lastFire = 0;
       window.addEventListener('devicemotion', e => {

@@ -1,6 +1,6 @@
 /* QUARK AI — انميشن الدخول وصفحة تسجيل الدخول
    نوعان:
-   1) runFull(opts): المقدمة الكاملة لأول فتح (شعار ← بناء الواجهة ← تسجيل الدخول/إنشاء حساب). تُرجع بيانات المستخدم عند الضغط على «ابدأ».
+   1) runFull(opts): أول فتح (نفس انميشن الشعار ← تسجيل الدخول/إنشاء حساب). تُرجع بيانات المستخدم عند الضغط على «ابدأ».
    2) playLogo(): الشعار فقط عند فتح التطبيق (يُتحكَّم بها من الإعدادات ← عام ← انميشن الدخول).
    الواجهة تُعرض داخل Shadow DOM حتى لا يتعارض تنسيقها مع تنسيق التطبيق (الملفات: pages/gate/intro.html و css/pages/gate/intro.css). */
 'use strict';
@@ -83,86 +83,30 @@ window.QuarkIntro = (() => {
   /* ---------- 1) المقدمة الكاملة + تسجيل الدخول ---------- */
   function runFull(opts){
     return new Promise(async (resolve, reject) => {
-      try{ await mount(false); }catch(e){ uncover(); reject(e); return; }
+      try{ await mount(true); }catch(e){ uncover(); reject(e); return; }
       const login = createLogin(opts, resolve);
       const word = buildWord();
       const t = ++token, S = ms => sleep(ms, t);
 
-      /* ملاءمة الجهاز (390×844) مع الشاشة */
-      const dev = $('dev'), wrap = $('devWrap');
-      const fit = () => {
-        const s = Math.max(.3, Math.min(1, (innerWidth - 40) / 406, (innerHeight - 170) / 860));
-        wrap.style.width = 390 * s + 'px'; wrap.style.height = 844 * s + 'px';
-        dev.style.transform = 'scale(' + s + ')';
-      };
-      addEventListener('resize', fit); cleanups.push(() => removeEventListener('resize', fit)); fit();
-
-      const Q = 'ماذا يمكنك أن تفعل لي؟';
-      const A = 'أكتب، أحلّل، أبحث، وأنظّم مهامك. اسألني أي شيء وسأجيبك بالعربية.';
-      const hr = new Date().getHours();
-      $('dGreet').textContent = (hr < 12 ? 'صباح الخير' : 'مساء الخير') + '، كيف أساعدك اليوم؟';
-
       const toLogin = () => { token++; show('sLogin'); login.start(); setTimeout(() => $('sLogin')?.classList.add('on'), 60); };
-      $('skipBuild').onclick = toLogin;
-      $('skipSplash').onclick = toLogin;
+      const skip = $('skipSplash'); if (skip) skip.onclick = toLogin;
+      $('sSplash').addEventListener('click', toLogin);   /* لمسة = تخطي */
 
       try{
-        /* ── 1: الشعار + الاسم ── */
-        show('sSplash');
-        await S(500);
-        $('glow').classList.add('on');
-        $('logo').classList.add('draw');
-        await S(1500);
-        for (const s of word.querySelectorAll('span')){ s.classList.add('in'); await S(85); }
-        await S(300);
-        $('tag').classList.add('in');
-        await S(1500);
-        $('sSplash').classList.add('out');
-        await S(500);
-
-        /* ── 2: بناء واجهة التطبيق ── */
-        show('sBuild');
-        await S(250);
-        wrap.classList.add('in');
-        $('progBar').style.transition = 'width 11.5s cubic-bezier(.3,.1,.5,1)';
-        void $('progBar').offsetWidth; $('progBar').style.width = '100%';
-        await S(700);
-
-        /* الشريط العلوي ← الترحيب ← خانة الكتابة */
-        for (const b of dev.querySelectorAll('.topbar .rv')){ b.classList.add('show'); await S(90); }
-        $('dWelcome').classList.add('show'); await S(550);
-        $('dComp').classList.add('show'); await S(650);
-
-        /* كتابة السؤال */
-        const ta = $('dTa'), txt = $('taTxt'), send = $('dSend');
-        for (const ch of Q){ txt.textContent += ch; ta.classList.add('has'); await S(55); }
-        send.classList.add('go'); await S(450);
-        send.classList.add('press'); await S(180); send.classList.remove('press');
-
-        /* الانتقال إلى المحادثة */
-        $('mUserT').textContent = Q; $('dTitle').textContent = Q;
-        txt.textContent = ''; ta.classList.remove('has'); send.classList.remove('go');
-        dev.classList.add('st-chat'); await S(600);
-        $('mUser').classList.add('show'); await S(700);
-        $('mAi').classList.add('show'); $('dTyping').classList.add('vis'); await S(1000);
-        $('dTyping').classList.remove('vis');
-        const ai = $('aiTxt');
-        for (const w of A.split(' ')){ ai.textContent += (ai.textContent ? ' ' : '') + w; await S(110); }
-        $('dActs').classList.add('show'); await S(900);
-
-        /* فتح القائمة الجانبية */
-        const menu = $('dMenu'); menu.classList.add('press'); await S(220); menu.classList.remove('press');
-        dev.classList.add('st-drawer'); await S(550);
-        for (const it of dev.querySelectorAll('.d-side .rv')){ it.classList.add('show'); await S(65); }
-        await S(500);
-        $('dNew').classList.add('press'); await S(260);
-
-        $('progT').textContent = 'اكتمل التجهيز ✓';
-        await S(800);
-        $('sBuild').classList.add('out');
-        await S(550);
-
-        /* ── 3: تسجيل الدخول ── */
+        /* نفس انميشن الشعار الذي يظهر عند كل فتح (قابل للإيقاف من الإعدادات ← عام ← انميشن الدخول) ثم صفحة الدخول مباشرة */
+        const on = typeof introOn === 'function' ? introOn() : true;
+        if (on){
+          show('sSplash');
+          await S(250);
+          $('glow').classList.add('on'); $('logo').classList.add('draw');
+          await S(950);
+          for (const s of word.querySelectorAll('span')){ s.classList.add('in'); await S(45); }
+          await S(200);
+          $('tag').classList.add('in');
+          await S(800);
+          $('sSplash').classList.add('out');
+          await S(320);
+        }
         toLogin();
       }catch(e){ if (!(e instanceof Cancel)) console.error(e); }
     });

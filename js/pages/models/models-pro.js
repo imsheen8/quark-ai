@@ -115,7 +115,7 @@
       else if (a === 'play'){ s.close(); play(it); }
       else if (a === 'params'){ s.close(); mdParams(it); }
       else if (a === 'copy') toast(await copyText(m.id) ? 'تم نسخ المعرّف' : 'تعذّر النسخ');
-      else if (a === 'toggle'){ m.on = !m.on; persistSettings(); mdRender(); s.close(); toast(m.on ? 'تم تفعيل النموذج' : 'تم تعطيل النموذج'); }
+      else if (a === 'toggle'){ m.on = !m.on; persistSettings(); mdRender(); s.close();  }
       else if (a === 'del'){ s.close(); mdAskDelete([key]); }
     });
   }

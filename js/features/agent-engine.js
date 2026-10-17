@@ -278,7 +278,7 @@ Object.defineProperty(window, '__agCtx', { configurable:true, get(){ return wind
     if (agDB.on === on) return;
     agDB.on = on; agSave(); sync();
     if (on && $('amRs')?.classList.contains('on')) $('amRs').click();   /* لا يجتمع مع البحث العميق */
-    toast(on ? 'وضع الوكيل: سيستخدم الأدوات عند الحاجة ويقوم بالمهمة على خطوات' : 'تم إيقاف وضع الوكيل');
+    
     window.__agChanged?.();
   };
   document.addEventListener('click', e => {

@@ -109,7 +109,7 @@
         ${chip('cpu', ramLbl, ramTxt, `<button type="button" class="od-mini" data-od="ram">تعديل</button>`)}
         ${chip('layers', 'المعالج', num(d.cores) + ' أنوية')}
         ${chip('database', 'المساحة الحرة', free)}
-        ${chip('sparkles', 'المحرك', d.native ? 'أصلي (llama.cpp)' : d.threads ? 'WASM متعدد الخيوط' : 'WASM خيط واحد')}
+        ${chip('sparkles', 'المحرك', d.native ? 'أصلي (سريع)' : d.threads ? 'قياسي' : 'قياسي (بطيء)')}
       </div>
       <p class="od-sum">${b ? `يناسب جهازك نماذج حتى <b>≈${b.params >= 1 ? b.params.toFixed(1).replace(/\.0$/, '') : b.params} مليار</b> معامل بسرعة تقديرية <b>≈${FT.fmtTps(b.fit.tps)} رمز/ث</b>.` : 'ذاكرة جهازك محدودة جدًا لتشغيل النماذج المحلية، جرّب تغيير الذاكرة يدويًا إن كان التقدير خاطئًا.'}
         ${d.bwMeasured ? ' <span class="od-ok">التقديرات مُعايَرة بسرعة جهازك الفعلية.</span>' : ' <span class="od-dim">التقديرات تتحسن بعد أول تشغيل فعلي.</span>'}
@@ -187,9 +187,9 @@
     const c = DV.cfgGet(), baseSel = c.base === 'https://huggingface.co' ? 'hf' : c.base === 'https://hf-mirror.com' ? 'mirror' : 'custom';
     const sw = (k, t, d, on) => `<button type="button" class="opt-row" role="switch" aria-checked="${on}" data-od="sw" data-k="${k}"><span>${t}<small>${d}</small></span><i class="tg"></i></button>`;
     const nat = od.native && od.native.available(), ni = od.native && od.native.readInfo ? od.native.readInfo() : null;
-    const eng = nat ? '<span class="od-ok">المحرك الأصلي (llama.cpp) يعمل ✓ — أسرع بعدة أضعاف من WASM</span>' + (ni && ni.sys ? `<small class="od-dim" dir="ltr">${E(String(ni.sys).slice(0, 140))}</small>` : '')
-      : ni && ni.error && ni.error !== 'no-bridge' ? `<span class="od-warn">تعذّر تحميل المحرك الأصلي (${E(String(ni.error).slice(0, 100))}) — يُستخدم المحرك البديل WASM.</span>` + (S.engineOk == null ? ' <button type="button" class="od-mini" data-od="engine">فحص WASM</button>' : '')
-      : S.engineOk == null ? '<button type="button" class="od-mini" data-od="engine">فحص المحرك</button>' : S.engineOk ? '<span class="od-ok">المحرك متاح ✓</span>' : '<span class="od-err">المحرك غير متاح — ابنِ التطبيق بعد npm install أو اتصل بالإنترنت لمرة واحدة</span>';
+    const eng = nat ? '<span class="od-ok">المحرك الأصلي يعمل ✓</span>'
+      : ni && ni.error && ni.error !== 'no-bridge' ? '<span class="od-warn">تعذّر تشغيل المحرك الأصلي — يُستخدم المحرك البديل (أبطأ).</span>' + (S.engineOk == null ? ' <button type="button" class="od-mini" data-od="engine">فحص المحرك</button>' : '')
+      : S.engineOk == null ? '<button type="button" class="od-mini" data-od="engine">فحص المحرك</button>' : S.engineOk ? '<span class="od-ok">المحرك متاح ✓</span>' : '<span class="od-err">المحرك غير متاح حاليًا. اتصل بالإنترنت مرة واحدة ثم أعد المحاولة.</span>';
     return `<details class="od-sec od-set"${S.setOpen ? ' open' : ''}><summary><h3>إعدادات التنزيل والتشغيل</h3></summary>
       <label class="lib-f">مصدر التنزيل<select class="fld" data-od-f="base"><option value="hf"${baseSel === 'hf' ? ' selected' : ''}>Hugging Face (الأصلي)</option><option value="mirror"${baseSel === 'mirror' ? ' selected' : ''}>hf-mirror.com (مرآة)</option><option value="custom"${baseSel === 'custom' ? ' selected' : ''}>عنوان مخصص…</option></select></label>
       ${baseSel === 'custom' ? `<label class="lib-f">العنوان<input class="fld" dir="ltr" data-od-f="custom" value="${E(c.base)}" placeholder="https://mirror.example.com"></label>` : ''}
@@ -202,11 +202,11 @@
       ${nat ? `<label class="lib-f">عدد الخيوط<select class="fld" data-od-f="threads">${[[0, 'تلقائي (الأنوية السريعة)'], [2, '2'], [3, '3'], [4, '4'], [5, '5'], [6, '6']].map(([v, t]) => `<option value="${v}"${c.threads === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>` : ''}
       ${nat ? gpuBlock(c, ni) : ''}
       <div class="od-eng">${eng}</div>
-      <p class="od-dim">${nat ? 'يعمل النموذج مباشرة على معالج الهاتف عبر llama.cpp الأصلي. السرعة تتوقف على الجهاز وحجم النموذج؛ أجهزة 8GB فأكثر تشغّل نماذج حتى ≈ 4–8 مليار معامل بسرعة معقولة. إن سخن الهاتف قلّل عدد الخيوط.' : 'يعمل المحرك داخل التطبيق عبر llama.cpp (WebAssembly) على المعالج، فهو أبطأ من المحرك الأصلي: الأفضل نماذج حتى ≈ 1.5–3 مليار معامل. المحرك الأصلي الأسرع يتوفر في تطبيق أندرويد المبني بالنسخة الأحدث.'}</p>
+      <p class="od-dim">${nat ? 'السرعة تتوقف على جهازك وحجم النموذج. إن سخن الهاتف قلّل عدد الخيوط.' : 'النماذج الصغيرة (حتى ≈ 3 مليار معامل) أنسب لهذا الوضع.'}</p>
     </details>`;
   }
   function gpuBlock(c, ni){
-    if (!ni || !ni.gpuLib) return '<p class="od-dim">تسريع GPU (Vulkan): غير مضمَّن في هذا الإصدار من التطبيق (لم تُبنَ وحدته في خطوة البناء الاختيارية).</p>';
+    if (!ni || !ni.gpuLib) return '';
     const sw = `<button type="button" class="opt-row" role="switch" aria-checked="${c.gpu}" data-od="sw" data-k="gpu"><span>تسريع GPU (تجريبي)<small>قد يُسرّع المعالجة على بعض الهواتف، وقد يكون أبطأ على غيرها — جرّب «قارن السرعة»</small></span><i class="tg"></i></button>`;
     const g = EN.state && EN.state.gpu ? `<span class="od-ok">GPU نشط: ${E(String(EN.state.gpu).slice(0, 60))}</span>` : '';
     const crash = ni.gpuCrashed ? '<span class="od-warn">انهار GPU في المرة السابقة؛ سيُعطَّل تلقائيًا في التحميل القادم.</span>' : '';

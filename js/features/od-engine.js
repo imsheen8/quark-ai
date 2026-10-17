@@ -162,7 +162,7 @@
   }
 
   /* ---------- تسريع GPU (Vulkan) ---------- */
-  const GPU_NOTES = { no_lib:'هذا الـ APK بُني بلا وحدة GPU', no_device:'لم يجد الهاتف معالجًا رسوميًا يدعم Vulkan', gpu_load_failed:'تعذّر تحميل النموذج على GPU', gpu_ctx_failed:'ذاكرة GPU لا تكفي', gpu_warmup_failed:'فشل اختبار GPU الأوّلي', crashed:'انهار تشغيل GPU في المرة السابقة' };
+  const GPU_NOTES = { no_lib:'غير مدعوم في هذا الإصدار', no_device:'لم يجد الهاتف معالجًا رسوميًا يدعم Vulkan', gpu_load_failed:'تعذّر تحميل النموذج على GPU', gpu_ctx_failed:'ذاكرة GPU لا تكفي', gpu_warmup_failed:'فشل اختبار GPU الأوّلي', crashed:'انهار تشغيل GPU في المرة السابقة' };
   function gpuNote(r, cfg){
     if (!cfg.gpu) return;
     if (r.gpu){ state.gpu = r.gpu_name || 'GPU'; return; }
@@ -192,6 +192,24 @@
   }
 
   /* ---------- المحرك الأصلي (llama.cpp) ---------- */
+  /* حماية السخونة/البطارية: قراءة حيّة لحالة الجهاز؛ عند الحرارة العالية أو البطارية الضعيفة يُخفَّض عدد الخيوط تلقائيًا (إن كان «تلقائي») */
+  function liveStatus(){
+    try{ const q = root.window && root.window.QuarkNative; return q && typeof q.deviceInfo === 'function' ? JSON.parse(q.deviceInfo() || '{}') : {}; }catch{ return {}; }
+  }
+  function throttle(cfg, dev){
+    const L = liveStatus(), hot = (L.thermal | 0) >= 2, low = typeof L.battery === 'number' && L.battery < 15 && !L.charging;
+    if (!(hot || low) || cfg.threads) return { threads:cfg.threads || 0, why:'' };
+    const t = Math.max(2, Math.floor(((dev && dev.cores) || L.cores || 8) / 2));
+    return { threads:t, why:hot ? 'الجهاز ساخن' : 'البطارية منخفضة' };
+  }
+  let lastHotWarn = 0;
+  function hotWarn(){
+    const L = liveStatus(); if ((L.thermal | 0) < 3 || Date.now() - lastHotWarn < 300000) return;
+    lastHotWarn = Date.now();
+    try{ root.window && root.window.toast && root.window.toast('الهاتف ساخن جدًا — قد يبطؤ الرد. أوقف المحادثة قليلًا ليبرد.'); }catch{}
+    try{ root.window && root.window.__errlog && root.window.__errlog.add({ src:'native', lvl:'warn', force:true, msg:'حرارة الجهاز مرتفعة (thermal=' + L.thermal + ')', code:'thermal' }); }catch{}
+  }
+
   async function ensureNative(rec){
     const cfg = od.device.cfgGet(), dev = await device();
     const extra = (rec.files || []).filter(f => f.role === 'mmproj').reduce((n, f) => n + (f.size || 0), 0), msize = Math.max(1, (rec.size || 0) - extra);
@@ -201,7 +219,9 @@
     setState('loading', { id:rec.id, msg:'جارٍ تحميل النموذج في الذاكرة…' });
     try{
       const p = od.store.paths(rec.id), t0 = Date.now();
-      const r = await od.native.load({ model:p.model, mmproj:p.mmproj, n_ctx:ctx, n_threads:cfg.threads || 0, n_batch:512, mmap:true, gpu:cfg.gpu });
+      const th = throttle(cfg, dev); hotWarn();
+      const r = await od.native.load({ model:p.model, mmproj:p.mmproj, n_ctx:ctx, n_threads:th.threads, n_batch:512, mmap:true, gpu:cfg.gpu });
+      if (th.why) { try{ root.window.__errlog && root.window.__errlog.add({ src:'native', lvl:'warn', force:true, msg:'خُفّض عدد الخيوط إلى ' + th.threads + ' (' + th.why + ')', code:'throttle' }); }catch{} }
       nloaded = { id:rec.id, ctx:r.n_ctx || ctx, vision:!!r.vision, threads:cfg.threads, msize, gpu:!!r.gpu, gpuName:r.gpu_name || '', wantGpu:cfg.gpu };
       gpuNote(r, cfg);
       setState('ready', { id:rec.id, ctx:nloaded.ctx, loadMs:Date.now() - t0, native:true });
@@ -212,7 +232,7 @@
   }
 
   async function* chatNative(rec, am, history, signal, P, system){
-    const id = am.model, cfg = od.device.cfgGet(), N = await ensureNative(rec);
+    const id = am.model, cfg = od.device.cfgGet(), N = await ensureNative(rec); hotWarn();
     const abortErr = () => { const e = new Error('Aborted'); e.name = 'AbortError'; return e; };
     if (signal && signal.aborted) throw abortErr();
     state.busy = true; clearTimeout(idleT); setState('busy', { id, native:true });

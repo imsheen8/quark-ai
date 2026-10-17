@@ -57,25 +57,6 @@
   $('themeBox').addEventListener('click', act);
   $('themeBox').addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.th-card')){ e.preventDefault(); act(e); } });
 })();
-$('stripeSeg').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  settings.cont.stripe = b.dataset.stripe; persistSettings(); applyTheme();
-});
-[['radiusSeg','radius','radius'],['borderSeg','bw','bw'],['alphaSeg','alpha','alpha']].forEach(([id,k,a]) => $(id).addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  settings.cont[k] = b.dataset[a]; persistSettings(); applyTheme();
-}));
-$('chatStyleSeg').addEventListener('click', e => {
-  const b = e.target.closest('button'); const c = current(); if (!b || !c) return;
-  if (b.dataset.cs === 'container' && !isPro()){ openPlans('النمط المستقل لكل محادثة متاح في خطة برو.'); return; }
-  if (b.dataset.cs === 'auto') delete c.mstyle; else c.mstyle = b.dataset.cs;
-  save(); applyTheme();
-});
-$('stripeColor').addEventListener('input', e => { settings.cont.color = e.target.value; persistSettings(); applyTheme(); });
-$('contBox').addEventListener('click', e => {
-  const b = e.target.closest('[data-copt]'); if (!b) return;
-  settings.cont[b.dataset.copt] = !settings.cont[b.dataset.copt]; persistSettings(); applyTheme();
-});
 /* حجب الرد: أول ضغطة تُظهره فقط */
 el.messages.addEventListener('click', e => {
   const r = document.documentElement.dataset;
