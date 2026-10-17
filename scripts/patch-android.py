@@ -98,6 +98,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CrashLog.install(getApplicationContext());
         if (savedInstanceState == null) pendingAction = actionOf(getIntent());
         getBridge().getWebView().addJavascriptInterface(new NavBridge(), "QuarkNative");
         QuarkOd.attach(getBridge().getWebView());
@@ -302,11 +303,20 @@ public class MainActivity extends BridgeActivity {
                 o.put("model", Build.MODEL);
                 o.put("soc", Build.VERSION.SDK_INT >= 31 ? Build.SOC_MODEL : "");
                 o.put("abi", Build.SUPPORTED_ABIS != null && Build.SUPPORTED_ABIS.length > 0 ? Build.SUPPORTED_ABIS[0] : "");
+                try {
+                    android.content.pm.PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    o.put("appVersion", pi.versionName);
+                    o.put("appCode", Build.VERSION.SDK_INT >= 28 ? pi.getLongVersionCode() : pi.versionCode);
+                } catch (Throwable ignored) {}
                 return o.toString();
             } catch (Exception e) {
                 return "{}";
             }
         }
+
+        /** سجل انهيارات أندرويد (JSON): استثناءات Java السابقة + أسباب إغلاق العملية (تُمسح بعد القراءة). */
+        @JavascriptInterface
+        public String crashLog() { return CrashLog.collect(MainActivity.this); }
 
         /** المحرك الأصلي للنماذج على الجهاز (llama.cpp): حالة المكتبة (JSON). */
         @JavascriptInterface

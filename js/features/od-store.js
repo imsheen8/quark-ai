@@ -152,7 +152,15 @@ self.onmessage = async e => {
   const load = () => { if (!recs){ recs = kv.get(DB_KEY, {}) || {}; } return recs; };
   const saveNow = () => { clearTimeout(saveT); saveT = null; kv.set(DB_KEY, load()); };
   const saveSoon = () => { if (!saveT) saveT = setTimeout(saveNow, 4000); };
-  const emit = (id, kind) => { listeners.forEach(f => { try{ f({ id, kind:kind || 'update' }); }catch{} }); };
+  /* سجل الأخطاء: أي انتقال لحالة «error» (مرة واحدة لكل رسالة) */
+  const errSeen = new Map();
+  const logDl = id => { try{
+    const r = get(id);
+    if (!r || r.state !== 'error' || !root.__errlog) return;
+    const k = id + '|' + r.errCode + '|' + r.err; if (errSeen.get(id) === k) return; errSeen.set(id, k);
+    root.__errlog.add({ src:'download', msg:(r.err || 'فشل التنزيل') + ' — ' + id, code:r.errCode, ctx:{ id, storage:r.storage, code:r.errCode, retryable:!!r.retryable, bytes:r.bytes, size:r.size }, key:'dl|' + id + '|' + r.errCode + '|' + (r.err || '').slice(0, 80) });
+  }catch{} };
+  const emit = (id, kind) => { if (kind === 'state') logDl(id); listeners.forEach(f => { try{ f({ id, kind:kind || 'update' }); }catch{} }); };
   const slug = id => String(id).replace(/[^\w.-]+/g, '_').slice(0, 100);
   const dirOf = rec => [ROOT_DIR, slug(rec.id)];
   const fileName = (rec, f, i) => (rec.files.length > 1 ? String(i + 1).padStart(2, '0') + '_' : '') + slug(f.path.split('/').pop());

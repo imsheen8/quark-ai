@@ -13,7 +13,7 @@ $('tileBtn').addEventListener('click', () => window.addQuarkTile?.());
 $('autoTitleSw').checked = settings.autoTitle;
 $('autoTitleSw').addEventListener('change', e => { settings.autoTitle = e.target.checked; persistSettings(); toast(settings.autoTitle ? 'تم تفعيل العنوان التلقائي' : 'تم إيقاف العنوان التلقائي'); });
 const phone = () => true; /* الواجهة الجديدة (قائمة ثم تفاصيل) لكل الأحجام */
-const SET_TITLES = { keys:'المفاتيح والنماذج', defaults:'النماذج التلقائية', research:'البحث العميق', integrations:'التكاملات', agent:'الوكيل', custom:'التخصيص', general:'عام', voice:'الصوت', look:'المظهر', security:'الأمان', stats:'الإحصائيات', data:'التخزين', about:'حول التطبيق' };
+const SET_TITLES = { keys:'المفاتيح والنماذج', defaults:'النماذج التلقائية', research:'البحث العميق', integrations:'التكاملات', agent:'الوكيل', custom:'التخصيص', general:'عام', voice:'الصوت', look:'المظهر', security:'الأمان', stats:'الإحصائيات', data:'التخزين', errors:'سجل الأخطاء', about:'حول التطبيق' };
 function selectTab(name){
   if (name === 'tasks'){ window.__openTasks?.('act'); return; }   /* رابط قديم: المهام صارت في المكتبة */
   if (name === 'home' && !phone()) name = 'keys';
@@ -27,6 +27,7 @@ function selectTab(name){
   document.querySelectorAll('.tab-panel').forEach(p => { p.hidden = home || p.dataset.panel !== name; });
   if (name === 'data') renderStats();
   if (name === 'stats') window.__stOpen?.();
+  if (name === 'errors') window.__erOpen?.();
   if (name === 'security') renderSecurity();
   if (name === 'voice') renderVoice();
   if (name === 'keys') window.renderKeysVoice?.();
@@ -86,7 +87,7 @@ function renderSetHome(){
   if (!pro) h += `<div class="sh-card sh-up"><h3>تريد المزيد؟</h3><p>رقِّ حسابك للحصول على استخدام وإمكانيات أكثر.</p><button type="button" class="sh-upbtn" data-go="plan">ترقية</button></div>`;
   h += `<div class="sh-grp">${shRow('profile','sh-user','الملف الشخصي','')}${shRow('plan','sh-dollar','الاشتراك','')}</div>`;
   h += `<div class="sh-grp">${shRow('keys','sh-blocks','المفاتيح والنماذج', eps ? `${eps} مفعّلة` : 'أضف مفتاحًا للبدء')}${shRow('defaults','cpu','النماذج التلقائية', window.__defSub ? window.__defSub() : '')}${shRow('research','globe','البحث العميق', window.__rsSub ? window.__rsSub() : '')}${shRow('integrations','plug','التكاملات', window.__intSub ? window.__intSub() : '')}${shRow('agent','sparkles','الوكيل', window.__agSub ? window.__agSub() : '')}${shRow('custom','sh-aa','التخصيص','الذاكرة والمهارات والتعليمات ومعاملات النموذج')}${shRow('security','sh-shield','الأمان', hasLock() ? 'مفعّل' : 'غير مفعّل')}</div>`;
-  h += `<div class="sh-grp">${shRow('general','sh-sliders','عام', 'العنوان التلقائي والاهتزاز')}${shRow('look','moon','المظهر', `${theme} · ${font}`)}${shRow('voice','sh-wave','الصوت', voiceOn ? 'مفعّل' : 'غير مضبوط')}${shRow('mail','mail','البريد', window.__mlSub ? window.__mlSub() : '')}${shRow('stats','chart','الإحصائيات', window.__stSub ? window.__stSub() : 'النص والصوت والنماذج')}${shRow('data','database','التخزين والنسخ الاحتياطي', `${nChats} محادثة`)}</div>`;
+  h += `<div class="sh-grp">${shRow('general','sh-sliders','عام', 'العنوان التلقائي والاهتزاز')}${shRow('look','moon','المظهر', `${theme} · ${font}`)}${shRow('voice','sh-wave','الصوت', voiceOn ? 'مفعّل' : 'غير مضبوط')}${shRow('mail','mail','البريد', window.__mlSub ? window.__mlSub() : '')}${shRow('stats','chart','الإحصائيات', window.__stSub ? window.__stSub() : 'النص والصوت والنماذج')}${shRow('data','database','التخزين والنسخ الاحتياطي', `${nChats} محادثة`)}${shRow('errors','alert','سجل الأخطاء', window.__erSub ? window.__erSub() : '')}</div>`;
   h += `<div class="sh-grp">${shRow('reset','refresh','مسح المفاتيح وإعادة الضبط','', 'danger')}</div>`;
   $('setHome').innerHTML = h;
   $('shPop').innerHTML = `<a class="sh-pi" href="https://discord.gg/ycmPBVszCy" target="_blank" rel="noopener noreferrer">${shIcon('globe')}<span>ديسكورد</span></a>` +

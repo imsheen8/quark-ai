@@ -7,6 +7,10 @@
   let info = null, seq = 0;
   const reqs = new Map();                                              /* id → { on(ev) } */
 
+  /* سجل الأخطاء: أخطاء المحرك الأصلي (تحميل/توليد) بتفاصيلها الخام */
+  function logNative(kind, o){
+    try{ if (root.__errlog) root.__errlog.add({ src:'native', msg:(kind === 'load' ? 'تحميل النموذج: ' : 'التوليد: ') + String(o.error || 'خطأ'), code:o.code, ctx:{ kind, code:o.code, need:o.need, ctx:o.ctx, gpu:o.gpu, gpu_note:o.gpu_note }, key:'nat|' + kind + '|' + o.code + '|' + String(o.error || '').slice(0, 100) }); }catch{}
+  }
   function readInfo(force){
     if (info && !force) return info;
     const n = QN();
@@ -27,7 +31,7 @@
     const n = QN(); if (!n) return Promise.reject(new Error('المحرك الأصلي غير متاح.'));
     const id = 'L' + (++seq);
     return new Promise((resolve, reject) => {
-      reqs.set(id, { on:o => { if (o.t !== 'loaded') return; reqs.delete(id); o.ok ? resolve(o) : reject(Object.assign(new Error(o.error || 'تعذّر تحميل النموذج'), { code:o.code || 'load' })); } });
+      reqs.set(id, { on:o => { if (o.t !== 'loaded') return; reqs.delete(id); o.ok ? resolve(o) : (logNative('load', o), reject(Object.assign(new Error(o.error || 'تعذّر تحميل النموذج'), { code:o.code || 'load' }))); } });
       try{ n.llamaLoad(id, JSON.stringify(opts)); }catch(e){ reqs.delete(id); reject(e); }
     });
   }
@@ -47,7 +51,7 @@
           if (o.t === 'tok') yield { tok:o.s };
           else if (o.t === 'pp') yield { pp:{ done:o.done, total:o.total } };
           else if (o.t === 'done'){ yield { stats:o }; return; }
-          else if (o.t === 'err') throw Object.assign(new Error(o.error || 'فشل التوليد'), { code:o.code || 'decode', need:o.need, ctx:o.ctx });
+          else if (o.t === 'err'){ if (o.code !== 'ctx') logNative('chat', o); throw Object.assign(new Error(o.error || 'فشل التوليد'), { code:o.code || 'decode', need:o.need, ctx:o.ctx }); }
         }
         if (end) return;
         await new Promise(r => { wake = r; if (q.length || end){ wake = null; r(); } });

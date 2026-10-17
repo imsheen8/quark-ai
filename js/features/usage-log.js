@@ -17,6 +17,7 @@
   function log(e){
     e.ts = e.ts || Date.now();
     db.ev.push(e);
+    try{ if (e.ok === false && e.h !== 'device' && window.__errlog) window.__errlog.add({ src:'api', msg:(e.e || 'فشل الطلب') + ' — ' + (e.m || '') + (e.h ? ' @ ' + e.h : ''), ctx:{ type:e.t, kind:e.k, model:e.m, host:e.h, ms:e.ms }, key:'api|' + e.h + '|' + e.m + '|' + String(e.e || '').slice(0, 100) }); }catch{}
     if (db.ev.length > MAX) db.ev.splice(0, db.ev.length - MAX);
     queue();
     try{ window.__stRefresh?.(); }catch{}

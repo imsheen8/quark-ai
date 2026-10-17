@@ -13,6 +13,15 @@
   };
 
   try {
+    // -1) سجل الأخطاء أولًا كي لا يفوته خطأ في الإقلاع (الإعدادات ← سجل الأخطاء)
+    try {
+      await new Promise((ok) => {
+        const s = document.createElement('script');
+        s.src = 'js/features/error-log.js'; s.onload = ok; s.onerror = ok;
+        document.head.appendChild(s);
+      });
+      window.__errlog && window.__errlog.importNative && window.__errlog.importNative();
+    } catch (_) {}
     // 0) التخزين: نحمّل كل البيانات من بايثون قبل تشغيل أي ملف (أو نعود لتخزين المتصفح إن لم يوجد خادم).
     //    وهو يستعيد/ينقل أيضًا نسخة ملفات الأندرويد القديمة (quark/state.json) عند الحاجة.
     await new Promise((ok, fail) => {

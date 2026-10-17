@@ -22,6 +22,7 @@
           <button class="lib-tab" data-tab="security" role="tab">الأمان</button>
           <button class="lib-tab" data-tab="stats" role="tab">الإحصائيات</button>
           <button class="lib-tab" data-tab="data" role="tab">التخزين</button>
+          <button class="lib-tab" data-tab="errors" role="tab">سجل الأخطاء<span class="er-dot" id="erTabDot" hidden></span></button>
           <button class="lib-tab" data-tab="about" role="tab">حول التطبيق</button>
         </nav>
       </div></div>
@@ -406,6 +407,11 @@
           <!-- الإحصائيات -->
           <section class="tab-panel" data-panel="stats" hidden>
             <div id="stRoot"></div>
+          </section>
+
+          <!-- سجل الأخطاء -->
+          <section class="tab-panel" data-panel="errors" hidden>
+            <div id="erRoot"></div>
           </section>
           <!-- حول التطبيق -->
           <section class="tab-panel" data-panel="about" hidden>

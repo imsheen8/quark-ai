@@ -169,6 +169,7 @@
     state.gpu = '';
     const why = GPU_NOTES[r.gpu_note] || 'غير متاح';
     if (r.gpu_note === 'crashed' || r.gpu_note === 'no_lib') od.device.cfgSet({ gpu:false });
+    try{ if (root.__errlog) root.__errlog.add({ src:'native', lvl:'warn', force:true, msg:'تسريع GPU غير مفعّل — ' + why, code:r.gpu_note, ctx:{ gpu_note:r.gpu_note } }); }catch{}
     if (typeof root.toast === 'function') root.toast('تسريع GPU غير مفعّل — ' + why + '؛ يعمل النموذج على المعالج');
   }
   /* مقارنة السرعة (معالج مقابل GPU) على نموذج مُنزَّل: يحمّله بالوضعين ويولّد نصًا قصيرًا */
