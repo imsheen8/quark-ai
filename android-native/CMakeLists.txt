@@ -35,6 +35,27 @@ if(ANDROID)
   set(GGML_CPU_KLEIDIAI OFF CACHE BOOL "" FORCE)
 endif()
 
+# ---- وحدة Vulkan الاختيارية (تُبنى منفصلة عبر scripts/build-vulkan.sh؛ لا تدخل في البناء الأساسي) ----
+option(QUARK_VULKAN "build the ggml-vulkan backend module (Android)" OFF)
+if(QUARK_VULKAN AND ANDROID)
+  set(GGML_VULKAN ON CACHE BOOL "" FORCE)
+  if(DEFINED QUARK_VK_PREFIX)
+    list(APPEND CMAKE_FIND_ROOT_PATH "${QUARK_VK_PREFIX}")           # SPIRV-Headers (config) + Vulkan-Headers
+    list(APPEND CMAKE_PREFIX_PATH "${QUARK_VK_PREFIX}")
+    set(Vulkan_INCLUDE_DIR "${QUARK_VK_PREFIX}/include" CACHE PATH "" FORCE)
+  endif()
+  find_library(QUARK_VULKAN_LIB NAMES vulkan)                          # مكتبة NDK
+  if(QUARK_VULKAN_LIB)
+    set(Vulkan_LIBRARY "${QUARK_VULKAN_LIB}" CACHE FILEPATH "" FORCE)
+  endif()
+  find_program(QUARK_GLSLC NAMES glslc NO_CMAKE_FIND_ROOT_PATH
+               HINTS "${CMAKE_ANDROID_NDK}/shader-tools/linux-x86_64" "${CMAKE_ANDROID_NDK}/shader-tools/darwin-x86_64")
+  if(QUARK_GLSLC)
+    set(Vulkan_GLSLC_EXECUTABLE "${QUARK_GLSLC}" CACHE FILEPATH "" FORCE)
+  endif()
+  message(STATUS "QUARK Vulkan: lib=${QUARK_VULKAN_LIB} glslc=${QUARK_GLSLC} prefix=${QUARK_VK_PREFIX}")
+endif()
+
 add_subdirectory(${QUARK_LLAMA_DIR} build-llama EXCLUDE_FROM_ALL)
 
 add_library(quark_llama SHARED src/quark_llama.cpp src/quark_jni.cpp)

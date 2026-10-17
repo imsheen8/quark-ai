@@ -36,6 +36,7 @@ State g;
 std::mutex g_mu;
 std::atomic<bool> g_abort{false};
 bool g_backend = false;
+bool g_vk_tried = false;
 
 // آخر أسطر خطأ من المكتبات (llama/mtmd) — تُضاف لرسالة الخطأ ليسهل التشخيص
 std::mutex g_logmu; std::string g_lasterr;
@@ -143,24 +144,71 @@ std::string load(const std::string & load_json) {
     llama_log_set(log_cb, nullptr); mtmd_log_set(log_cb, nullptr);
     double t0 = now_ms();
 
-    llama_model_params mp = llama_model_default_params();
-    mp.load_mode = mmap ? LLAMA_LOAD_MODE_MMAP : LLAMA_LOAD_MODE_NONE;
-    mp.n_gpu_layers = 0;
-    g.model = llama_model_load_from_file(path.c_str(), mp);
-    if (!g.model) return err("load", "تعذّر قراءة النموذج (ملف غير صالح أو بنية غير مدعومة): " + path).dump();
+    // ---- GPU (Vulkan) اختياري: الوحدة تُحمَّل عند الطلب فقط، وأي فشل يرجع للمعالج تلقائيًا ----
+    std::string gpu_lib = o.value("gpu_lib", ""), gpu_name, gpu_note;
+    ggml_backend_dev_t gdev = nullptr;
+    if (o.value("gpu", false)) {
+        if (!g_vk_tried) {
+            g_vk_tried = true;
+            if (!gpu_lib.empty() && access(gpu_lib.c_str(), R_OK) == 0) ggml_backend_load(gpu_lib.c_str());
+            else gpu_note = "no_lib";
+        }
+        for (size_t i = 0; i < ggml_backend_dev_count(); i++) {
+            auto d = ggml_backend_dev_get(i);
+            auto t = ggml_backend_dev_type(d);
+            if (t == GGML_BACKEND_DEVICE_TYPE_GPU || t == GGML_BACKEND_DEVICE_TYPE_IGPU) { gdev = d; break; }
+        }
+        if (gdev) gpu_name = ggml_backend_dev_description(gdev);
+        else if (gpu_note.empty()) gpu_note = "no_device";
+    }
+    bool use_gpu = gdev != nullptr;
+    ggml_backend_dev_t gpu_list[2] = { gdev, nullptr };
+    ggml_backend_dev_t cpu_list[1] = { nullptr };      // قائمة فارغة: لا أجهزة تسريع (فلا يُحمَّل شيء على GPU عن طريق الخطأ)
 
-    int n_train = llama_model_n_ctx_train(g.model);
-    if (n_train > 0 && n_ctx > n_train) n_ctx = n_train;
-    g.n_threads = n_thr > 0 ? n_thr : pick_threads();
-    g.n_batch = std::max(32, std::min(2048, n_batch));
-    g.n_ctx = n_ctx;
-
+    int n_train = 0;
     llama_context_params cp = llama_context_default_params();
-    cp.n_ctx = n_ctx; cp.n_batch = g.n_batch; cp.n_ubatch = std::min(g.n_batch, 512);
-    cp.n_threads = g.n_threads; cp.n_threads_batch = g.n_threads;
-    cp.no_perf = true;
-    g.ctx = llama_init_from_model(g.model, cp);
-    if (!g.ctx) { free_all(); return err("load", "الذاكرة لا تكفي لإنشاء سياق بحجم " + std::to_string(n_ctx)).dump(); }
+    for (int pass = 0; pass < 2; pass++) {
+        llama_model_params mp = llama_model_default_params();
+        mp.load_mode = mmap ? LLAMA_LOAD_MODE_MMAP : LLAMA_LOAD_MODE_NONE;
+        mp.devices = use_gpu ? gpu_list : cpu_list;
+        mp.n_gpu_layers = use_gpu ? 999 : 0;
+        g.model = llama_model_load_from_file(path.c_str(), mp);
+        if (!g.model) {
+            if (use_gpu) { use_gpu = false; gpu_note = "gpu_load_failed"; continue; }
+            return err("load", "تعذّر قراءة النموذج (ملف غير صالح أو بنية غير مدعومة): " + path).dump();
+        }
+        n_train = llama_model_n_ctx_train(g.model);
+        if (n_train > 0 && n_ctx > n_train) n_ctx = n_train;
+        g.n_threads = n_thr > 0 ? n_thr : pick_threads();
+        g.n_batch = std::max(32, std::min(2048, n_batch));
+        g.n_ctx = n_ctx;
+
+        cp = llama_context_default_params();
+        cp.n_ctx = n_ctx; cp.n_batch = g.n_batch; cp.n_ubatch = std::min(g.n_batch, 512);
+        cp.n_threads = g.n_threads; cp.n_threads_batch = g.n_threads;
+        cp.no_perf = true;
+        cp.op_offload = use_gpu;
+        g.ctx = llama_init_from_model(g.model, cp);
+        if (!g.ctx) {
+            if (use_gpu) { llama_model_free(g.model); g.model = nullptr; use_gpu = false; gpu_note = "gpu_ctx_failed"; continue; }
+            free_all(); return err("load", "الذاكرة لا تكفي لإنشاء سياق بحجم " + std::to_string(n_ctx)).dump();
+        }
+        if (use_gpu) {
+            // إحماء: دفعة صغيرة ثم رمز واحد على GPU للتأكد أن المشغّل (driver) يعمل فعلًا قبل الاعتماد عليه
+            const llama_vocab * v = llama_model_get_vocab(g.model);
+            llama_token b = llama_vocab_bos(v); if (b < 0) b = 0;
+            std::vector<llama_token> toks(32, b);
+            bool ok = llama_decode(g.ctx, llama_batch_get_one(toks.data(), (int32_t) toks.size())) == 0;
+            if (ok) { llama_token t1 = b; ok = llama_decode(g.ctx, llama_batch_get_one(&t1, 1)) == 0; }
+            llama_memory_clear(llama_get_memory(g.ctx), true);
+            if (!ok) {
+                llama_free(g.ctx); g.ctx = nullptr; llama_model_free(g.model); g.model = nullptr;
+                use_gpu = false; gpu_note = "gpu_warmup_failed"; continue;
+            }
+        }
+        break;
+    }
+    if (!use_gpu) gpu_name.clear();
     llama_set_abort_callback(g.ctx, abort_cb, nullptr);
 
     g.tmpls = common_chat_templates_init(g.model, "");
@@ -178,7 +226,8 @@ std::string load(const std::string & load_json) {
     llama_model_desc(g.model, desc, sizeof desc);
     return json{{"ok", true}, {"vision", vision}, {"n_ctx", n_ctx}, {"n_ctx_train", n_train}, {"n_threads", g.n_threads},
                 {"params", (double) llama_model_n_params(g.model)}, {"size", (double) llama_model_size(g.model)},
-                {"desc", desc}, {"has_template", g.tmpls != nullptr}, {"load_ms", now_ms() - t0}}.dump();
+                {"desc", desc}, {"has_template", g.tmpls != nullptr}, {"load_ms", now_ms() - t0},
+                {"gpu", use_gpu}, {"gpu_name", gpu_name}, {"gpu_note", gpu_note}}.dump();
 }
 
 std::string chat(const std::string & chat_json, const std::vector<std::string> & images, const PieceCb & on_piece, const ProgressCb & on_prog) {

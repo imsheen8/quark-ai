@@ -11,6 +11,7 @@ import ai.quark.engine.QuarkLlama;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,6 +25,11 @@ public class QuarkOd {
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
     private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
     private static final Charset UTF8 = Charset.forName("UTF-8");
+
+    // حماية من انهيار GPU: ملف علامة يُنشأ قبل تجربة GPU ويُحذف بعد نجاحها؛ إن بقي عند التشغيل التالي فالتشغيل السابق انهار
+    private static boolean gpuActive = false, gpuVerified = false;
+    private static File sentinel(Context c) { return new File(c.getFilesDir(), "od_gpu_try"); }
+    private static File gpuLib(Context c) { return new File(c.getApplicationInfo().nativeLibraryDir, "libqvk.so"); }
 
     public static void attach(WebView w) { web = w; }
 
@@ -51,6 +57,8 @@ public class QuarkOd {
                 String r = QuarkLlama.init(c.getApplicationInfo().nativeLibraryDir);
                 if (r.length() > 0) { o.put("available", false); o.put("error", r); }
                 else o.put("sys", QuarkLlama.sysInfo());
+                o.put("gpuLib", gpuLib(c).exists());                   // هل وحدة Vulkan مضمّنة في هذا الـ APK؟
+                o.put("gpuCrashed", sentinel(c).exists());             // هل انهار تشغيل GPU آخر مرة؟
             }
             return o.toString();
         } catch (Throwable t) {
@@ -65,7 +73,23 @@ public class QuarkOd {
                 try {
                     String r = QuarkLlama.init(c.getApplicationInfo().nativeLibraryDir);
                     if (r.length() > 0) { o.put("ok", false); o.put("error", r); emit(o); return; }
-                    JSONObject res = new JSONObject(QuarkLlama.load(json));
+                    String lj = json;
+                    boolean wantGpu = false, crashed = false;
+                    try {
+                        JSONObject q = new JSONObject(json);
+                        if (q.optBoolean("gpu", false)) {
+                            File sn = sentinel(c);
+                            if (sn.exists()) { crashed = true; sn.delete(); q.put("gpu", false); }     // انهيار سابق: ارجع للمعالج
+                            else if (!gpuLib(c).exists()) { q.put("gpu", false); }
+                            else { wantGpu = true; q.put("gpu_lib", gpuLib(c).getAbsolutePath()); try { sn.createNewFile(); } catch (Exception ignored) {} }
+                        }
+                        lj = q.toString();
+                    } catch (Exception ignored) {}
+                    JSONObject res = new JSONObject(QuarkLlama.load(lj));
+                    gpuActive = res.optBoolean("gpu", false);
+                    gpuVerified = false;
+                    sentinel(c).delete();      // وصلنا إلى هنا: لم ينهر التحميل (والإحماء) — الحماية تُعاد مع أول محادثة
+                    if (crashed) res.put("gpu_note", "crashed");
                     java.util.Iterator<String> it = res.keys();
                     while (it.hasNext()) { String k = it.next(); o.put(k, res.get(k)); }
                 } catch (Throwable t) {
@@ -76,9 +100,11 @@ public class QuarkOd {
         });
     }
 
-    public static void chat(final String reqId, final String json, final String imagesJson) {
+    public static void chat(final Context c, final String reqId, final String json, final String imagesJson) {
         EXEC.execute(new Runnable() {
             public void run() {
+                final boolean guard = gpuActive && !gpuVerified;
+                if (guard) { try { sentinel(c).createNewFile(); } catch (Exception ignored) {} }
                 final StringBuilder buf = new StringBuilder();
                 final long[] last = {System.currentTimeMillis()};
                 final int[] lastPp = {-1};
@@ -105,11 +131,13 @@ public class QuarkOd {
                     });
                     flush(reqId, buf);
                     JSONObject r = new JSONObject(res);
+                    if (guard) { sentinel(c).delete(); if (r.optBoolean("ok", false)) gpuVerified = true; }
                     JSONObject o = ev(r.optBoolean("ok", false) ? "done" : "err", reqId);
                     java.util.Iterator<String> it = r.keys();
                     while (it.hasNext()) { String k = it.next(); o.put(k, r.get(k)); }
                     emit(o);
                 } catch (Throwable t) {
+                    if (guard) sentinel(c).delete();
                     flush(reqId, buf);
                     try { emit(ev("err", reqId).put("error", String.valueOf(t.getMessage())).put("code", "decode")); } catch (Exception ignored) {}
                 }

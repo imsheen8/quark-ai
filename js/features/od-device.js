@@ -7,13 +7,13 @@
 
   /* إعدادات النماذج على الجهاز (تُحفظ مع بقية بيانات التطبيق) */
   const CFG_KEY = 'ai_od_cfg', BENCH_KEY = 'ai_od_bench';
-  const CFG_DEF = { base:'https://huggingface.co', token:'', wifiOnly:true, idleMin:10, ramGB:0, ctx:0, autoTitle:false, think:false, threads:0 };
+  const CFG_DEF = { base:'https://huggingface.co', token:'', wifiOnly:true, idleMin:10, ramGB:0, ctx:0, autoTitle:false, think:false, threads:0, gpu:false };
   function cfgGet(){
     let o = {}; try{ o = (typeof store !== 'undefined' ? store.get(CFG_KEY, {}) : JSON.parse(root.localStorage?.getItem(CFG_KEY) || '{}')) || {}; }catch{}
     const c = { ...CFG_DEF, ...o };
     c.base = String(c.base || CFG_DEF.base).replace(/\/+$/, '');
     c.idleMin = Math.max(0, Math.min(120, Number(c.idleMin) || 0));
-    c.think = c.think === true; c.autoTitle = c.autoTitle === true; c.wifiOnly = c.wifiOnly !== false; c.token = String(c.token || '').trim();
+    c.gpu = c.gpu === true; c.think = c.think === true; c.autoTitle = c.autoTitle === true; c.wifiOnly = c.wifiOnly !== false; c.token = String(c.token || '').trim();
     c.ramGB = Math.max(0, Math.min(64, Number(c.ramGB) || 0));
     c.ctx = [0, 1024, 2048, 4096, 8192].includes(Number(c.ctx)) ? Number(c.ctx) : 0;
     c.threads = Math.max(0, Math.min(12, Math.round(Number(c.threads) || 0)));

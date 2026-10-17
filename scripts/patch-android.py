@@ -328,7 +328,7 @@ public class MainActivity extends BridgeActivity {
         @JavascriptInterface
         public void llamaLoad(String reqId, String json) { QuarkOd.load(MainActivity.this, reqId, json); }
         @JavascriptInterface
-        public void llamaChat(String reqId, String json, String imagesJson) { QuarkOd.chat(reqId, json, imagesJson); }
+        public void llamaChat(String reqId, String json, String imagesJson) { QuarkOd.chat(MainActivity.this, reqId, json, imagesJson); }
         @JavascriptInterface
         public void llamaAbort() { QuarkOd.abort(); }
         @JavascriptInterface
@@ -705,6 +705,13 @@ if (native_dir / 'llama.cpp' / 'CMakeLists.txt').exists() and 'quark_llama' not 
     g = re.sub(r'(defaultConfig\s*\{)', lambda mo: mo.group(1) + cmake_args, g, count=1)
     ext = ('\n    externalNativeBuild {\n        cmake {\n            path "../../android-native/CMakeLists.txt"\n        }\n    }\n'
            '    packagingOptions {\n        jniLibs { useLegacyPackaging true }\n    }\n')
+    # وحدة Vulkan الاختيارية (scripts/build-vulkan.sh): إن وُجدت تُضمَّن كمكتبة libqvk.so وتُحمَّل عند تفعيل GPU فقط
+    vk = native_dir / 'prebuilt' / 'arm64-v8a' / 'libqvk.so'
+    if vk.exists():
+        ext += '    sourceSets {\n        main {\n            jniLibs.srcDir "../../android-native/prebuilt"\n        }\n    }\n'
+        print('vulkan module found: GPU acceleration available')
+    else:
+        print('vulkan module not built: GPU acceleration disabled (CPU only)')
     if ndk_ver:
         ext = '\n    ndkVersion "' + ndk_ver + '"' + ext
     g = re.sub(r'(\n\s*buildTypes\s*\{)', lambda mo: ext + mo.group(1), g, count=1)

@@ -7,15 +7,15 @@ const GB = 1024 ** 3;
 /* ---------- QuarkNative وهمي ---------- */
 const calls = [], jobs = new Map(); let emitCtxErrOnce = false, loadFail = false;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-let aborted = false, lastReq = null, lastImgs = null, loadReq = null;
+let aborted = false, lastReq = null, lastImgs = null, loadReq = null, gpuMock = { gpu: true, gpu_name: 'Adreno 725' };
 const QN = {
-  odInfo: () => JSON.stringify({ available: true, sys: 'NEON' }),
+  odInfo: () => JSON.stringify({ available: true, sys: 'NEON', gpuLib: true }),
   dlEnqueue: s => { const sp = JSON.parse(s); calls.push(['enq', sp]); const j = { id: sp.id, state: 'queued', err: '', code: '', bps: 0, files: sp.files.map(f => ({ name: f.name, size: f.size, done: 0 })), spec: sp }; jobs.set(sp.id, j); return JSON.stringify({ ok: true, state: 'queued' }); },
   dlPause: id => { calls.push(['pause', id]); const j = jobs.get(id); if (j) j.state = 'paused'; },
   dlResume: (id, f) => { calls.push(['resume', id, f]); const j = jobs.get(id); if (j) j.state = 'queued'; },
   dlCancel: id => { calls.push(['cancel', id]); jobs.delete(id); },
   dlState: () => JSON.stringify({ root: '/data/files/quark-models', jobs: [...jobs.values()].map(({ spec, ...j }) => j) }),
-  llamaLoad: (id, js) => { loadReq = JSON.parse(js); setTimeout(() => globalThis.window.__odn.ev(loadFail ? { t: 'loaded', id, ok: false, error: 'تعذّر', code: 'load' } : { t: 'loaded', id, ok: true, vision: !!loadReq.mmproj, n_ctx: loadReq.n_ctx }), 5); },
+  llamaLoad: (id, js) => { loadReq = JSON.parse(js); setTimeout(() => globalThis.window.__odn.ev(loadFail ? { t: 'loaded', id, ok: false, error: 'تعذّر', code: 'load' } : { t: 'loaded', id, ok: true, vision: !!loadReq.mmproj, n_ctx: loadReq.n_ctx, ...(loadReq.gpu ? gpuMock : { gpu: false }) }), 5); },
   llamaChat: (id, js, imgs) => {
     lastReq = JSON.parse(js); lastImgs = imgs ? JSON.parse(imgs) : []; aborted = false;
     const ev = o => globalThis.window.__odn.ev({ id, ...o });
@@ -111,6 +111,20 @@ const engine = require('../js/features/od-engine.js');
   const nb = engine.toNativeMessages(hist, '', { vision: false }); eq([nb.seen, nb.messages[0].imgs.length], [1, 0]);
   const many = engine.toNativeMessages([1, 2, 3, 4, 5].map(i => ({ role: i % 2 ? 'user' : 'assistant', content: 'x', images: i % 2 ? [{ data: 'data:image/png;base64,A' + i }] : [] })), '', { vision: true, maxImgs: 2 });
   eq(many.messages.reduce((a, m) => a + m.imgs.length, 0), 2); eq(many.messages.filter(m => m.imgs.length).map(m => m.imgs[0]), ['data:image/png;base64,A3', 'data:image/png;base64,A5']);
+  /* ---------- GPU (Vulkan) ---------- */
+  eq(loadReq.gpu, false);                                                         /* افتراضيًا معطّل */
+  device.cfgSet({ gpu: true }); await engine.unload();
+  for await (const c of engine.chat(am, hist2, null, {}, ''));
+  eq([loadReq.gpu, engine.state.gpu], [true, 'Adreno 725']);
+  gpuMock = { gpu: false, gpu_note: 'crashed' }; await engine.unload();
+  for await (const c of engine.chat(am, hist2, null, {}, ''));
+  eq([device.cfgGet().gpu, engine.state.gpu], [false, '']);                       /* الانهيار السابق يعطّله تلقائيًا */
+  gpuMock = { gpu: true, gpu_name: 'Adreno 725' };
+  const bres = await engine.benchGpu(store.get(spec.id));
+  ok(bres.cpu && bres.cpu.tps === 10 && bres.gpu && bres.gpu.tps === 10 && bres.gpu.name === 'Adreno 725', 'مقارنة المعالج وGPU');
+  gpuMock = { gpu: false, gpu_note: 'no_device' };
+  const bres2 = await engine.benchGpu(store.get(spec.id)); ok(bres2.gpu && bres2.gpu.err && bres2.cpu.tps === 10, 'GPU غير متاح يُبلَّغ دون إسقاط المقارنة');
+  device.cfgSet({ gpu: false });
   /* إلغاء أثناء التوليد */
   const ac2 = new AbortController(); let err = null; const t = [];
   try { for await (const c of engine.chat(am, hist2, ac2.signal, {}, '')) { t.push(c); if (t.length === 1) ac2.abort(); } } catch (e) { err = e; }

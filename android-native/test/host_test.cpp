@@ -24,8 +24,24 @@ int main(int argc, char ** argv) {
     std::string d = run((std::string("{\"messages\":[{\"role\":\"user\",\"content\":\"") + big + "\"}],\"n_predict\":8}").c_str(), 0);
     std::string e = run("{\"messages\":[{\"role\":\"user\",\"content\":\"a\",\"nimg\":1}],\"n_predict\":8}", 0, {"notanimage"});
     ql::unload();
+    // طلب GPU دون وحدة Vulkan: يجب أن يعمل على المعالج مع ملاحظة السبب
+    std::string lg = std::string("{\"model\":\"") + argv[1] + "\",\"n_ctx\":256,\"n_threads\":2,\"gpu\":true,\"gpu_lib\":\"/nonexistent/libqvk.so\"}";
+    std::string rg = ql::load(lg);
+    printf("LOAD-GPU %s\n", rg.c_str());
+    std::string f = run("{\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}],\"n_predict\":6,\"seed\":1}", 0);
+    ql::unload();
+    bool gpu_ok = rg.find("\"ok\":true") != std::string::npos && rg.find("\"gpu\":false") != std::string::npos
+                  && rg.find("\"gpu_note\":\"no_lib\"") != std::string::npos && f.find("\"ok\":true") != std::string::npos;
+    // اختياري: QUARK_TEST_GPU_LIB=/path/libggml-vulkan.so يجرّب وحدة Vulkan حقيقية (إن وُجد جهاز Vulkan على المضيف)
+    if (const char * gl = getenv("QUARK_TEST_GPU_LIB")) {
+        std::string lv = std::string("{\"model\":\"") + argv[1] + "\",\"n_ctx\":256,\"n_threads\":2,\"gpu\":true,\"gpu_lib\":\"" + gl + "\"}";
+        std::string rv = ql::load(lv);
+        printf("LOAD-VK %s\n", rv.c_str());
+        if (rv.find("\"ok\":true") != std::string::npos) run("{\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}],\"n_predict\":6,\"seed\":1}", 0);
+        ql::unload();
+    }
     printf("DONE\n");
     bool ok = a.find("\"ok\":true") != std::string::npos && b.find("\"n_cached\":") != std::string::npos && c.find("abort") != std::string::npos
-              && d.find("\"code\":\"ctx\"") != std::string::npos && e.find("\"code\":\"image\"") != std::string::npos;
+              && d.find("\"code\":\"ctx\"") != std::string::npos && e.find("\"code\":\"image\"") != std::string::npos && gpu_ok;
     return ok ? 0 : 3;
 }

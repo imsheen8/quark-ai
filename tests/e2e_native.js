@@ -8,7 +8,7 @@ const NATIVE = `(() => {
   const jobs = {}, calls = [], GB = 1073741824;
   const impl = {
     deviceInfo: () => JSON.stringify({ totalMem: 12 * GB, availMem: 6 * GB, freeBytes: 60 * GB, totalBytes: 256 * GB, cores: 8, sdk: 34, release: '14', brand: 'Test', model: 'Phone 12', soc: 'SoC', abi: 'arm64-v8a' }),
-    odInfo: () => JSON.stringify({ available: true, sys: 'NEON = 1 | ARM_FMA = 1 | DOTPROD = 1' }),
+    odInfo: () => JSON.stringify({ available: true, sys: 'NEON = 1 | ARM_FMA = 1 | DOTPROD = 1', gpuLib: true }),
     dlEnqueue: s => { const sp = JSON.parse(s); calls.push(['enq', sp]); jobs[sp.id] = { id: sp.id, state: 'downloading', err: '', code: '', bps: 4e6, step: 0, files: sp.files.map(f => ({ name: f.name, size: f.size, done: 0 })) }; return JSON.stringify({ ok: true, state: 'queued' }); },
     dlPause: id => { if (jobs[id]) jobs[id].state = 'paused'; calls.push(['pause', id]); },
     dlResume: (id, f) => { if (jobs[id]) jobs[id].state = 'downloading'; calls.push(['resume', id]); },
@@ -41,6 +41,14 @@ const NATIVE = `(() => {
   const dev = await p.locator('.od-dev').innerText();
   ok(/أصلي/.test(dev), 'بطاقة الجهاز تعرض المحرك الأصلي');
   ok(await p.evaluate(() => window.__od.store.useNative() && window.__od.native.available()), 'التخزين والمحرك الأصليان مفعّلان');
+  /* خيار GPU في الإعدادات */
+  await p.evaluate(() => { const d = document.querySelector('.od-set'); d.open = true; });
+  ok(await p.locator('[data-od="sw"][data-k="gpu"]').count() === 1 && await p.locator('[data-od="benchgpu"]').count() === 1, 'مفتاح GPU وزر المقارنة ظاهران');
+  await p.click('[data-od="sw"][data-k="gpu"]');
+  ok(await p.evaluate(() => window.__od.device.cfgGet().gpu === true), 'تفعيل GPU يُحفظ في الإعدادات');
+  await p.locator('.od-set').scrollIntoViewIfNeeded(); await p.screenshot({ path: 'e2e-gpu-1.png' });
+  await p.click('[data-od="sw"][data-k="gpu"]');
+  ok(await p.evaluate(() => window.__od.device.cfgGet().gpu === false), 'إيقاف GPU');
   await p.click('.od-gr [data-g="all"]');
   const cards = await p.locator('.od-m').count();
   ok(cards >= 15, 'ظهرت بطاقات كثيرة (7B وما فوق لا يُعرض لأن الكتالوج حتى 4B): ' + cards);

@@ -129,6 +129,7 @@
     clearTimeout(idleT);
     const w = W; W = null; loaded = null;
     if (nloaded){ nloaded = null; try{ od.native.free(); }catch{} }
+    state.gpu = '';
     if (w){ try{ await w.exit(); }catch{} }
     if (state.state !== 'error') setState('idle', { id:'' });
   }
@@ -160,18 +161,48 @@
     }
   }
 
+  /* ---------- تسريع GPU (Vulkan) ---------- */
+  const GPU_NOTES = { no_lib:'هذا الـ APK بُني بلا وحدة GPU', no_device:'لم يجد الهاتف معالجًا رسوميًا يدعم Vulkan', gpu_load_failed:'تعذّر تحميل النموذج على GPU', gpu_ctx_failed:'ذاكرة GPU لا تكفي', gpu_warmup_failed:'فشل اختبار GPU الأوّلي', crashed:'انهار تشغيل GPU في المرة السابقة' };
+  function gpuNote(r, cfg){
+    if (!cfg.gpu) return;
+    if (r.gpu){ state.gpu = r.gpu_name || 'GPU'; return; }
+    state.gpu = '';
+    const why = GPU_NOTES[r.gpu_note] || 'غير متاح';
+    if (r.gpu_note === 'crashed' || r.gpu_note === 'no_lib') od.device.cfgSet({ gpu:false });
+    if (typeof root.toast === 'function') root.toast('تسريع GPU غير مفعّل — ' + why + '؛ يعمل النموذج على المعالج');
+  }
+  /* مقارنة السرعة (معالج مقابل GPU) على نموذج مُنزَّل: يحمّله بالوضعين ويولّد نصًا قصيرًا */
+  async function benchGpu(rec, onStep){
+    const info = od.native.readInfo();
+    if (!od.native.available()) throw new Error('المحرك الأصلي غير متاح');
+    if (!info.gpuLib) throw new Error(GPU_NOTES.no_lib);
+    const cfg = od.device.cfgGet(), p = od.store.paths(rec.id), out = {};
+    for (const mode of ['cpu', 'gpu']){
+      await unload(); onStep && onStep(mode);
+      const r = await od.native.load({ model:p.model, mmproj:'', n_ctx:1024, n_threads:cfg.threads || 0, n_batch:512, mmap:true, gpu:mode === 'gpu' });
+      if (mode === 'gpu' && !r.gpu){ out.gpu = { err:GPU_NOTES[r.gpu_note] || 'غير متاح' }; continue; }
+      let st = null;
+      const req = { messages:[{ role:'user', content:'اكتب فقرة قصيرة عن الشمس والقمر.' }], n_predict:48, temp:0, top_k:1, think:false };
+      for await (const ev of od.native.chat(req, [], null)){ if (ev.stats) st = ev.stats; }
+      out[mode] = st ? { tps:st.t_gen_ms > 0 ? st.n_gen * 1000 / st.t_gen_ms : 0, pps:st.t_prompt_ms > 0 ? st.n_prompt * 1000 / st.t_prompt_ms : 0, name:r.gpu_name || '' } : { err:'لا نتيجة' };
+    }
+    await unload();
+    return out;
+  }
+
   /* ---------- المحرك الأصلي (llama.cpp) ---------- */
   async function ensureNative(rec){
     const cfg = od.device.cfgGet(), dev = await device();
     const extra = (rec.files || []).filter(f => f.role === 'mmproj').reduce((n, f) => n + (f.size || 0), 0), msize = Math.max(1, (rec.size || 0) - extra);
     let ctx = od.fit.ctxForModel(msize, rec.params, dev, cfg.ctx, extra); if (rec.ctx) ctx = Math.min(ctx, rec.ctx);
-    if (nloaded && nloaded.id === rec.id && nloaded.ctx === ctx && nloaded.threads === cfg.threads) return nloaded;
+    if (nloaded && nloaded.id === rec.id && nloaded.ctx === ctx && nloaded.threads === cfg.threads && nloaded.wantGpu === cfg.gpu) return nloaded;
     await unload();
     setState('loading', { id:rec.id, msg:'جارٍ تحميل النموذج في الذاكرة…' });
     try{
       const p = od.store.paths(rec.id), t0 = Date.now();
-      const r = await od.native.load({ model:p.model, mmproj:p.mmproj, n_ctx:ctx, n_threads:cfg.threads || 0, n_batch:512, mmap:true });
-      nloaded = { id:rec.id, ctx:r.n_ctx || ctx, vision:!!r.vision, threads:cfg.threads, msize };
+      const r = await od.native.load({ model:p.model, mmproj:p.mmproj, n_ctx:ctx, n_threads:cfg.threads || 0, n_batch:512, mmap:true, gpu:cfg.gpu });
+      nloaded = { id:rec.id, ctx:r.n_ctx || ctx, vision:!!r.vision, threads:cfg.threads, msize, gpu:!!r.gpu, gpuName:r.gpu_name || '', wantGpu:cfg.gpu };
+      gpuNote(r, cfg);
       setState('ready', { id:rec.id, ctx:nloaded.ctx, loadMs:Date.now() - t0, native:true });
       return nloaded;
     }catch(e){
@@ -211,7 +242,7 @@
       for (const x of sp.flush()) yield x;
       if (signal && signal.aborted) throw abortErr();
       const nIn = stats ? stats.n_prompt : 0, nOut = stats ? stats.n_gen : 0;
-      if (stats && nOut >= 8 && stats.t_gen_ms > 50) od.device.benchAdd(id, N.msize, nOut * 1000 / stats.t_gen_ms);
+      if (stats && nOut >= 8 && stats.t_gen_ms > 50 && !N.gpu) od.device.benchAdd(id, N.msize, nOut * 1000 / stats.t_gen_ms);
       yield { usage:{ in:nIn, out:nOut, think:0 } };
     }catch(e){
       if (e && e.name === 'AbortError') throw e;
@@ -305,6 +336,6 @@
     return { ok:text.trim().length > 0, text:text.trim(), ms:Math.round(ms), tps };
   }
 
-  od.engine = { ThinkSplitter, estTokens, trimHistory, toMessages, toNativeMessages, flattenNative, shrinkNative, friendly, chat, once, selfTest, ensure, unload, available:engineAvailable, on, state, device, resetDevice:() => { devCache = null; } };
+  od.engine = { ThinkSplitter, estTokens, trimHistory, toMessages, toNativeMessages, flattenNative, shrinkNative, friendly, chat, once, selfTest, ensure, unload, benchGpu, available:engineAvailable, on, state, device, resetDevice:() => { devCache = null; } };
   if (typeof module !== 'undefined' && module.exports) module.exports = od.engine;
 })(typeof window !== 'undefined' ? window : globalThis);

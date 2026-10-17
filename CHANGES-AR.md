@@ -99,3 +99,9 @@
 ## v33.2
 - توقيع ثابت: `build-apk.yml` يقرأ أسرار KEYSTORE_* ويبني `assembleRelease` موقّعًا بنفس المفتاح كل مرة (وإلا يرجع لـ debug مع تحذير).
 - تعطيل فحص lint لبناء الإصدار كي لا يُفشل البناء.
+
+## v34 — تسريع GPU (Vulkan)
+- النواة: `gpu`/`gpu_lib` في `load`، تحميل وحدة Vulkan عند الطلب فقط، قائمة أجهزة صريحة (معالج فقط افتراضيًا)، إحماء على GPU، رجوع تلقائي للمعالج (`gpu_note`).
+- `QuarkOd.java`: حماية من انهيار GPU بملف علامة (`od_gpu_try`).
+- الواجهة: مفتاح «تسريع GPU (تجريبي)» وزر «قارن السرعة (معالج مقابل GPU)».
+- البناء: `scripts/build-vulkan.sh` + خطوة اختيارية في build-apk.yml وrelease.yml، و`patch-android.py` يضمّن `libqvk.so` إن وُجدت.

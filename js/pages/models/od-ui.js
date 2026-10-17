@@ -200,9 +200,19 @@
       <label class="lib-f">حجم السياق<select class="fld" data-od-f="ctx">${[[0, 'تلقائي (حسب الذاكرة)'], [1024, '1024'], [2048, '2048'], [4096, '4096'], [8192, '8192 (يحتاج ذاكرة كبيرة)']].map(([v, t]) => `<option value="${v}"${c.ctx === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
       <label class="lib-f">تفريغ النموذج من الذاكرة عند عدم الاستخدام<select class="fld" data-od-f="idleMin">${[[0, 'أبدًا'], [3, 'بعد 3 دقائق'], [10, 'بعد 10 دقائق'], [30, 'بعد 30 دقيقة']].map(([v, t]) => `<option value="${v}"${c.idleMin === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
       ${nat ? `<label class="lib-f">عدد الخيوط<select class="fld" data-od-f="threads">${[[0, 'تلقائي (الأنوية السريعة)'], [2, '2'], [3, '3'], [4, '4'], [5, '5'], [6, '6']].map(([v, t]) => `<option value="${v}"${c.threads === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>` : ''}
+      ${nat ? gpuBlock(c, ni) : ''}
       <div class="od-eng">${eng}</div>
       <p class="od-dim">${nat ? 'يعمل النموذج مباشرة على معالج الهاتف عبر llama.cpp الأصلي. السرعة تتوقف على الجهاز وحجم النموذج؛ أجهزة 8GB فأكثر تشغّل نماذج حتى ≈ 4–8 مليار معامل بسرعة معقولة. إن سخن الهاتف قلّل عدد الخيوط.' : 'يعمل المحرك داخل التطبيق عبر llama.cpp (WebAssembly) على المعالج، فهو أبطأ من المحرك الأصلي: الأفضل نماذج حتى ≈ 1.5–3 مليار معامل. المحرك الأصلي الأسرع يتوفر في تطبيق أندرويد المبني بالنسخة الأحدث.'}</p>
     </details>`;
+  }
+  function gpuBlock(c, ni){
+    if (!ni || !ni.gpuLib) return '<p class="od-dim">تسريع GPU (Vulkan): غير مضمَّن في هذا الإصدار من التطبيق (لم تُبنَ وحدته في خطوة البناء الاختيارية).</p>';
+    const sw = `<button type="button" class="opt-row" role="switch" aria-checked="${c.gpu}" data-od="sw" data-k="gpu"><span>تسريع GPU (تجريبي)<small>قد يُسرّع المعالجة على بعض الهواتف، وقد يكون أبطأ على غيرها — جرّب «قارن السرعة»</small></span><i class="tg"></i></button>`;
+    const g = EN.state && EN.state.gpu ? `<span class="od-ok">GPU نشط: ${E(String(EN.state.gpu).slice(0, 60))}</span>` : '';
+    const crash = ni.gpuCrashed ? '<span class="od-warn">انهار GPU في المرة السابقة؛ سيُعطَّل تلقائيًا في التحميل القادم.</span>' : '';
+    const bn = S.bench ? (S.bench.busy ? `<span class="od-dim">يقيس: ${S.bench.mode === 'gpu' ? 'GPU' : 'المعالج'}…</span>` : S.bench.err ? `<span class="od-err">${E(S.bench.err)}</span>`
+      : `<div class="od-dim" dir="rtl">المعالج: <b>${S.bench.cpu && S.bench.cpu.tps ? S.bench.cpu.tps.toFixed(1) : '—'}</b> رمز/ث (قراءة النص ${S.bench.cpu && S.bench.cpu.pps ? Math.round(S.bench.cpu.pps) : '—'}) · GPU: <b>${S.bench.gpu && S.bench.gpu.tps ? S.bench.gpu.tps.toFixed(1) : '—'}</b> رمز/ث${S.bench.gpu && S.bench.gpu.pps ? ' (قراءة النص ' + Math.round(S.bench.gpu.pps) + ')' : ''}${S.bench.gpu && S.bench.gpu.err ? ' — GPU: ' + E(S.bench.gpu.err) : ''}</div>`) : '';
+    return sw + `<div class="od-eng">${g}${crash}<button type="button" class="od-mini" data-od="benchgpu"${S.bench && S.bench.busy ? ' disabled' : ''}>قارن السرعة (معالج مقابل GPU)</button>${bn}</div>`;
   }
   function render(){
     const r = root(); if (!r) return;
@@ -315,7 +325,15 @@
       }catch(e){ toast('فشل الاختبار: ' + (e.message || e)); }
       render();
     }
-    else if (a === 'sw'){ const k = btn.dataset.k, c = DV.cfgGet(); DV.cfgSet({ [k]: !c[k] }); S.setOpen = true; render(); }
+    else if (a === 'sw'){ const k = btn.dataset.k, c = DV.cfgGet(); DV.cfgSet({ [k]: !c[k] }); if (k === 'gpu') EN.unload && EN.unload(); S.setOpen = true; render(); }
+    else if (a === 'benchgpu'){
+      const rec = ST.list().find(r => r.state === 'ready' && r.storage === 'native');
+      if (!rec){ toast('نزّل نموذجًا على الجهاز أولًا ثم جرّب'); return; }
+      S.bench = { busy:true, mode:'cpu' }; S.setOpen = true; render();
+      try{ const r = await EN.benchGpu(rec, m => { S.bench = { busy:true, mode:m }; render(); }); S.bench = r; }
+      catch(e){ S.bench = { err:String(e && e.message || e) }; }
+      S.setOpen = true; render();
+    }
     else if (a === 'engine'){ btn.disabled = true; S.engineOk = await EN.available(); S.setOpen = true; render(); }
   }
   function ramDialog(){

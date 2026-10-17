@@ -17,3 +17,4 @@ data/
 vendor/
 
 android-native/llama.cpp/
+android-native/prebuilt/
