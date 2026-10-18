@@ -13,7 +13,7 @@ $('tileBtn').addEventListener('click', () => window.addQuarkTile?.());
 $('autoTitleSw').checked = settings.autoTitle;
 $('autoTitleSw').addEventListener('change', e => { settings.autoTitle = e.target.checked; persistSettings();  });
 const phone = () => true; /* الواجهة الجديدة (قائمة ثم تفاصيل) لكل الأحجام */
-const SET_TITLES = { keys:'المفاتيح والنماذج', defaults:'النماذج التلقائية', research:'البحث العميق', integrations:'التكاملات', agent:'الوكيل', custom:'التخصيص', general:'عام', voice:'الصوت', look:'المظهر', security:'الأمان', stats:'الإحصائيات', data:'التخزين', errors:'سجل الأخطاء', about:'حول التطبيق' };
+const SET_TITLES = { keys:'المفاتيح والنماذج', defaults:'النماذج التلقائية', research:'البحث العميق', integrations:'التكاملات', agent:'الوكيل', custom:'', general:'عام', voice:'الصوت', look:'المظهر', security:'الأمان', stats:'الإحصائيات', data:'التخزين', errors:'سجل الأخطاء', about:'حول التطبيق' };
 function selectTab(name){
   if (name === 'tasks'){ window.__openTasks?.('act'); return; }   /* رابط قديم: المهام صارت في المكتبة */
   if (name === 'home' && !phone()) name = 'keys';
@@ -35,7 +35,7 @@ function selectTab(name){
   if (name === 'research') window.renderRsSet?.();
   if (name === 'integrations') window.renderInt?.();
   if (name === 'agent') window.renderAgent?.();
-  if (name === 'custom'){ window.__mmRefresh?.(); window.__renderSkillSettings?.(); $('pfPrefs').value = getProfile().prefs; $('pfSystem').value = settings.systemPrompt; pfDirty(); renderPrm(); }
+  if (name === 'custom'){ window.__cuPaint?.(); window.__mmRefresh?.(); window.__renderSkillSettings?.(); $('pfPrefs').value = getProfile().prefs; $('pfSystem').value = settings.systemPrompt; pfDirty(); renderPrm(); }
   window.__syncHash?.();
   el.modal.querySelector('.set-body').scrollTop = 0; $('setHome').scrollTop = 0;
 }

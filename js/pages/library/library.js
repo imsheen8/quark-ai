@@ -93,6 +93,8 @@ const sysPrompt = () => { const a = store.get('ai_active_persona', null), pf = g
     $l('lbTabs').innerHTML = TABS.map(([k,l]) => {
       const n = EMB[k] ? embCount(k) : k==='all' ? a.length : k==='fav' ? a.filter(x => fav.has(key(x))).length : a.filter(x => x.kind===k).length;
       return `<button class="lib-tab ${tab===k?'on':''}" data-tab="${k}">${l}<small>${n}</small></button>`; }).join('');
+    const on = $l('lbTabs').querySelector('.lib-tab.on');   /* التبويب النشط يظهر دائمًا ولو كان خارج الشاشة */
+    if (on) requestAnimationFrame(() => { try{ on.scrollIntoView({ inline:'center', block:'nearest' }); }catch{} });
   }
   window.__libCounts = () => { if (main.classList.contains('lib-open')) paintTabs(); };
   function render(){

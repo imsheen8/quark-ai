@@ -32,6 +32,7 @@ window.QUARK_MANIFEST = {
     'js/pages/settings/gateway-settings.js',
     'js/pages/settings/params.js',
     'js/pages/settings/settings-nav.js',
+    'js/pages/settings/custom-tabs.js',
     'js/pages/settings/defaults.js',
     'js/pages/settings/voice-settings.js',
     'js/pages/profile/profile.js',

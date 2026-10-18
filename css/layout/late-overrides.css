@@ -50,7 +50,7 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 /* ===== إعدادات الهاتف: قائمة مجموعات (الصفحة الرئيسية ثم التفاصيل) ===== */
 .set-home,.sh-pop,.sh-back,.sh-info{display:none}
 @media all{
-  #modal .lib-tabs{display:none}
+  #modal #tabs.lib-tabs{display:none}
   #modal .lib-head{border-bottom:0;padding-bottom:6px}
   #modal .lib-top{margin-bottom:4px}
   #modal .lib-top h2{text-align:center;font-size:24px;font-weight:600;letter-spacing:.2px}
@@ -180,3 +180,75 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 #keysText,#keysVoice{display:flex;flex-direction:column;gap:18px}
 #keysText[hidden],#keysVoice[hidden]{display:none}
 .vo-tab span{white-space:nowrap}
+
+/* ===== المكتبة: توحيد كل التبويبات (الكل · المفضلة · الشخصيات · القوالب · البحث العميق · المهارات · المهام) ===== */
+/* 1) إصلاح: الشبكة داخل حاوية flex كانت تضغط الصفوف فيختفي وصف البطاقة (ارتفاعه 0) */
+#lbGrid{flex:none;grid-auto-rows:auto}
+#lbGrid .lib-card{min-height:150px;flex:none}
+/* 2) شريط التبويبات: تلاشٍ عند الحواف ليظهر أنه قابل للتمرير، وبلا قصّ */
+.lib-tabs{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%);scroll-behavior:smooth}
+.lib-tab{padding:10px 14px}
+/* 3) المهارات والمهام: نفس الشبكة ونفس البطاقة */
+#skillsMount .rs-body{max-width:1132px;padding:18px 16px 100px}
+#skillsMount .rs-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;align-items:stretch}
+#skillsMount .sk-cat{grid-column:1/-1;margin:6px 2px 0}
+#skillsMount .rs-empty,#skillsMount .rs-list>.tk-sub{grid-column:1/-1}
+#skillsMount .rs-empty{padding:70px 10px;line-height:2}
+#skSummary,#tkSummary,#tkActSummary,#tkResN{font-size:13px;color:var(--muted);margin:0 2px 12px!important}
+.sk-card,.tk-card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;gap:10px;min-height:150px;transition:border-color .15s,box-shadow .15s}
+.sk-card:hover,.tk-card:hover{box-shadow:var(--shadow-md)}
+.sk-card.sel,.tk-card.sel{outline:0;border-color:var(--accent);background:var(--accent-soft)}
+.sk-card.off,.tk-card.off{opacity:1}
+.sk-card.draft{border-style:solid}
+.tk-card.unread{border-color:var(--accent)}
+.tk-row{align-items:center;gap:8px}
+.tk-row .tk-nm{font-size:16px;font-weight:600;line-height:1.4;overflow-wrap:anywhere}
+.sk-card .tk-row{flex-wrap:wrap}
+.sk-card .tk-row .tk-nm{order:3;flex-basis:100%}
+.sk-card .tk-row .tk-more{order:0;margin-inline-start:auto}
+.sk-pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.tk-sub{font-size:13.5px;line-height:1.7;color:var(--text-2)}
+.sk-card .rs-meta,.tk-card .rs-meta{margin-top:auto;padding-top:4px}
+.tk-more{width:34px;height:34px}
+/* مقاطع المهام (المهام · النتائج · النشاط): بنفس عرض الشبكة وبشكل مطابق لأزرار التبويب الأخرى */
+#tkTasksView .rs-body{max-width:1132px;padding:14px 16px 100px}
+#tkTasksView .rs-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+#tkTasksView .rs-list>.rs-empty,#tkTasksView .rs-list>.tk-sub{grid-column:1/-1}
+#tkTasksView .rs-empty{padding:70px 10px;line-height:2}
+.tk-sub-tabs{gap:6px;margin-bottom:14px}
+.tk-sub-tabs button{height:38px;border-radius:12px;font-size:14px}
+.rs-bulk{margin-bottom:12px}
+#libView.lib-view>#skillsMount{padding:0}
+#skillsMount .rs-body,#tkTasksView .rs-body{margin-inline:auto}
+
+/* ===== صفحة النماذج: نفس لغة المكتبة (شبكة، شريط تبويبات، ترشيح مرتب) ===== */
+#mdGrid{flex:none;grid-auto-rows:auto}
+#mdGrid .lib-card{flex:none}
+.md-chips{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%)}
+.md-filters{margin-top:12px;gap:12px}
+.md-chips{flex:1 1 100%}
+.md-tool{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.md-tool .sel-wrap{width:100%}
+.md-tool .sel-wrap select.fld{width:100%}
+.md-tool .md-vm{grid-column:1/-1;justify-self:start}
+.md-tool #mdReset{grid-column:1/-1;justify-self:start}
+@media (min-width:760px){
+  .md-chips{flex:1 1 auto}
+  .md-tool{display:flex;flex-wrap:wrap;width:auto}
+  .md-tool .sel-wrap,.md-tool .sel-wrap select.fld{width:auto}
+  .md-tool .md-vm,.md-tool #mdReset{grid-column:auto}
+}
+
+/* ===== الإعدادات ← التخصيص: تبويبات بدل صفوف قابلة للطيّ ===== */
+[data-panel="custom"] details[hidden]{display:none}
+/* المجموعة الواحدة بلا إطار مزدوج: العنوان يظهر فقط حين يضم التبويب أكثر من قسم (التفضيلات والتعليمات) */
+[data-panel="custom"] .embedded-group>summary{pointer-events:none;cursor:default}
+[data-panel="custom"] .embedded-group>summary::marker,[data-panel="custom"] .embedded-group>summary::-webkit-details-marker{content:"";display:none}
+[data-panel="custom"] details[data-cu="params"]>summary,[data-panel="custom"] details[data-cu="mem"]>summary,[data-panel="custom"] details[data-cu="skills"]>summary{display:none}
+[data-panel="custom"] .embedded-group[open]>summary{margin-bottom:12px}
+[data-panel="custom"] details[data-cu="params"],[data-panel="custom"] details[data-cu="mem"],[data-panel="custom"] details[data-cu="skills"]{border:0;background:none;padding:0}
+/* تبويبات التخصيص: نفس شكل مفاتيح الكتابة/الصوت لكن 2×2 */
+.cu-tabs{display:grid;grid-template-columns:1fr 1fr;margin:4px 0 14px}
+.cu-tabs .vo-tab{font-size:15px;padding:12px 8px;min-width:0}
+.cu-tabs .vo-tab span{white-space:normal;text-align:center;line-height:1.35}
+.cu-tabs .vo-tab .i{flex:none}

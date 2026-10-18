@@ -196,7 +196,7 @@
   /* ---------- الأحداث ---------- */
   window.__renderSkillSettings = renderSkillSettings;
   const openSkillSettings = () => {
-    openSettings('custom'); $('skillsSettingsDetails').open = true;
+    openSettings('custom'); window.__cuGo?.('skills'); $('skillsSettingsDetails').open = true;
     requestAnimationFrame(() => $('skillsSettingsDetails').scrollIntoView({ block:'start' }));
   };
   const addMenu = anchor => menu(anchor, [

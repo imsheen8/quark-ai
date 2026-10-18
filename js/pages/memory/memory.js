@@ -228,7 +228,7 @@
 
   /* نقطة دخول متوافقة مع الروابط القديمة. */
   window.__openMemory = () => {
-    openSettings('custom');
+    openSettings('custom'); window.__cuGo?.('mem');
     $('memoryDetails').open = true;
     selMode = false; sel.clear(); editing = ''; paint();
     requestAnimationFrame(() => $('memoryDetails').scrollIntoView({ block:'start' }));

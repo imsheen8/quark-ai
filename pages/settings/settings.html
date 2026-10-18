@@ -139,21 +139,22 @@
           </section>
 
           <section class="tab-panel" data-panel="custom" hidden>
-            <details class="embedded-group" id="prefsDetails" open>
+            <div class="vo-tabs cu-tabs" id="cuTabs" role="tablist" aria-label="التخصيص"></div>
+            <details class="embedded-group" id="prefsDetails" data-cu="prefs" open>
               <summary><svg class="i"><use href="#i-user"/></svg> التفضيلات الشخصية <span>ما يراعيه الذكاء الاصطناعي في كل المحادثات</span></summary>
               <div class="pf-sec eg-body">
               <div class="field"><textarea id="pfPrefs" rows="5" placeholder="اطرح أسئلة توضيحية قبل تقديم إجابات مفصّلة"></textarea></div>
               <button class="pf-big" id="pfSavePrefs" disabled>حفظ التفضيلات</button>
               </div>
             </details>
-            <details class="embedded-group" id="systemDetails">
+            <details class="embedded-group" id="systemDetails" data-cu="prefs" open>
               <summary><svg class="i"><use href="#i-cpu"/></svg> تعليمات النظام <span>دور الذكاء الاصطناعي وأسلوبه ولغته</span></summary>
               <div class="pf-sec eg-body">
               <div class="field"><textarea id="pfSystem" rows="4" placeholder="مثال: أنت مساعد ودود تجيب بالعربية بإيجاز."></textarea></div>
               <button class="pf-big" id="pfSaveSystem" disabled>حفظ التعليمات</button>
               </div>
             </details>
-            <details class="embedded-group" id="paramsDetails">
+            <details class="embedded-group" id="paramsDetails" data-cu="params" open>
               <summary><svg class="i"><use href="#i-sh-sliders"/></svg> معاملات النموذج <span>Temperature وTop P وطول الرد</span></summary>
               <div class="pf-sec eg-body">
               <div class="prm-box">
@@ -188,11 +189,11 @@
               <div class="help"><svg class="i"><use href="#i-info"/></svg><div>في Anthropic لا تُرسل Temperature وTop P معًا (يُستخدم Temperature فقط، وحدّه الأقصى 1). بعض النماذج المنطقية تتجاهل هذه المعاملات.</div></div>
               </div>
             </details>
-            <details class="embedded-group" id="memoryDetails">
+            <details class="embedded-group" id="memoryDetails" data-cu="mem" open>
               <summary><svg class="i"><use href="#i-brain"/></svg> الذاكرة <span>الذكريات والاستخراج التلقائي</span></summary>
               <div id="memoryMount"></div>
             </details>
-            <details class="embedded-group" id="skillsSettingsDetails">
+            <details class="embedded-group" id="skillsSettingsDetails" data-cu="skills" open>
               <summary><svg class="i"><use href="#i-sparkles"/></svg> إعدادات المهارات <span>المطابقة والاعتماد والاستيراد</span></summary>
               <div id="skillsSettingsRoot"></div>
               <button type="button" class="lib-btn" id="manageSkills">إدارة المهارات في المكتبة</button>

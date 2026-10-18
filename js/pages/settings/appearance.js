@@ -67,12 +67,12 @@ function themeCard(t, mode){
     (custom ? `<button type="button" class="th-ed" data-edit="${t.id}" aria-label="تعديل الثيم">${ic('lib-edit')}</button>` : '') + '</div>';
 }
 function renderThemes(){
-  const modes = settings.theme === 'auto' ? ['dark', 'light'] : [settings.theme];
+  const modes = [resolvedTheme()];   /* «تلقائي»: نعرض ثيمات الوضع الحالي للجهاز فقط (داكن أو فاتح) */
   $('themeBox').innerHTML = modes.map(m => {
-    const title = settings.theme === 'auto' ? (m === 'dark' ? 'ثيم الوضع الداكن' : 'ثيم الوضع الفاتح') : (m === 'dark' ? 'ثيمات داكنة' : 'ثيمات فاتحة');
+    const title = settings.theme === 'auto' ? (m === 'dark' ? 'ثيم الوضع الداكن (الحالي)' : 'ثيم الوضع الفاتح (الحالي)') : (m === 'dark' ? 'ثيمات داكنة' : 'ثيمات فاتحة');
     return `<div class="th-group"><span class="lbl">${ic('sparkles')} ${title}</span><div class="th-grid">${allThemes(m).map(t => themeCard(t, m)).join('')}</div>` +
       `<button type="button" class="th-new" data-new="${m}">${isPro() || settings.customThemes.length < FREE_THEMES ? ic('plus') + ' إنشاء ثيم مخصص' : ic('lock') + ' إنشاء ثيم مخصص — برو'}</button></div>`;
-  }).join('') + (settings.theme === 'auto' ? '<p class="panel-desc">يُطبَّق الثيم المناسب تلقائيًا بحسب إعداد جهازك.</p>' : '');
+  }).join('') + (settings.theme === 'auto' ? '<p class="panel-desc">يتبدّل الثيم تلقائيًا مع وضع جهازك، وتظهر هنا ثيمات الوضع الحالي فقط.</p>' : '');
 }
 function syncLook(){
   $('themeSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.tmode === settings.theme));
@@ -100,7 +100,7 @@ function applyTheme(){
   st.setProperty('--fs', { sm:.9, md:1, lg:1.12 }[settings.fontSize] || 1);
   syncLook();
 }
-if (mqLight.addEventListener) mqLight.addEventListener('change', () => { if (settings.theme === 'auto') applyTheme(); });
+if (mqLight.addEventListener) mqLight.addEventListener('change', () => { if (settings.theme === 'auto'){ applyTheme(); renderThemes(); } });
 $('themeSeg').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   settings.theme = b.dataset.tmode; persistSettings(); applyTheme();
