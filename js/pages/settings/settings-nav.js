@@ -78,7 +78,7 @@ function shSwitch(id, icon, title, on){
 }
 function renderSetHome(){
   const pf = getProfile(), pro = isPro();
-  const eps = settings.endpoints.filter(e => e.enabled).length;
+  const eps = settings.endpoints.filter(e => e.enabled && !e.managed).length;
   const theme = { auto:'تلقائي', light:'فاتح', dark:'داكن' }[settings.theme] || 'مخصص';
   const font = { sm:'صغير', md:'متوسط', lg:'كبير' }[settings.fontSize] || 'متوسط';
   const voiceOn = !!(voiceConf('stt').key || voiceConf('tts').key);

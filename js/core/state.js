@@ -8,7 +8,7 @@ settings.themeSel = { dark:'default', light:'default', ...(settings.themeSel && 
 settings.customThemes = (Array.isArray(settings.customThemes) ? settings.customThemes : []).filter(t => t && t.id && /^#[0-9a-f]{6}$/i.test(t.bg) && /^#[0-9a-f]{6}$/i.test(t.surface) && /^#[0-9a-f]{6}$/i.test(t.text) && /^#[0-9a-f]{6}$/i.test(t.accent) && (t.mode === 'dark' || t.mode === 'light')).slice(0, 50);
 settings.params = { global:{ ...(settings.params?.global || {}) }, models:{ ...(settings.params?.models || {}) } };
 const persistSettings = () => store.set('ai_settings_v3', { endpoints:settings.endpoints, sel:settings.sel, theme:settings.theme, fontSize:settings.fontSize, systemPrompt:settings.systemPrompt, autoTitle:settings.autoTitle, params:settings.params, themeSel:settings.themeSel, customThemes:settings.customThemes, msgStyle:settings.msgStyle, cont:settings.cont, gw:settings.gw, research:settings.research, skills:settings.skills, memory:settings.memory, defs:settings.defs });
-const hostOf = u => { if (/^ondevice:/.test(u || '')) return 'على الجهاز'; try{ return new URL(u).host; }catch{ return u || '—'; } };
+const hostOf = u => { if (/^ondevice:/.test(u || '')) return 'على الجهاز'; if (typeof MANAGED_URL !== 'undefined' && MANAGED_URL && String(u || '').replace(/\/+$/, '') === MANAGED_URL) return 'QUARK'; try{ return new URL(u).host; }catch{ return u || '—'; } };
 const epOf = id => settings.endpoints.find(e => e.id === id);
 function activeModel(){
   const s = settings.sel, ep = s && epOf(s.ep);

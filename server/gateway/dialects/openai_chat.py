@@ -58,6 +58,8 @@ class OpenAIChat(Dialect):
     name = "openai"
 
     def chat_url(self, ep: Endpoint, model: str, stream: bool) -> str:
+        if ep.url.rstrip("/").endswith("/qk"):        # وسيط QUARK المُدار (مسار بديل لا تحجبه الاستضافات)
+            return ep.url.rstrip("/") + "/chat"
         return ep.url + "/chat/completions"
 
     def headers(self, ep: Endpoint) -> Dict[str, str]:

@@ -1,7 +1,7 @@
 /* QUARK AI — نقطة اتصال مُدارة (وسيط QUARK Proxy).
    ضع عنوان الوسيط في MANAGED_URL (مثل https://example.com/v1) فيُضاف تلقائيًا كنقطة اتصال للنموذج الافتراضي،
    والمفتاح هو معرّف عشوائي لهذا الجهاز (لا مفتاح حقيقي في التطبيق). اتركه فارغًا لتعطيل الميزة. */
-const MANAGED_URL = 'https://quark.wisp.uno/v1';
+const MANAGED_URL = 'https://quark.wisp.uno/qk';
 const MANAGED_MODEL = 'quark';
 const MANAGED_SECRET = '';   /* نفس APP_SECRET في الوسيط إن استخدمته */
 
@@ -38,3 +38,6 @@ async function managedLeft(){
     return r.ok ? await r.json() : null;
   } catch { return null; }
 }
+
+/* مسار الدردشة: الوسيط المُدار ينتهي عنوانه بـ /qk ويستقبل على /chat (بعض الاستضافات تحجب الاسم المعتاد) */
+const chatPath = (base) => /\/qk$/.test(String(base || '')) ? '/chat' : '/chat/completions';

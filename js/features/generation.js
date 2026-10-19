@@ -20,7 +20,7 @@ async function completeOnce({ ep, model }, prompt, signal, opts = {}){
   const headers = { 'content-type':'application/json' };
   if (ep.key) headers.authorization = 'Bearer ' + ep.key;
   if (/openrouter\.ai/.test(base)) headers['X-Title'] = 'QUARK AI';
-  const res = await fetch(base + '/chat/completions', { method:'POST', signal, headers,
+  const res = await fetch(base + chatPath(base), { method:'POST', signal, headers,
     body: JSON.stringify({ model, stream:false, messages:[{ role:'user', content:prompt }] }) });
   if (!res.ok) throw new Error(await errText(res));
   const j = await res.json();
@@ -199,7 +199,7 @@ async function generateImage(c, imgAM){
       const order = only ? [['image'], ['image', 'text']] : [['image', 'text'], ['image']];
       let j = null, lastErr = '';
       for (const mods of order){
-        const res = await fetch(base + '/chat/completions', { method:'POST', signal:controller.signal, headers,
+        const res = await fetch(base + chatPath(base), { method:'POST', signal:controller.signal, headers,
           body: JSON.stringify({ model, messages:hist, modalities:mods, stream:false }) });
         if (res.ok){ j = await res.json(); break; }
         lastErr = await errText(res);

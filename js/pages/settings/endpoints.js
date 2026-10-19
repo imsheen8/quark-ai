@@ -82,11 +82,12 @@ function epCard(e){
 }
 function renderEps(){
   const box = $('epList'); box.innerHTML = '';
-  if (!draft.endpoints.length){
+  const shown = draft.endpoints.filter(e => !e.managed);        /* نقطة QUARK المُدارة لا تظهر للمستخدم هنا */
+  if (!shown.length){
     box.innerHTML = '<div class="empty-list">لم تُضف أي نقطة اتصال بعد. استخدم النموذج أعلاه لإضافة أول نقطة.</div>'; return;
   }
   [['local','محلي','monitor'], ['api','API','globe']].forEach(([k, label, icn]) => {
-    const list = draft.endpoints.filter(e => e.kind === k); if (!list.length) return;
+    const list = shown.filter(e => e.kind === k); if (!list.length) return;
     const g = document.createElement('div'); g.className = 'ep-group'; g.innerHTML = `${ic(icn)} ${label}`; box.appendChild(g);
     list.forEach(e => box.appendChild(epCard(e)));
   });

@@ -1,0 +1,13 @@
+const { chromium } = require('playwright');
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:412,height:860}});
+await ctx.addInitScript(()=>{try{localStorage.setItem('ai_intro','false');localStorage.setItem('ai_onboarded','true')}catch{}});
+const p=await ctx.newPage();let ok=0,bad=0;const t=(n,c)=>{console.log((c?'✓ ':'✗ ')+n);c?ok++:bad++};
+await p.goto('http://localhost:8123/index.html');await p.waitForFunction(()=>typeof openSettings==='function',null,{timeout:25000});
+await p.addStyleTag({content:'#qiHost,#qiCover{display:none!important}'});
+t('نقطة QUARK مضافة ومختارة',await p.evaluate(()=>{const e=settings.endpoints.find(x=>x.managed);return !!e&&settings.sel?.ep===e.id&&settings.sel.model==='quark'}));
+t('hostOf يعيد QUARK',await p.evaluate(()=>hostOf(MANAGED_URL)==='QUARK'));
+await p.evaluate(()=>openSettings('keys'));await p.waitForTimeout(600);
+t('لا تظهر في قائمة المفاتيح',await p.evaluate(()=>!/quark\.wisp/.test(document.getElementById('epList').innerText)&&document.querySelectorAll('#epList .ep-card').length===0));
+await p.evaluate(()=>openSettings('home'));await p.waitForTimeout(500);
+t('عدّاد الإعدادات لا يحسبها',await p.evaluate(()=>!/1 مفعّلة/.test(document.getElementById('modal').innerText)));
+console.log(ok+'/'+(ok+bad));await b.close();process.exit(bad?1:0)})();

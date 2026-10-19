@@ -89,7 +89,7 @@ async function* callModel(history, signal, chat, amOverride){
   } else {
     const headers = ep.key ? { authorization:'Bearer ' + ep.key } : {};
     if (/openrouter\.ai/.test(base)) headers['X-Title'] = 'QUARK AI';
-    yield* openaiStyle(base + '/chat/completions', headers, model, history, signal, P);
+    yield* openaiStyle(base + chatPath(base), headers, model, history, signal, P);
   }
 }
 function buildHistory(c){
