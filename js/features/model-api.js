@@ -70,7 +70,7 @@ async function* callModel(history, signal, chat, amOverride){
     try{ yield* gwChat(am, history, signal, P, sysPrompt()); return; }
     catch(e){ if (!e.gwDown) throw e; }          // البوابة سقطت قبل أي رد → نكمل مباشرةً
   }
-  if (['gemini', 'ollama'].includes(ep.proto)) throw new Error('هذه النقطة بصيغة ' + (ep.proto === 'gemini' ? 'Gemini' : 'Ollama') + ' الأصلية وتتطلب تشغيل البوابة (python3 serve.py) أو ضبط عنوان البوابة في الإعدادات. أو غيّر البروتوكول إلى OpenAI.');
+  if (['gemini', 'ollama'].includes(ep.proto)) throw new Error('هذه النقطة بصيغة ' + (ep.proto === 'gemini' ? 'Gemini' : 'Ollama') + ' الأصلية وغير متاحة حاليًا على هذا الجهاز. أو غيّر البروتوكول إلى OpenAI.');
   history = wireMsgs(history, ep.proto);
   const base = ep.url.replace(/\/+$/,'');
   if (ep.proto === 'anthropic'){

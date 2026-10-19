@@ -216,7 +216,7 @@ const mlCreds = a => ({ imap_host:a.imap_host, imap_port:a.imap_port, imap_sec:a
 async function mlApi(op, acc, params = {}, signal){
   if (!acc) throw new Error('لا يوجد حساب بريد مضبوط');
   if (!(await gwReady())){
-    const e = new Error('البريد يحتاج بوابة QUARK (تعمل مع serve.py أو داخل تطبيق الأندرويد). في الاستضافة الثابتة شغّل serve.py على جهاز آخر وأدخل عنوانه في الإعدادات ← المفاتيح ← بوابة النماذج.');
+    const e = new Error('البريد غير متاح حاليًا على هذا الجهاز.');
     e.code = 'nogw'; throw e;
   }
   let j;

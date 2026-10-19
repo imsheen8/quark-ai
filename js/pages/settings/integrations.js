@@ -19,7 +19,7 @@
     const r = root(); if (!r) return;
     const items = intDB.items, hooks = intDB.hooks;
     let h = `<div class="panel"><h3 class="it-h"><svg class="i"><use href="#i-plug"/></svg>تكاملات API</h3>
-      <p class="it-p">اربط خدماتك (المنزل الذكي، GitHub، قوائم المهام…) ليتصرف النموذج فيها من المحادثة: يقرأ ويستعلم تلقائيًا، وأي طلب يغيّر بيانات (إضافة/تعديل/حذف) يعرض عليك أولًا لتوافق. تحتاج البوابة (serve.py أو تطبيق الأندرويد). مفاتيحك تبقى في هذا الجهاز وتُرسل إلى بوابتك مع كل استدعاء فقط.</p>
+      <p class="it-p">اربط خدماتك (المنزل الذكي، GitHub، قوائم المهام…) ليتصرف النموذج فيها من المحادثة: يقرأ ويستعلم تلقائيًا، وأي طلب يغيّر بيانات (إضافة/تعديل/حذف) يعرض عليك أولًا لتوافق. مفاتيحك تبقى على هذا الجهاز.</p>
       <div class="it-row"><div><b>السماح للنموذج باستدعاء التكاملات</b><small>يُضاف وصف التكاملات المفعّلة إلى تعليمات النموذج في المحادثة.</small></div>${sw('intChat', intDB.chat)}</div></div>`;
     h += `<div class="panel"><h3 class="it-h">التكاملات المضبوطة</h3>` +
       (items.length ? items.map(i => `<div class="it-card${i.enabled ? '' : ' off'}" data-id="${E(i.id)}">
@@ -29,7 +29,7 @@
         <div class="it-res" id="res-${E(i.id)}" hidden></div></div>`).join('') : '<div class="it-empty">لا توجد تكاملات بعد. أضف أول واحد من القوالب الجاهزة أو خدمة مخصصة.</div>') +
       `<button type="button" class="lib-btn pri" data-a="add">إضافة تكامل</button></div>`;
     h += `<div class="panel"><h3 class="it-h">Webhooks الصادرة</h3>
-      <p class="it-p">أرسل أحداث المحادثة إلى خدمة خارجية (n8n، Zapier، خادمك…). كل طلب POST بصيغة JSON وموقَّع بـ HMAC-SHA256 في الترويسة X-Quark-Signature. العناوين العامة فقط، ولا تُعاد المحاولة عند الفشل، وتعمل أثناء استخدام التطبيق.</p>` +
+      <p class="it-p">أرسل أحداث المحادثة إلى خدمة خارجية مثل n8n أو Zapier. تعمل أثناء استخدام التطبيق فقط.</p>` +
       (hooks.length ? hooks.map(w => `<div class="it-card${w.enabled ? '' : ' off'}" data-id="${E(w.id)}">
         <div class="it-top"><div><b>${E(w.name)}</b><small dir="ltr">${E(intHost(w.url) || w.url)}</small></div>${sw('wen-' + w.id, w.enabled)}</div>
         <div class="it-tags">${w.events.map(e => `<span class="it-tag">${E(INT_EVENTS[e])}</span>`).join('') || '<span class="it-tag bad">بلا أحداث</span>'}${w.secret ? '<span class="it-tag ok">موقَّع</span>' : ''}${w.text ? '<span class="it-tag">مع النص</span>' : ''}${w.last ? `<span class="it-tag ${w.last.ok ? 'ok' : 'bad'}">${E(w.last.ok ? 'آخر إرسال ناجح' : 'آخر إرسال فشل')}</span>` : ''}</div>

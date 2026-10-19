@@ -27,10 +27,10 @@
     h += `<div class="panel"><h3 class="it-h">الأدوات</h3><p class="it-p">اختر ما يُسمح للوكيل باستخدامه. الأدوات التي تنقصها متطلبات تظهر معطّلة مع السبب.</p>` +
       Object.keys(AG_TOOLS).map(k => {
         const t = AG_TOOLS[k], why = whyOff(t), rk = RISK[t.risk];
-        return `<div class="it-card${agDB.tools[k] && !why ? '' : ' off'}"><div class="it-top"><div><b>${E(t.label)} <span class="ag-code" dir="ltr">${k}</span></b><small>${E(t.desc.split('. ')[0])}</small></div>${sw('agT-' + k, agDB.tools[k], !!why)}</div>
-          <div class="it-tags"><span class="it-tag ${rk[1]}">${E(rk[0])}</span>${t.gw ? '<span class="it-tag">تحتاج البوابة</span>' : ''}${why ? `<span class="it-tag bad">${E(why)}</span>` : ''}${k === 'run_js' ? '<span class="it-tag">بيئة معزولة · بلا شبكة · مهلة 6 ث</span>' : ''}</div></div>`;
+        return `<div class="it-card${agDB.tools[k] && !why ? '' : ' off'}"><div class="it-top"><div><b>${E(t.label)}</b><small>${E(t.desc.split('. ')[0])}</small></div>${sw('agT-' + k, agDB.tools[k], !!why)}</div>
+          <div class="it-tags"><span class="it-tag ${rk[1]}">${E(rk[0])}</span>${why ? `<span class="it-tag bad">${E(why)}</span>` : ''}${k === 'run_js' ? '<span class="it-tag">بيئة معزولة · بلا شبكة · مهلة 6 ث</span>' : ''}</div></div>`;
       }).join('') + `</div>`;
-    h += `<div class="it-note">الوكيل يعمل أثناء فتح التطبيق. محتوى الويب والتكاملات يُعامَل كبيانات غير موثوقة لا كتعليمات، وتُحفظ إعدادات الوكيل على هذا الجهاز فقط. أدوات الويب تحتاج البوابة (<span dir="ltr">serve.py</span> أو تطبيق الأندرويد). ${names.length ? `المتاح الآن: ${names.length} أدوات.` : 'لا توجد أدوات متاحة الآن.'}</div>`;
+    h += `<div class="it-note">الوكيل يعمل أثناء فتح التطبيق. محتوى الويب والتكاملات يُعامَل كبيانات غير موثوقة لا كتعليمات، وتُحفظ إعدادات الوكيل على هذا الجهاز فقط. ${names.length ? `المتاح الآن: ${names.length} أدوات.` : 'لا توجد أدوات متاحة الآن.'}</div>`;
     r.innerHTML = h;
   }
   window.renderAgent = render;

@@ -159,7 +159,7 @@ function rsAsk1(title, placeholder, ok = 'ابدأ'){
     const $o = id => root.querySelector('#' + id);
     $o('rsMaxT').value = c.maxTokens; $o('rsConc').value = c.concurrency; $o('rsExT').value = c.extractTimeout; $o('rsRunT').value = c.runTimeout;
     $o('rsDefModel').innerHTML = modelOptions(); $o('rsDefModel').value = c.sel ? c.sel.ep + '|' + c.sel.model : '';
-    gwReady().then(ok => { const n = $o('rsGwNote'); if (n) n.innerHTML = ok ? '' : 'البحث العميق يحتاج البوابة لجلب الصفحات. شغّل <b dir="ltr">python3 serve.py</b> أو أدخل عنوان البوابة في الإعدادات (في تطبيق الأندرويد تعمل مدمجة).'; });
+    gwReady().then(ok => { const n = $o('rsGwNote'); if (n) n.innerHTML = ok ? '' : 'البحث العميق غير متاح حاليًا.'; });
     const num = (id, lo, hi, d) => { const v = Number($o(id).value); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, Math.round(v))) : d; };
     const commit = () => {
       root.querySelectorAll('[data-k]').forEach(i => { c.keys[i.dataset.k] = i.value.trim(); });

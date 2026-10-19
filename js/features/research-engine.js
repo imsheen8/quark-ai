@@ -100,7 +100,7 @@ const rsToday = () => new Date().toLocaleDateString('ar', { weekday:'long', year
 
 /* ================= نداءات البوابة ================= */
 async function rsGw(route, body, signal){
-  if (!(await gwReady())) throw new Error('البحث العميق يتطلب البوابة (python3 serve.py أو تطبيق الأندرويد). افحص إعدادات البوابة.');
+  if (!(await gwReady())) throw new Error('البحث العميق غير متاح حاليًا. تحقق من اتصالك وحاول مرة أخرى.');
   const j = await gwJson(route, body, signal);
   if (!j.ok) throw new Error(j.error || 'فشل الطلب');
   return j;

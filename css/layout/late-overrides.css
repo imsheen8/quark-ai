@@ -252,3 +252,6 @@ input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:tex
 .cu-tabs .vo-tab{font-size:15px;padding:12px 8px;min-width:0}
 .cu-tabs .vo-tab span{white-space:normal;text-align:center;line-height:1.35}
 .cu-tabs .vo-tab .i{flex:none}
+
+/* نشر: بوابة النماذج مخفية عن المستخدم */
+#gwPanel[hidden]{display:none!important}
