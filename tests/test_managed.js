@@ -6,7 +6,7 @@ function run(url) {
   const kv = {}; let saved = 0;
   const ctx = { settings: { endpoints: [], sel: null }, persistSettings: () => saved++, store: { get: (k, d) => kv[k] ?? d, set: (k, v) => { kv[k] = v; } }, crypto: require('crypto').webcrypto, window: {}, fetch: async () => ({ ok: false }), console };
   vm.createContext(ctx);
-  vm.runInContext(src.replace("const MANAGED_URL = ''", `const MANAGED_URL = '${url}'`) + '\nthis.__r={ensureManaged,managedDeviceId}', ctx);
+  vm.runInContext(src.replace(/const MANAGED_URL = '[^']*'/, `const MANAGED_URL = '${url}'`) + '\nthis.__r={ensureManaged,managedDeviceId}', ctx);
   return { ctx, saved: () => saved, kv };
 }
 let r = run(''); t('فارغ: لا نقطة اتصال', r.ctx.settings.endpoints.length === 0 && r.saved() === 0);
