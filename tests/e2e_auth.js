@@ -19,7 +19,7 @@ await p.evaluate(()=>{window.__gsMode='cancel'}); await p.click('#gsGo'); await 
 t('الإلغاء يُظهر رسالة ويبقي الشاشة',/أُلغي/.test(await p.textContent('#gsErr'))&&await p.isVisible('#gsGate'));
 // نجاح
 await p.evaluate(()=>{window.__gsMode='ok'}); await p.click('#gsGo'); await p.waitForSelector('#gsGate',{state:'detached',timeout:10000});
-t('أُرسل معرّف العميل الصحيح',await p.evaluate(()=>window.__gsId)==='549746092483-es7te24btno6ghl1u89od90i4s7l67v0.apps.googleusercontent.com');
+t('أُرسل معرّف العميل الصحيح',await p.evaluate(()=>window.__gsId)==='549746092483-2j03teo8tjkrp4i3ucshg2edjbe2bhqo.apps.googleusercontent.com');
 t('طُلبت الجلسة من الوسيط مرة واحدة',calls===1);
 await p.waitForFunction(()=>typeof settings!=='undefined'&&settings.endpoints.some(e=>e.managed),null,{timeout:10000});
 t('مفتاح نقطة QUARK = الجلسة',await p.evaluate(()=>settings.endpoints.find(e=>e.managed).key==='qs.abc.def'));

@@ -1,7 +1,7 @@
 /* QUARK AI — تسجيل الدخول بحساب Google (لنقطة QUARK المُدارة فقط).
    التطبيق يحصل من Google على رمز هوية، ويبدله عند الوسيط بجلسة خاصة (تُحفظ هنا وتُرسل كمفتاح).
    العدّاد اليومي مرتبط بالحساب لا بالجهاز. يعمل داخل تطبيق أندرويد فقط (الجسر QuarkNative.googleSignIn). */
-const GOOGLE_CLIENT_ID = '549746092483-es7te24btno6ghl1u89od90i4s7l67v0.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '549746092483-2j03teo8tjkrp4i3ucshg2edjbe2bhqo.apps.googleusercontent.com';
 
 const QuarkAuth = (() => {
   const KEY = 'ai_auth';

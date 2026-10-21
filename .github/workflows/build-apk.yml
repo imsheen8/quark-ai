@@ -99,6 +99,15 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug
 
+      # بصمة SHA-1 للمفتاح الذي وُقّع به الـ APK: يجب أن تطابق Client ID (Android) في Google Cloud لتعمل «الدخول بحساب Google»
+      - name: Show signing SHA-1 (for Google sign-in)
+        run: |
+          for f in android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/debug/app-debug.apk; do
+            [ -f "$f" ] || continue
+            echo "== $f"
+            keytool -printcert -jarfile "$f" | grep -E "Owner|SHA1" | tee -a "$GITHUB_STEP_SUMMARY"
+          done
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
