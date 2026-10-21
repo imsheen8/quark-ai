@@ -45,6 +45,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import com.getcapacitor.BridgeActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends BridgeActivity {
     private String pendingAction = null;
@@ -205,10 +212,78 @@ public class MainActivity extends BridgeActivity {
         } catch (Exception e) { return null; }
     }
 
+    /* ── تسجيل الدخول بحساب Google: نعيد رمز الهوية للصفحة عبر window.__gsResult(json) ── */
+    private static final int RC_GOOGLE = 9417;
+
+    private void gsDeliver(JSONObject o) {
+        final String js = "window.__gsResult && window.__gsResult(" + JSONObject.quote(o.toString()) + ")";
+        final WebView w = getBridge().getWebView();
+        w.post(new Runnable() {
+            @Override
+            public void run() { w.evaluateJavascript(js, null); }
+        });
+    }
+
+    private void gsFail(int code, String msg) {
+        try {
+            JSONObject o = new JSONObject();
+            o.put("ok", false);
+            o.put("code", code);
+            o.put("msg", msg == null ? "" : msg);
+            gsDeliver(o);
+        } catch (Exception ignored) {}
+    }
+
+    private void startGoogleSignIn(String webClientId) {
+        try {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(webClientId).requestEmail().requestProfile().build();
+            final GoogleSignInClient client = GoogleSignIn.getClient(this, gso);
+            /* نخرج من الحساب السابق أولًا ليظهر اختيار الحساب في كل مرة */
+            client.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(Task<Void> t) {
+                    try { startActivityForResult(client.getSignInIntent(), RC_GOOGLE); }
+                    catch (Throwable e) { gsFail(-1, String.valueOf(e.getMessage())); }
+                }
+            });
+        } catch (Throwable e) {
+            gsFail(-1, String.valueOf(e.getMessage()));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != RC_GOOGLE) return;
+        try {
+            GoogleSignInAccount a = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
+            JSONObject o = new JSONObject();
+            o.put("ok", true);
+            o.put("idToken", a.getIdToken() == null ? "" : a.getIdToken());
+            o.put("email", a.getEmail() == null ? "" : a.getEmail());
+            o.put("name", a.getDisplayName() == null ? "" : a.getDisplayName());
+            gsDeliver(o);
+        } catch (ApiException e) {
+            gsFail(e.getStatusCode(), e.getMessage());
+        } catch (Throwable e) {
+            gsFail(-1, String.valueOf(e.getMessage()));
+        }
+    }
+
     public class NavBridge {
         /** منفذ البوابة المدمجة: 0 = تجهز بعد، -1 = فشلت، غير ذلك = جاهزة على 127.0.0.1. */
         @JavascriptInterface
         public int gwPort() { return gwPort; }
+
+        /** يفتح نافذة اختيار حساب Google؛ النتيجة تصل إلى window.__gsResult. */
+        @JavascriptInterface
+        public void googleSignIn(final String webClientId) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() { startGoogleSignIn(webClientId); }
+            });
+        }
 
         /** رمز الوصول العشوائي للبوابة (يتجدد عند كل تشغيل للتطبيق). */
         @JavascriptInterface
@@ -694,6 +769,9 @@ if os.environ.get('SIGNING') == '1' and 'signingConfigs' not in g:
     # لا نريد أن يُفشل فحص lint بناء الإصدار (يبطئه أيضًا)
     if 'checkReleaseBuilds' not in g:
         g = re.sub(r'(\n\s*android\s*\{)', r'\1\n    lintOptions { checkReleaseBuilds false; abortOnError false }', g, count=1)
+# تسجيل الدخول بحساب Google (واجهة GoogleSignIn من خدمات Google Play)
+if 'play-services-auth' not in g:
+    g = re.sub(r'(\ndependencies\s*\{)', r"\1\n    implementation 'com.google.android.gms:play-services-auth:21.2.0'", g, count=1)
 # Chaquopy: يشغّل بايثون داخل التطبيق لتعمل البوابة بدون خادم خارجي
 if 'com.chaquo.python' not in g:
     g = re.sub(r"(apply plugin: ['\"]com\.android\.application['\"])", r"\1\napply plugin: 'com.chaquo.python'", g, count=1)

@@ -16,9 +16,12 @@ const managedDeviceId = () => {
   return id;
 };
 
+/* المفتاح المُرسل للوسيط: جلسة Google إن وُجدت، وإلا معرّف الجهاز */
+const managedKey = () => { try { const a = store.get('ai_auth', null); if (a && a.token && a.exp > Date.now()) return a.token; } catch {} return managedDeviceId(); };
+
 function ensureManaged(){
   if (!MANAGED_URL) return;
-  const key = (MANAGED_SECRET ? MANAGED_SECRET + ':' : '') + managedDeviceId();
+  const key = (MANAGED_SECRET ? MANAGED_SECRET + ':' : '') + managedKey();
   let e = settings.endpoints.find((x) => x.managed);
   const first = !e;
   if (!e) {
@@ -34,7 +37,7 @@ ensureManaged();
 async function managedLeft(){
   if (!MANAGED_URL) return null;
   try {
-    const r = await fetch(MANAGED_URL.replace(/\/+$/, '') + '/usage', { headers:{ authorization:'Bearer ' + ((MANAGED_SECRET ? MANAGED_SECRET + ':' : '') + managedDeviceId()) } });
+    const r = await fetch(MANAGED_URL.replace(/\/+$/, '') + '/usage', { headers:{ authorization:'Bearer ' + ((MANAGED_SECRET ? MANAGED_SECRET + ':' : '') + managedKey()) } });
     return r.ok ? await r.json() : null;
   } catch { return null; }
 }

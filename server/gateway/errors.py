@@ -66,6 +66,10 @@ def from_http(status: int, body, ep: Endpoint) -> GatewayError:
     label = ep.label or "المزوّد"
     tail = (" — " + detail) if detail else ""
 
+    # وسيط QUARK المُدار: رسائله جاهزة وواضحة للمستخدم (عربية)، فنعرضها كما هي
+    if detail and str(getattr(ep, "url", "")).rstrip("/").endswith("/qk"):
+        return GatewayError(detail, status, "managed", status >= 500)
+
     if status in (400, 413, 422) and _CTX.search(probe):
         return GatewayError("المحادثة أطول من نافذة سياق النموذج. ابدأ محادثة جديدة أو قلّل حجم الرسائل والمرفقات." + tail, status, "context_length")
     if status in (401, 403) or (status == 400 and _BAD_KEY.search(probe)):

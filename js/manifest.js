@@ -8,6 +8,7 @@ window.QUARK_MANIFEST = {
     'js/pages/subscription/codes.js',
     'js/core/state.js',
     'js/features/managed.js',
+    'js/features/auth-google.js',
     'js/features/voice-api.js',
     'js/core/markdown.js',
     'js/features/tags.js',
