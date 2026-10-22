@@ -44,3 +44,13 @@ async function managedLeft(){
 
 /* مسار الدردشة: الوسيط المُدار ينتهي عنوانه بـ /qk ويستقبل على /chat (بعض الاستضافات تحجب الاسم المعتاد) */
 const chatPath = (base) => /\/qk$/.test(String(base || '')) ? '/chat' : '/chat/completions';
+
+/* رسالة الحظر من الوسيط: «تم إيقاف حسابك.» ثم «السبب: …» ثم سطر مساعدة. تصل بنصها نفسه عبر كل المسارات (مباشر/بوابة/تسجيل دخول)،
+   فنتعرّف عليها من أول سطر ونعيد { reason, help } أو null. */
+function parseBan(msg){
+  const t = String(msg || '').replace(/^\(\d{3}\)\s*/, '').trim();
+  if (!/^تم إيقاف حسابك/.test(t)) return null;
+  const L = t.split('\n').map(x => x.trim()).filter(Boolean);
+  const r = L.find(x => /^السبب\s*[:：]/.test(x));
+  return { reason: r ? r.replace(/^السبب\s*[:：]\s*/, '') : 'مخالفة شروط الاستخدام', help: L.length > 2 ? L[L.length - 1] : 'إن كنت ترى أن هذا خطأ فتواصل مع الدعم.' };
+}

@@ -1,0 +1,28 @@
+/* QUARK AI — صفحة الإشعارات */
+.nt{display:flex;flex-direction:column;gap:12px;min-width:0}
+.nt-head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13.5px;color:var(--muted)}
+.nt-head .lib-btn{height:38px;font-size:13.5px;gap:6px}
+.nt-head .lib-btn .i{font-size:17px}
+.nt-head .lib-btn:disabled{opacity:.5;pointer-events:none}
+.nt-note{font-size:13px;line-height:1.8;color:var(--danger);background:var(--danger-soft);border-radius:12px;padding:9px 12px}
+.nt-list{display:flex;flex-direction:column;gap:10px}
+.nt-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:14px 16px}
+.nt-card.new{border-color:var(--accent)}
+.nt-top{display:flex;align-items:center;gap:8px}
+.nt-top b{flex:1;min-width:0;font-size:16px;line-height:1.6;color:var(--text);overflow-wrap:anywhere}
+.nt-new{flex:none;font-size:11.5px;font-weight:700;padding:1px 9px;border-radius:99px;background:var(--accent);color:#fff}
+.nt-time{font-size:12.5px;color:var(--muted);margin-top:2px}
+.nt-body{margin-top:10px;font-size:15px;line-height:1.95;color:var(--text-2);white-space:pre-wrap;overflow-wrap:anywhere}
+.nt-empty{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:56px 20px;color:var(--muted)}
+.nt-empty .i{font-size:40px;opacity:.55}
+.nt-empty p{margin:6px 0 0;font-size:16px;color:var(--text-2)}
+.nt-empty small{font-size:13px;line-height:1.8}
+.nt-badge{margin-inline-start:auto;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--danger);color:#fff;font-size:12px;font-weight:700;display:inline-grid;place-items:center}
+#setInfo{position:relative}
+#setInfo.has-nt::after{content:'';position:absolute;top:8px;inset-inline-end:8px;width:9px;height:9px;border-radius:50%;background:var(--danger);border:2px solid var(--bg)}
+/* رسالة الحظر في المحادثة */
+.msg.error.banned .bubble{display:flex;flex-direction:column;gap:6px;white-space:normal}
+.msg.error.banned .ban-t{font-weight:700;font-size:16px}
+.msg.error.banned .ban-r{font-size:14.5px;line-height:1.8;color:var(--text)}
+.msg.error.banned .ban-r b{color:var(--danger)}
+.msg.error.banned .ban-h{font-size:13px;line-height:1.8;color:var(--muted)}

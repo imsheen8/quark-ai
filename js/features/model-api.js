@@ -26,7 +26,7 @@ async function* streamSSE(res){
   }
 }
 async function errText(res){
-  let t = ''; try{ const j = await res.json(); t = j.error?.message || JSON.stringify(j); }catch{ t = res.statusText; }
+  let t = ''; try{ const j = await res.json(); t = j.error?.message || JSON.stringify(j); if (j.error?.code === 'banned' && parseBan(t)) return t; }catch{ t = res.statusText; }
   if (res.status === 401) t = 'مفتاح API غير صالح. ' + t;
   if (res.status === 402) t = 'الرصيد غير كافٍ. ' + t;
   if (res.status === 404) t = 'النموذج أو العنوان غير موجود، تأكد من معرّف النموذج. ' + t;

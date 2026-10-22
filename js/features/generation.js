@@ -152,6 +152,7 @@ async function generate(c){
         ? 'تعذّر الاتصال. تحقق من الإنترنت أو من عنوان API.'
         : err.message;
       final = { role:'assistant', content:msg, error:true };
+      if (parseBan(msg)) final.banned = true;
       window.QuarkAuth?.onError?.(msg);
     }
   }finally{

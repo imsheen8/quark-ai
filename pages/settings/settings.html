@@ -23,6 +23,7 @@
           <button class="lib-tab" data-tab="stats" role="tab">الإحصائيات</button>
           <button class="lib-tab" data-tab="data" role="tab">التخزين</button>
           <button class="lib-tab" data-tab="errors" role="tab">سجل الأخطاء<span class="er-dot" id="erTabDot" hidden></span></button>
+          <button class="lib-tab" data-tab="notices" role="tab">الإشعارات<span class="er-dot" id="ntTabDot" hidden></span></button>
           <button class="lib-tab" data-tab="about" role="tab">حول التطبيق</button>
         </nav>
       </div></div>
@@ -386,16 +387,16 @@
           <section class="tab-panel" data-panel="errors" hidden>
             <div id="erRoot"></div>
           </section>
+          <!-- الإشعارات -->
+          <section class="tab-panel" data-panel="notices" hidden>
+            <div id="ntRoot"></div>
+          </section>
           <!-- حول التطبيق -->
           <section class="tab-panel" data-panel="about" hidden>
             <div class="rows">
               <div class="row-btn"><svg class="i"><use href="#i-user"/></svg><div><b>المطوّر</b><small>شين</small></div></div>
               <div class="row-btn"><svg class="i"><use href="#i-monitor"/></svg><div><b>الشركة</b><small dir="ltr" style="text-align:start">KRAZOS</small></div></div>
               <div class="row-btn"><svg class="i"><use href="#i-cpu"/></svg><div><b>الإصدار</b><small dir="ltr" style="text-align:start">v1.0</small></div></div>
-            </div>
-            <p class="panel-desc" style="margin:18px 0 10px">الروابط</p>
-            <div class="rows">
-              <a class="row-btn" href="https://discord.gg/ycmPBVszCy" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none"><svg class="i"><use href="#i-globe"/></svg><div><b>ديسكورد</b><small dir="ltr" style="text-align:start">discord.gg/ycmPBVszCy</small></div></a>
             </div>
           </section>
       </div>

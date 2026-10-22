@@ -92,7 +92,7 @@ const QuarkAuth = (() => {
         + '#gsGate .gs-t{font-size:22px;margin:0 0 10px;color:var(--text)}#gsGate .gs-p{font-size:14px;line-height:1.9;color:var(--text-2);margin:0 0 28px}'
         + '#gsGate .gs-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:52px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit;font-size:16px;cursor:pointer}'
         + '#gsGate .gs-btn:active{background:var(--surface-2)}#gsGate .gs-btn[disabled]{opacity:.6}'
-        + '#gsGate .gs-e{margin:16px 0 0;font-size:13.5px;line-height:1.8;color:#d9534f}';
+        + '#gsGate .gs-e{margin:16px 0 0;font-size:13.5px;line-height:1.8;color:#d9534f;white-space:pre-line}';
       d.appendChild(st); document.body.appendChild(d);
       document.getElementById('qiCover')?.remove();
       const btn = d.querySelector('#gsGo'), err = d.querySelector('#gsErr');

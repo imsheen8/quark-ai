@@ -217,6 +217,7 @@ const QuarkCloud = (() => {
       if (r.s === 200){ INFO = r.j; SIZES = b.sz; needsPull = false; setMeta({ owner:owner(), sig:b.sig, at:r.j.updated, skipped, known:t.cur }); setStatus('ok'); return true; }
       if (r.s === 413){ setStatus('full'); return false; }
       if (r.s === 401){ setStatus('auth', 'انتهت الجلسة'); return false; }
+      if (r.s === 403 && r.j && r.j.error && r.j.error.code === 'banned'){ setStatus('error', 'الحساب موقوف — ' + (r.j.error.reason || 'مخالفة شروط الاستخدام')); return false; }
       setStatus('error', (r.j && r.j.error && r.j.error.message) || 'تعذّرت المزامنة'); return false;
     }finally{ pushing = false; }
   }

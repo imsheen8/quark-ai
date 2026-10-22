@@ -46,6 +46,7 @@ window.QUARK_MANIFEST = {
     'js/pages/settings/storage.js',
     'js/pages/settings/stats.js',
     'js/pages/settings/errors.js',
+    'js/pages/settings/notices.js',
     'js/components/menus.js',
     'js/features/export.js',
     'js/components/sidebar.js',

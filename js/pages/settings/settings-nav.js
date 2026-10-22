@@ -13,7 +13,7 @@ $('tileBtn').addEventListener('click', () => window.addQuarkTile?.());
 $('autoTitleSw').checked = settings.autoTitle;
 $('autoTitleSw').addEventListener('change', e => { settings.autoTitle = e.target.checked; persistSettings();  });
 const phone = () => true; /* الواجهة الجديدة (قائمة ثم تفاصيل) لكل الأحجام */
-const SET_TITLES = { keys:'المفاتيح والنماذج', defaults:'النماذج التلقائية', research:'البحث العميق', integrations:'التكاملات', agent:'الوكيل', custom:'', general:'عام', voice:'الصوت', look:'المظهر', security:'الأمان', stats:'الإحصائيات', data:'التخزين', errors:'سجل الأخطاء', about:'حول التطبيق' };
+const SET_TITLES = { keys:'المفاتيح والنماذج', defaults:'النماذج التلقائية', research:'البحث العميق', integrations:'التكاملات', agent:'الوكيل', custom:'', general:'عام', voice:'الصوت', look:'المظهر', security:'الأمان', stats:'الإحصائيات', data:'التخزين', errors:'سجل الأخطاء', notices:'الإشعارات', about:'حول التطبيق' };
 function selectTab(name){
   if (name === 'tasks'){ window.__openTasks?.('act'); return; }   /* رابط قديم: المهام صارت في المكتبة */
   if (name === 'home' && !phone()) name = 'keys';
@@ -28,6 +28,7 @@ function selectTab(name){
   if (name === 'data') renderStats();
   if (name === 'stats') window.__stOpen?.();
   if (name === 'errors') window.__erOpen?.();
+  if (name === 'notices') window.__ntOpen?.();
   if (name === 'security') renderSecurity();
   if (name === 'voice') renderVoice();
   if (name === 'keys') window.renderKeysVoice?.();
@@ -90,7 +91,8 @@ function renderSetHome(){
   h += `<div class="sh-grp">${shRow('general','sh-sliders','عام', 'العنوان التلقائي والاهتزاز')}${shRow('look','moon','المظهر', `${theme} · ${font}`)}${shRow('voice','sh-wave','الصوت', voiceOn ? 'مفعّل' : 'غير مضبوط')}${shRow('mail','mail','البريد', window.__mlSub ? window.__mlSub() : '')}${shRow('stats','chart','الإحصائيات', window.__stSub ? window.__stSub() : 'النص والصوت والنماذج')}${shRow('data','database','التخزين والنسخ الاحتياطي', `${nChats} محادثة`)}${shRow('errors','alert','سجل الأخطاء', window.__erSub ? window.__erSub() : '')}</div>`;
   h += `<div class="sh-grp">${shRow('reset','refresh','مسح المفاتيح وإعادة الضبط','', 'danger')}</div>`;
   $('setHome').innerHTML = h;
-  $('shPop').innerHTML = `<a class="sh-pi" href="https://discord.gg/ycmPBVszCy" target="_blank" rel="noopener noreferrer">${shIcon('globe')}<span>ديسكورد</span></a>` +
+  const ntN = window.__ntUnread ? window.__ntUnread() : 0;
+  $('shPop').innerHTML = `<button type="button" class="sh-pi" data-go="notices">${shIcon('bell')}<span>الإشعارات</span>${ntN ? `<b class="nt-badge">${ntN > 9 ? '9+' : ntN}</b>` : ''}</button>` +
     `<button type="button" class="sh-pi" data-go="about">${shIcon('info')}<span>حول التطبيق</span></button><div class="sh-ver" dir="ltr">Version 1.0</div>`;
 }
 $('setHome').addEventListener('click', e => {

@@ -21,7 +21,7 @@ function msgNode(m, { last = false, noanim = false, stream = false } = {}){
   if (m.role === 'assistant' && m.cmp) return cmpNode(m, { last, noanim, stream });
   const w = document.createElement('div');
   if (stream) w.dataset.live = '1';
-  w.className = `msg ${m.role === 'user' ? 'user' : 'ai'}${m.error ? ' error' : ''}${noanim ? ' noanim' : ''}`;
+  w.className = `msg ${m.role === 'user' ? 'user' : 'ai'}${m.error ? ' error' : ''}${m.error && m.banned ? ' banned' : ''}${noanim ? ' noanim' : ''}`;
   w._raw = m.content; w._m = m;
   if (revealedMsgs.has(m)) w.classList.add('revealed');
   if (m.role === 'user'){
@@ -47,7 +47,9 @@ function msgNode(m, { last = false, noanim = false, stream = false } = {}){
   }
   w.innerHTML = '<div class="bubble"></div><div class="actions"></div>';
   const b = w.querySelector('.bubble');
-  if (m.error) b.textContent = m.content; else paintBubble(b, m.thinking, m.content, false, m.thinkSecs);
+  const ban = m.error && m.banned ? parseBan(m.content) : null;
+  if (ban) b.innerHTML = `<div class="ban-t">🚫 تم إيقاف حسابك</div><div class="ban-r"><b>السبب:</b> ${esc(ban.reason)}</div><div class="ban-h">${esc(ban.help)}</div>`;
+  else if (m.error) b.textContent = m.content; else paintBubble(b, m.thinking, m.content, false, m.thinkSecs);
   if (m.research && !stream) window.__rsDecorate?.(w, m);
   if (m.web && !stream) window.__wsDecorate?.(w, m);
   if (m.agent && !stream) window.__agDecorate?.(w, m);
