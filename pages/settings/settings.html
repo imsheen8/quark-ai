@@ -337,17 +337,19 @@
           <!-- التخزين -->
           <section class="tab-panel" data-panel="data" hidden>
             <div class="stor-card" id="storCard">
+              <div class="stor-mode" id="storMode"></div>
               <div class="stor-head">
                 <div><b id="storUsed">—</b><small id="storOf">من —</small></div>
                 <span class="stor-pct" id="storPct" dir="ltr">0%</span>
               </div>
               <div class="stor-bar" id="storBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="المساحة المستخدمة">
-                <i class="seg-chats" id="segChats"></i><i class="seg-imgs" id="segImgs"></i><i class="seg-other" id="segOther"></i>
+                <i class="seg-chats" id="segChats"></i><i class="seg-imgs" id="segImgs"></i><i class="seg-other" id="segOther"></i><i class="seg-bots" id="segBots"></i>
               </div>
               <div class="stor-legend">
                 <span><i class="seg-chats"></i>المحادثات <b id="lgChats" dir="ltr">0 B</b></span>
                 <span><i class="seg-imgs"></i>الصور <b id="lgImgs" dir="ltr">0 B</b></span>
                 <span><i class="seg-other"></i>أخرى <b id="lgOther" dir="ltr">0 B</b></span>
+                <span><i class="seg-bots"></i><em id="lgBotsLbl" style="font-style:normal">بوتات</em> <b id="lgBots" dir="ltr">0 B</b></span>
               </div>
               <div class="stor-free"><svg class="i"><use href="#i-info"/></svg><span id="storFree">جارٍ الحساب…</span></div>
             </div>
@@ -358,6 +360,10 @@
               <div class="stat"><b id="stSize">0</b><small>الحجم</small></div>
             </div>
 
+            <div class="rows" id="cloudRows" hidden>
+              <button class="row-btn" id="cloudSync"><svg class="i"><use href="#i-refresh"/></svg><div><b>مزامنة الآن</b><small id="cloudSyncSub">يحفظ كل شيء عدا المفاتيح في حسابك</small></div></button>
+              <button class="row-btn" id="cloudRestore"><svg class="i"><use href="#i-download"/></svg><div><b>استعادة من السحابة</b><small>دمج النسخة المحفوظة في حسابك مع هذا الجهاز</small></div></button>
+            </div>
             <div class="rows">
               <button class="row-btn" id="exportAll"><svg class="i"><use href="#i-download"/></svg><div><b>تصدير نسخة احتياطية</b><small>ملف JSON بكل المحادثات (بدون المفاتيح)</small></div></button>
               <button class="row-btn" id="importBtn"><svg class="i"><use href="#i-upload"/></svg><div><b>استيراد نسخة احتياطية</b><small>دمج محادثات من ملف JSON تم تصديره سابقًا</small></div></button>

@@ -26,6 +26,26 @@ const QuarkAuth = (() => {
     });
   }
 
+  /* احتياطي: جلب الصورة من رابط Google وتصغيرها 256px (قد يفشل بسبب CORS فنرجع الرابط نفسه) */
+  function photoFromUrl(url) {
+    return new Promise((res) => {
+      if (!url) return res('');
+      const img = new Image(); img.crossOrigin = 'anonymous';
+      const t = setTimeout(() => res(url), 8000);
+      img.onload = () => {
+        clearTimeout(t);
+        try {
+          const S = 256, c = document.createElement('canvas'); c.width = c.height = S;
+          const m = Math.min(img.width, img.height);
+          c.getContext('2d').drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, S, S);
+          res(c.toDataURL('image/jpeg', .85));
+        } catch { res(url); }
+      };
+      img.onerror = () => { clearTimeout(t); res(url); };
+      img.src = String(url).replace(/=s\d+(-c)?$/, '') + '=s256-c';
+    });
+  }
+
   async function signIn() {
     const g = await nativeSignIn();
     let r;
@@ -36,7 +56,16 @@ const QuarkAuth = (() => {
     if (!r.ok || !j.token) throw new Error((j.error && j.error.message) || 'تعذّر تسجيل الدخول.');
     store.set(KEY, { token: j.token, exp: j.exp, email: j.email || '', name: j.name || '', picture: j.picture || '', left: j.left, limit: j.limit });
     try { ensureManaged(); } catch {}
-    try { const pf = getProfile(); if (!pf.name && j.name) { pf.name = j.name; setProfile(pf); renderAvatars(); } } catch {}
+    try {
+      const pf = getProfile();
+      if (!pf.name && j.name) pf.name = j.name;
+      /* صورة حساب Google: الوسيط يعيدها جاهزة (photo)، وإلا نجلبها من الرابط. لا نستبدل صورة اختارها المستخدم بنفسه */
+      if (!pf.photo || pf.photoSrc === 'google') {
+        const ph = j.photo || await photoFromUrl(j.picture);
+        if (ph) { pf.photo = ph; pf.photoSrc = 'google'; }
+      }
+      setProfile(pf); renderAvatars();
+    } catch {}
     return load();
   }
 

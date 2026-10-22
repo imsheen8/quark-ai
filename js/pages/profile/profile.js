@@ -41,7 +41,7 @@ $('pfSaveSystem').addEventListener('click', () => {
   settings.systemPrompt = $('pfSystem').value.trim(); persistSettings(); pfDirty(); toast('تم حفظ تعليمات النظام');
 });
 $('pfPhotoBtn').addEventListener('click', () => $('pfFile').click());
-$('pfPhotoRm').addEventListener('click', () => { const pf = getProfile(); pf.photo = ''; setProfile(pf); renderAvatars(); toast('تمت إزالة الصورة'); });
+$('pfPhotoRm').addEventListener('click', () => { const pf = getProfile(); pf.photo = ''; pf.photoSrc = ''; setProfile(pf); renderAvatars(); toast('تمت إزالة الصورة'); });
 $('pfFile').addEventListener('change', e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   const img = new Image(), url = URL.createObjectURL(f);
@@ -49,12 +49,19 @@ $('pfFile').addEventListener('change', e => {
     const S = 256, c = document.createElement('canvas'); c.width = c.height = S;
     const m = Math.min(img.width, img.height), sx = (img.width - m) / 2, sy = (img.height - m) / 2;
     c.getContext('2d').drawImage(img, sx, sy, m, m, 0, 0, S, S); URL.revokeObjectURL(url);
-    const pf = getProfile(); pf.photo = c.toDataURL('image/jpeg', .85); setProfile(pf); renderAvatars(); toast('تم تحديث الصورة');
+    const pf = getProfile(); pf.photo = c.toDataURL('image/jpeg', .85); pf.photoSrc = ''; setProfile(pf); renderAvatars(); toast('تم تحديث الصورة');
   };
   img.onerror = () => { URL.revokeObjectURL(url); toast('تعذّر قراءة الصورة'); };
   img.src = url;
 });
 $('pfGoSettings').addEventListener('click', () => openSettings());
+$('pfLogout').addEventListener('click', async () => {
+  if (typeof busy !== 'undefined' && busy){ toast('انتظر انتهاء الرد الحالي'); return; }
+  const google = !!(window.QuarkAuth && QuarkAuth.session());
+  if (!await qConfirm(google ? 'تسجيل الخروج من حسابك؟ تُحفظ بياناتك في حسابك السحابي ويمكنك الدخول بها لاحقًا.' : 'تسجيل الخروج من هذا الحساب؟ تبقى بياناتك على الجهاز ويمكنك الدخول ببريدك وكلمة مرورك.', { ok:'تسجيل الخروج' })) return;
+  if (google){ await QuarkCloud.logout(); return; }
+  store.set('ai_onboarded', false); await QuarkKV.flush(); location.reload();
+});
 $('pfDelAll').addEventListener('click', () => $('delAll').click());
 renderAvatars();
 

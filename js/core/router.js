@@ -75,6 +75,7 @@ new MutationObserver(() => syncHash()).observe(mainEl, { attributes:true, attrib
 
 async function boot(){
   if (window.QuarkAuth && QuarkAuth.needed()) await QuarkAuth.gate();   /* الدخول بحساب Google قبل أي شيء */
+  if (window.QuarkCloud) await QuarkCloud.boot();   /* استعادة بيانات الحساب السحابية إن وُجدت */
   if (!store.get('ai_onboarded', false)) await runGate();   /* أول فتح: المقدمة الكاملة + إنشاء الحساب */
   else {
     if (introOn()) await QuarkIntro.playLogo(); else QuarkIntro.uncover();   /* الشعار فقط (قابل للإيقاف من الإعدادات) */

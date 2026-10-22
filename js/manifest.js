@@ -15,6 +15,7 @@ window.QUARK_MANIFEST = {
     'js/components/chat-list.js',
     'js/features/thinking.js',
     'js/features/image-store.js',
+    'js/features/cloud-sync.js',
     'js/pages/chat/messages.js',
     'js/features/gateway.js',
     'js/features/od-native.js',

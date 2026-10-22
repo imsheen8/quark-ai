@@ -17,7 +17,19 @@ async function renderStorageBar(){
   let imgs = await imgsBytes();
   let usage = 0, quota = 0;
   let other = 0, where = ' (المتاح للتطبيق)', onServer = false;
-  if (QuarkKV.server){
+  /* البوتات = النماذج المحمّلة على الجهاز (مجموعها فقط) */
+  let botsB = 0; try{ botsB = (window.__od && __od.store && __od.store.totalBytes()) || 0; }catch{}
+  const cloudOn = !!(window.QuarkCloud && QuarkCloud.active());
+  $('cloudRows').hidden = !cloudOn;
+  $('storMode').textContent = cloudOn ? 'التخزين السحابي — مساحة حسابك' : 'مساحة الجهاز';
+  $('lgBotsLbl').textContent = cloudOn ? 'بوتات (على الجهاز)' : 'بوتات';
+  if (cloudOn){
+    /* مستخدم الاستضافة: مساحة الحساب (5MB مجانًا) بدل مساحة الجهاز */
+    const inf = await QuarkCloud.refreshInfo().catch(() => null) || QuarkCloud.info() || {};
+    const sz = QuarkCloud.sizes();
+    chatsB = sz.chats; imgs = sz.imgs; other = sz.other; usage = inf.used || (chatsB + imgs + other); quota = inf.quota || 5 * 1048576;
+    where = ' (مساحة حسابك السحابية)'; onServer = true;
+  } else if (QuarkKV.server){
     /* التخزين في بايثون: الأحجام الحقيقية من الخادم، والسقف = ما يتسع له القرص */
     const st = await QuarkKV.stats().catch(() => null);
     if (st){ chatsB = st.chats; imgs = st.files; other = st.kv; usage = chatsB + imgs + other; quota = usage + st.disk_free; where = ' (مساحة القرص المتاحة)'; onServer = true; }
@@ -26,7 +38,7 @@ async function renderStorageBar(){
   }
   if (tok !== storTok) return;
   if (!onServer) other = Math.max(0, lsAll - chatsB);
-  const mine = chatsB + imgs + other;
+  const mine = chatsB + imgs + other + (cloudOn ? 0 : botsB);
   if (!usage || usage < mine) usage = mine;          /* التقدير غير متاح → نستخدم المجموع الفعلي */
   const estimated = quota > 0;
   if (!estimated) quota = 5 * 1048576;               /* احتياطي: حد localStorage التقريبي */
@@ -37,12 +49,29 @@ async function renderStorageBar(){
   const ptxt = pct < 1 && usage > 0 ? '<1%' : Math.round(pct) + '%';
   $('storPct').textContent = ptxt;
   $('storBar').setAttribute('aria-valuenow', Math.round(pct));
+  $('segBots').style.width = cloudOn ? '0%' : min(botsB) + '%'; $('lgBots').textContent = fmtBytes(botsB);
   $('segChats').style.width = min(chatsB) + '%'; $('segImgs').style.width = min(imgs) + '%'; $('segOther').style.width = min(other) + '%';
   $('lgChats').textContent = fmtBytes(chatsB); $('lgImgs').textContent = fmtBytes(imgs); $('lgOther').textContent = fmtBytes(other);
   const free = Math.max(0, quota - usage);
+  if (cloudOn){
+    const st = QuarkCloud.status(), at = QuarkCloud.lastAt(), sk = QuarkCloud.skipped();
+    const line = st === 'full' ? 'مساحتك السحابية ممتلئة — لم تُحفظ آخر التغييرات. احذف محادثات قديمة.'
+      : st === 'error' || st === 'auth' ? (QuarkCloud.error() || 'تعذّرت المزامنة') + ' — ستُعاد المحاولة تلقائيًا.'
+      : st === 'syncing' ? 'جارٍ المزامنة…'
+      : `المتبقي ${fmtBytes(Math.max(0, quota - usage))} · ` + (at ? 'آخر مزامنة ' + new Date(at).toLocaleTimeString('ar', { hour:'2-digit', minute:'2-digit' }) : 'لم تتم المزامنة بعد') + (sk ? ` · تخطّت ${sk} صورة لضيق المساحة` : '');
+    $('storFree').textContent = line; $('storCard').classList.toggle('warn', pct >= 85 || st === 'full'); return;
+  }
   $('storFree').textContent = pct >= 85 ? `المساحة شبه ممتلئة — المتبقي ${fmtBytes(free)}. صدّر نسخة احتياطية واحذف محادثات قديمة.` : `المتبقي ${fmtBytes(free)} من المساحة.`;
   $('storCard').classList.toggle('warn', pct >= 85);
 }
+$('cloudSync').addEventListener('click', async () => {
+  const ok = await QuarkCloud.syncNow(); toast(ok ? 'تمت المزامنة' : (QuarkCloud.status() === 'full' ? 'مساحتك السحابية ممتلئة' : 'تعذّرت المزامنة')); renderStorageBar();
+});
+$('cloudRestore').addEventListener('click', async () => {
+  if (!await qConfirm('سيُدمج ما في حسابك السحابي مع بيانات هذا الجهاز (بلا حذف). سيُعاد تشغيل التطبيق. متابعة؟', { ok:'استعادة' })) return;
+  if (!await QuarkCloud.restoreNow()) toast('لا توجد نسخة سحابية لاستعادتها');
+});
+window.QuarkCloud?.onChange(() => { const p = document.querySelector('[data-panel="data"]'); if (p && !p.hidden) renderStorageBar(); });
 /* مع تخزين بايثون: زر لحذف النسخة القديمة المتبقية في المتصفح بعد النقل (لا يمسّ بيانات الخادم) */
 function paintLegacy(){
   const b = $('clearLegacy'); if (!b) return;

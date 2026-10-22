@@ -81,3 +81,7 @@
 .stor-card.warn .stor-pct{color:var(--danger);background:var(--danger-soft)}
 .stor-card.warn .stor-free .i{color:var(--danger)}
 .stor-card.warn .stor-free{color:var(--danger)}
+
+.seg-bots{background:#8a63d2}
+.stor-mode{font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:8px}
+#cloudRows{margin-bottom:12px}
