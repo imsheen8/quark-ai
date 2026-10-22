@@ -50,7 +50,7 @@
   const act = e => {
     const ed = e.target.closest('[data-edit]');
     if (ed){ e.stopPropagation(); open(ed.dataset.edit); return; }
-    const add = e.target.closest('[data-new]'); if (add){ if (!isPro() && settings.customThemes.length >= FREE_THEMES){ openPlans('الخطة المجانية تتيح ثيمًا مخصصًا واحدًا. رقّ إلى برو لإنشاء المزيد.'); return; } open(null, add.dataset.new); return; }
+    const add = e.target.closest('[data-new]'); if (add){ if (!isPro() && settings.customThemes.length >= FREE_THEMES){ openPlans('الخطة المجانية تتيح ثيمًا مخصصًا واحدًا. اشترك في أي خطة (بلس أو برو أو برو ماكس) لإنشاء المزيد.'); return; } open(null, add.dataset.new); return; }
     const c = e.target.closest('[data-th]'); if (!c) return;
     settings.themeSel[c.dataset.mode] = c.dataset.th; persistSettings(); applyTheme();
   };

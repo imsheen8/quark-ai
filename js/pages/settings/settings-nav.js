@@ -84,7 +84,8 @@ function renderSetHome(){
   const font = { sm:'صغير', md:'متوسط', lg:'كبير' }[settings.fontSize] || 'متوسط';
   const voiceOn = !!(voiceConf('stt').key || voiceConf('tts').key);
   const nChats = (typeof chats !== 'undefined' ? chats.filter(c => !c.temp).length : 0);
-  let h = `<button type="button" class="sh-card sh-acc" data-go="profile"><span class="sh-name">${esc(pf.nick || pf.name || 'حسابي')}</span><span class="sh-badge">${pro ? 'برو' : 'مجاني'}</span></button>`;
+  /* بطاقة الحساب للعرض فقط (الاسم + نوع الاشتراك): لا تفتح شيئًا عند الضغط. الدخول للملف الشخصي من صف «الملف الشخصي» أدناه */
+  let h = `<div class="sh-card sh-acc sh-static" role="status"><span class="sh-name">${esc(pf.nick || pf.name || 'حسابي')}</span><span class="sh-badge">${esc(planLabel(planId()))}</span></div>`;
   if (!pro) h += `<div class="sh-card sh-up"><h3>تريد المزيد؟</h3><p>رقِّ حسابك للحصول على استخدام وإمكانيات أكثر.</p><button type="button" class="sh-upbtn" data-go="plan">ترقية</button></div>`;
   h += `<div class="sh-grp">${shRow('profile','sh-user','الملف الشخصي','')}${shRow('plan','sh-dollar','الاشتراك','')}</div>`;
   h += `<div class="sh-grp">${shRow('keys','sh-blocks','المفاتيح والنماذج', eps ? `${eps} مفعّلة` : 'أضف مفتاحًا للبدء')}${shRow('defaults','cpu','النماذج التلقائية', window.__defSub ? window.__defSub() : '')}${shRow('research','globe','البحث العميق', window.__rsSub ? window.__rsSub() : '')}${shRow('integrations','plug','التكاملات', window.__intSub ? window.__intSub() : '')}${shRow('agent','sparkles','الوكيل', window.__agSub ? window.__agSub() : '')}${shRow('custom','sh-aa','التخصيص','الذاكرة والمهارات والتعليمات ومعاملات النموذج')}${shRow('security','sh-shield','الأمان', hasLock() ? 'مفعّل' : 'غير مفعّل')}</div>`;

@@ -71,7 +71,7 @@ function renderThemes(){
   $('themeBox').innerHTML = modes.map(m => {
     const title = settings.theme === 'auto' ? (m === 'dark' ? 'ثيم الوضع الداكن (الحالي)' : 'ثيم الوضع الفاتح (الحالي)') : (m === 'dark' ? 'ثيمات داكنة' : 'ثيمات فاتحة');
     return `<div class="th-group"><span class="lbl">${ic('sparkles')} ${title}</span><div class="th-grid">${allThemes(m).map(t => themeCard(t, m)).join('')}</div>` +
-      `<button type="button" class="th-new" data-new="${m}">${isPro() || settings.customThemes.length < FREE_THEMES ? ic('plus') + ' إنشاء ثيم مخصص' : ic('lock') + ' إنشاء ثيم مخصص — برو'}</button></div>`;
+      `<button type="button" class="th-new" data-new="${m}">${isPro() || settings.customThemes.length < FREE_THEMES ? ic('plus') + ' إنشاء ثيم مخصص' : ic('lock') + ' إنشاء ثيم مخصص — يتطلب اشتراكًا'}</button></div>`;
   }).join('') + (settings.theme === 'auto' ? '<p class="panel-desc">يتبدّل الثيم تلقائيًا مع وضع جهازك، وتظهر هنا ثيمات الوضع الحالي فقط.</p>' : '');
 }
 function syncLook(){

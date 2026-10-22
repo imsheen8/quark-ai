@@ -65,7 +65,7 @@ $('pfLogout').addEventListener('click', async () => {
 });
 $('pfDelAcc').addEventListener('click', async () => {
   if (typeof busy !== 'undefined' && busy){ toast('انتظر انتهاء الرد الحالي'); return; }
-  if (!await qConfirm('سيُحذف حسابك نهائيًا: نسختك السحابية واشتراك برو (إن وُجد) وكل المحادثات والإعدادات والمفاتيح على هذا الجهاز. لا يمكن التراجع، ولن يُعاد الاشتراك. هل أنت متأكد؟', { ok:'متابعة' })) return;
+  if (!await qConfirm('سيُحذف حسابك نهائيًا: نسختك السحابية واشتراكك (إن وُجد) وكل المحادثات والإعدادات والمفاتيح على هذا الجهاز. لا يمكن التراجع، ولن يُعاد الاشتراك. هل أنت متأكد؟', { ok:'متابعة' })) return;
   if (!await qConfirm('تأكيد أخير: حذف الحساب وكل بياناتك نهائيًا؟', { ok:'نعم، احذف كل شيء' })) return;
   const r = await QuarkCloud.deleteAccount();
   if (!r.ok) toast(r.msg);
