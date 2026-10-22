@@ -824,9 +824,22 @@ gradle.write_text(g, encoding='utf-8')
 root_gradle = pathlib.Path('android/build.gradle')
 rg = root_gradle.read_text(encoding='utf-8')
 if 'com.chaquo.python' not in rg:
-    rg = re.sub(r'(buildscript\s*\{\s*repositories\s*\{)', r'\1\n        maven { url "https://chaquo.com/maven" }', rg, count=1)
+    # مهم: المستودع مقيَّد بمجموعة com.chaquo.* فقط — وإلا يسأل Gradle موقع chaquo.com عن كل اعتمادية (AGP وgoogle-services…) ويفشل البناء عند أي مهلة اتصال
+    chaquo_repo = ('\n        maven {\n            url "https://chaquo.com/maven"\n'
+                   '            content { includeGroupByRegex "com\\\\.chaquo\\\\..*" }\n        }')
+    rg = re.sub(r'(buildscript\s*\{\s*repositories\s*\{)', lambda mo: mo.group(1) + chaquo_repo, rg, count=1)
     rg = re.sub(r"(dependencies\s*\{\s*classpath ['\"]com\.android\.tools\.build:gradle:[^'\"]+['\"])", r"\1\n        classpath 'com.chaquo.python:gradle:15.0.1'", rg, count=1)
     root_gradle.write_text(rg, encoding='utf-8')
     if 'com.chaquo.python:gradle' not in rg or 'chaquo.com/maven' not in rg:
         raise SystemExit('تعذّر تعديل android/build.gradle لإضافة Chaquopy')
+# مهلات أطول + إعادة محاولة عند تعثّر أي مستودع بعيد
+gp = pathlib.Path('android/gradle.properties')
+gptxt = gp.read_text(encoding='utf-8') if gp.exists() else ''
+if 'org.gradle.internal.http.socketTimeout' not in gptxt:
+    gptxt = gptxt.rstrip('\n') + ('\n\n# Quark: network resilience\n'
+        'org.gradle.internal.http.connectionTimeout=180000\n'
+        'org.gradle.internal.http.socketTimeout=180000\n'
+        'org.gradle.internal.repository.max.retries=6\n'
+        'org.gradle.internal.repository.initial.backoff=1000\n')
+    gp.write_text(gptxt, encoding='utf-8')
 print('patched android project:', app_id, 'versionCode', code, 'versionName', name, 'signing', os.environ.get('SIGNING') == '1')
