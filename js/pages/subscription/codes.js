@@ -19,15 +19,34 @@ function parseCode(raw){
 }
 const getSub = () => store.get('ai_sub', null);
 const isPro = () => { const s = getSub(); return !!s && (s.exp === null || s.exp > Date.now()); };
-function redeemCode(raw){
-  const p = parseCode(raw);
-  if (!p) return { ok:false, msg:'الكود غير صحيح. تحقق منه وحاول مجددًا.' };
-  const used = store.get('ai_sub_used', []);
-  if (used.includes(p.code)) return { ok:false, msg:'استُخدم هذا الكود من قبل على هذا الجهاز.' };
-  const s = getSub(), now = Date.now(); let exp;
-  if (p.days === null || (s && s.exp === null && isPro())) exp = null;
-  else exp = ((s && s.exp !== null && s.exp > now) ? s.exp : now) + p.days * 864e5;
-  store.set('ai_sub', { plan:'pro', exp, since:s?.since || now, code:p.code });
-  store.set('ai_sub_used', [...used, p.code].slice(-50));
-  return { ok:true, label:p.label, exp };
+/* التفعيل صار على الخادم: كود عشوائي يُستعمل مرة واحدة ويُربط بحساب Google، والخادم هو من يحدّد حدّ الرسائل والمساحة السحابية.
+   (حالة برو المحفوظة هنا للواجهة فقط؛ ما يهمّ فعلًا يُفرَض في الوسيط.) */
+const subApi = async (method, path, body) => {
+  const a = window.QuarkAuth && QuarkAuth.session();
+  if (!a || !MANAGED_URL) return null;
+  try{
+    const r = await fetch(String(MANAGED_URL).replace(/\/+$/, '') + path, { method, cache:'no-store', body:body ? JSON.stringify(body) : undefined,
+      headers:{ authorization:'Bearer ' + ((MANAGED_SECRET ? MANAGED_SECRET + ':' : '') + a.token), ...(body ? { 'content-type':'application/json' } : {}) } });
+    return { s:r.status, j:await r.json().catch(() => ({})) };
+  }catch{ return null; }
+};
+async function redeemCode(raw){
+  const c = normCode(raw);
+  if (c.length !== 8) return { ok:false, msg:'الكود غير صحيح. تحقق منه وحاول مجددًا.' };
+  if (!(window.QuarkAuth && QuarkAuth.session())) return { ok:false, msg:'سجّل الدخول بحساب Google أولًا لتفعيل الاشتراك.' };
+  const r = await subApi('POST', '/redeem', { code:c });
+  if (!r) return { ok:false, msg:'تعذّر الاتصال بالخدمة. تحقق من الإنترنت وحاول مجددًا.' };
+  if (r.s !== 200) return { ok:false, msg:(r.j && r.j.error && r.j.error.message) || 'تعذّر تفعيل الكود.' };
+  const s = getSub(), now = Date.now();
+  store.set('ai_sub', { plan:'pro', exp:r.j.exp, since:(s && s.since) || now, server:true });
+  return { ok:true, label:r.j.label, exp:r.j.exp };
+}
+/* يطابق الاشتراك المحلي مع الخادم (عند الفتح وبعد التفعيل). الاشتراكات القديمة المحلية تبقى للواجهة حتى انتهائها. */
+async function syncSub(){
+  const r = await subApi('GET', '/me');
+  if (!r || r.s !== 200) return false;
+  const cur = getSub();
+  if (r.j.pro) store.set('ai_sub', { plan:'pro', exp:r.j.exp, since:r.j.since || (cur && cur.since) || Date.now(), server:true });
+  else if (cur && cur.server) store.set('ai_sub', null);
+  return true;
 }

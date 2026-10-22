@@ -75,6 +75,7 @@ new MutationObserver(() => syncHash()).observe(mainEl, { attributes:true, attrib
 
 async function boot(){
   if (window.QuarkAuth && QuarkAuth.needed()) await QuarkAuth.gate();   /* الدخول بحساب Google قبل أي شيء */
+  try{ if (window.QuarkAuth && QuarkAuth.session()) await Promise.race([syncSub(), new Promise(r => setTimeout(r, 3500))]); }catch{}   /* حالة برو من الخادم */
   if (window.QuarkCloud) await QuarkCloud.boot();   /* استعادة بيانات الحساب السحابية إن وُجدت */
   if (!store.get('ai_onboarded', false)) await runGate();   /* أول فتح: المقدمة الكاملة + إنشاء الحساب */
   else {

@@ -21,6 +21,7 @@ function pfDirty(){
 }
 function openProfile(){
   const pf = getProfile();
+  $('pfDelAcc').hidden = !(window.QuarkAuth && QuarkAuth.session());
   $('pfName').value = pf.name; $('pfNick').value = pf.nick;
   renderAvatars(); pfDirty();
   mainEl.classList.remove('lib-open','set-open','ch-open','md-open','vo-open'); mainEl.classList.add('pf-open');
@@ -61,6 +62,13 @@ $('pfLogout').addEventListener('click', async () => {
   if (!await qConfirm(google ? 'تسجيل الخروج من حسابك؟ تُحفظ بياناتك في حسابك السحابي ويمكنك الدخول بها لاحقًا.' : 'تسجيل الخروج من هذا الحساب؟ تبقى بياناتك على الجهاز ويمكنك الدخول ببريدك وكلمة مرورك.', { ok:'تسجيل الخروج' })) return;
   if (google){ await QuarkCloud.logout(); return; }
   store.set('ai_onboarded', false); await QuarkKV.flush(); location.reload();
+});
+$('pfDelAcc').addEventListener('click', async () => {
+  if (typeof busy !== 'undefined' && busy){ toast('انتظر انتهاء الرد الحالي'); return; }
+  if (!await qConfirm('سيُحذف حسابك نهائيًا: نسختك السحابية واشتراك برو (إن وُجد) وكل المحادثات والإعدادات والمفاتيح على هذا الجهاز. لا يمكن التراجع، ولن يُعاد الاشتراك. هل أنت متأكد؟', { ok:'متابعة' })) return;
+  if (!await qConfirm('تأكيد أخير: حذف الحساب وكل بياناتك نهائيًا؟', { ok:'نعم، احذف كل شيء' })) return;
+  const r = await QuarkCloud.deleteAccount();
+  if (!r.ok) toast(r.msg);
 });
 $('pfDelAll').addEventListener('click', () => $('delAll').click());
 renderAvatars();

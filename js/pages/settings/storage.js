@@ -21,7 +21,8 @@ async function renderStorageBar(){
   let botsB = 0; try{ botsB = (window.__od && __od.store && __od.store.totalBytes()) || 0; }catch{}
   const cloudOn = !!(window.QuarkCloud && QuarkCloud.active());
   $('cloudRows').hidden = !cloudOn;
-  $('storMode').textContent = cloudOn ? 'التخزين السحابي — مساحة حسابك' : 'مساحة الجهاز';
+  if (cloudOn) paintCloudRows();
+  $('storMode').textContent = cloudOn ? 'التخزين السحابي — مساحة حسابك' + (QuarkCloud.encOn() ? ' · 🔒 مشفّر' : '') : 'مساحة الجهاز';
   $('lgBotsLbl').textContent = cloudOn ? 'بوتات (على الجهاز)' : 'بوتات';
   if (cloudOn){
     /* مستخدم الاستضافة: مساحة الحساب (5MB مجانًا) بدل مساحة الجهاز */
@@ -57,6 +58,8 @@ async function renderStorageBar(){
     const st = QuarkCloud.status(), at = QuarkCloud.lastAt(), sk = QuarkCloud.skipped();
     const line = st === 'full' ? 'مساحتك السحابية ممتلئة — لم تُحفظ آخر التغييرات. احذف محادثات قديمة.'
       : st === 'error' || st === 'auth' ? (QuarkCloud.error() || 'تعذّرت المزامنة') + ' — ستُعاد المحاولة تلقائيًا.'
+      : st === 'locked' || QuarkCloud.locked() ? 'النسخة السحابية مشفّرة — المزامنة متوقفة حتى تُدخل كلمة السر.'
+      : st === 'pending' ? 'في انتظار دمج تغييرات من جهاز آخر…'
       : st === 'syncing' ? 'جارٍ المزامنة…'
       : `المتبقي ${fmtBytes(Math.max(0, quota - usage))} · ` + (at ? 'آخر مزامنة ' + new Date(at).toLocaleTimeString('ar', { hour:'2-digit', minute:'2-digit' }) : 'لم تتم المزامنة بعد') + (sk ? ` · تخطّت ${sk} صورة لضيق المساحة` : '');
     $('storFree').textContent = line; $('storCard').classList.toggle('warn', pct >= 85 || st === 'full'); return;
@@ -64,8 +67,37 @@ async function renderStorageBar(){
   $('storFree').textContent = pct >= 85 ? `المساحة شبه ممتلئة — المتبقي ${fmtBytes(free)}. صدّر نسخة احتياطية واحذف محادثات قديمة.` : `المتبقي ${fmtBytes(free)} من المساحة.`;
   $('storCard').classList.toggle('warn', pct >= 85);
 }
+function paintCloudRows(){
+  const enc = QuarkCloud.encOn(), lk = QuarkCloud.locked();
+  $('cloudUnlock').hidden = !lk;
+  $('cloudEnc').hidden = lk;
+  $('cloudEncT').textContent = enc ? 'إيقاف التشفير' : 'تشفير النسخة بكلمة سر';
+  $('cloudEncS').textContent = enc ? 'مفعّل 🔒 — الخادم لا يقرأ بياناتك' : 'لا يقرأ الخادم بياناتك، ويتيح مزامنة المفاتيح بأمان';
+  $('cloudEncPass').hidden = !enc || lk; $('cloudEncKeys').hidden = !enc || lk;
+  $('cloudEncKeysS').textContent = QuarkCloud.keysOn() ? 'مفعّلة — تُرفع مشفّرة وتظهر على أجهزتك الأخرى' : 'معطّلة — تُدخل المفاتيح على كل جهاز';
+}
+const encToast = ok => toast(ok ? 'تمت المزامنة' : (QuarkCloud.status() === 'full' ? 'مساحتك السحابية ممتلئة' : 'تعذّرت المزامنة'));
+$('cloudEnc').addEventListener('click', async () => {
+  if (QuarkCloud.encOn()){
+    if (!await qConfirm('إيقاف التشفير؟ ستُرفع نسختك بلا تشفير، وتتوقف مزامنة المفاتيح (تُحذف من السحابة).', { ok:'إيقاف التشفير' })) return;
+    toast('جارٍ التحديث…'); encToast(await QuarkCloud.disableEnc()); renderStorageBar(); return;
+  }
+  const a = await QuarkCloud.askPass({ mode:'set' }); if (!a) return;
+  toast('جارٍ التشفير…'); const ok = await QuarkCloud.enableEnc(a.pass, a.keys); toast(ok ? 'تم تشفير نسختك السحابية 🔒' : 'تعذّر التشفير'); renderStorageBar();
+});
+$('cloudEncPass').addEventListener('click', async () => {
+  const a = await QuarkCloud.askPass({ mode:'set', title:'تغيير كلمة السر', withKeys:false, ok:'تغيير' }); if (!a) return;
+  toast('جارٍ إعادة التشفير…'); const ok = await QuarkCloud.changePass(a.pass); toast(ok ? 'تم تغيير كلمة السر. ستطلبها أجهزتك الأخرى.' : 'تعذّر التغيير'); renderStorageBar();
+});
+$('cloudEncKeys').addEventListener('click', async () => {
+  const on = !QuarkCloud.keysOn();
+  if (on && !await qConfirm('ستُرفع مفاتيحك (API والصوت والتكاملات وكلمات مرور البريد) مشفّرةً بكلمة سرك، وتظهر على أجهزتك الأخرى بعد فك التشفير. متابعة؟', { ok:'تفعيل', danger:false })) return;
+  if (!on && !await qConfirm('إيقاف مزامنة المفاتيح؟ تُحذف من النسخة السحابية، وتبقى على أجهزتك.', { ok:'إيقاف' })) return;
+  toast('جارٍ التحديث…'); encToast(await QuarkCloud.setKeysSync(on)); renderStorageBar();
+});
+$('cloudUnlock').addEventListener('click', async () => { if (!await QuarkCloud.unlock()) toast('لم تُفك النسخة'); renderStorageBar(); });
 $('cloudSync').addEventListener('click', async () => {
-  const ok = await QuarkCloud.syncNow(); toast(ok ? 'تمت المزامنة' : (QuarkCloud.status() === 'full' ? 'مساحتك السحابية ممتلئة' : 'تعذّرت المزامنة')); renderStorageBar();
+  const ok = await QuarkCloud.syncNow(); toast(ok ? 'تمت المزامنة' : (QuarkCloud.status() === 'full' ? 'مساحتك السحابية ممتلئة' : QuarkCloud.locked() ? 'النسخة مشفّرة: أدخل كلمة السر أولًا' : 'تعذّرت المزامنة')); renderStorageBar();
 });
 $('cloudRestore').addEventListener('click', async () => {
   if (!await qConfirm('سيُدمج ما في حسابك السحابي مع بيانات هذا الجهاز (بلا حذف). سيُعاد تشغيل التطبيق. متابعة؟', { ok:'استعادة' })) return;
